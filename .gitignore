@@ -1,0 +1,19 @@
+node_modules/
+package-lock.json
+
+# your own lyrics and everything generated from them stay on your computer
+web/data.json
+web/needed.json
+web/timings.json
+web/*.ttf
+*.netease.txt
+
+# Android build output and signing secrets
+android/build/
+android/assets/
+android/jdk-*/
+android/sdk/
+*.keystore
+*.pass
+
+tmp-browser-profile/
