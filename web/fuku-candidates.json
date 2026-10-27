@@ -1,0 +1,556 @@
+{
+ "exact": {
+  "あさ": "File:LL-Q5287 (jpn)-Fukujinzuke-あさ.wav",
+  "いぬ": "File:LL-Q5287 (jpn)-Fukujinzuke-いぬ.wav",
+  "え": "File:LL-Q5287 (jpn)-Fukujinzuke-え.wav",
+  "かさ": "File:LL-Q5287 (jpn)-Fukujinzuke-かさ.wav",
+  "かお": "File:LL-Q5287 (jpn)-Fukujinzuke-かお.wav",
+  "き": "File:LL-Q5287 (jpn)-Fukujinzuke-き.wav",
+  "きく": "File:LL-Q5287 (jpn)-Fukujinzuke-きく.wav",
+  "ケーキ": "File:LL-Q5287 (jpn)-Fukujinzuke-ケーキ.wav",
+  "ここ": "File:LL-Q5287 (jpn)-Fukujinzuke-ここ.wav",
+  "こころ": "File:LL-Q5287 (jpn)-Fukujinzuke-こころ.wav",
+  "コーヒー": "File:LL-Q5287 (jpn)-Fukujinzuke-コーヒー.wav",
+  "さかな": "File:LL-Q5287 (jpn)-Fukujinzuke-さかな.wav",
+  "サッカー": "File:LL-Q5287 (jpn)-Fukujinzuke-サッカー.wav",
+  "しろ": "File:LL-Q5287 (jpn)-Fukujinzuke-しろ.wav",
+  "せかい": "File:LL-Q5287 (jpn)-Fukujinzuke-せかい.wav",
+  "そら": "File:LL-Q5287 (jpn)-Fukujinzuke-そら.wav",
+  "たべる": "File:LL-Q5287 (jpn)-Fukujinzuke-たべる.wav",
+  "タクシー": "File:LL-Q5287 (jpn)-Fukujinzuke-タクシー.wav",
+  "チーズ": "File:LL-Q5287 (jpn)-Fukujinzuke-チーズ.wav",
+  "つき": "File:LL-Q5287 (jpn)-Fukujinzuke-つき.wav",
+  "て": "File:LL-Q5287 (jpn)-Fukujinzuke-て.wav",
+  "とり": "File:LL-Q5287 (jpn)-Fukujinzuke-とり.wav",
+  "トマト": "File:LL-Q5287 (jpn)-Fukujinzuke-トマト.wav",
+  "なつ": "File:LL-Q5287 (jpn)-Fukujinzuke-なつ.wav",
+  "ナイフ": "File:LL-Q5287 (jpn)-Fukujinzuke-ナイフ.wav",
+  "にほん": "File:LL-Q5287 (jpn)-Fukujinzuke-にほん.wav",
+  "ニュース": "File:LL-Q5287 (jpn)-Fukujinzuke-ニュース.wav",
+  "ねこ": "File:LL-Q5287 (jpn)-Fukujinzuke-ねこ.wav",
+  "ノート": "File:LL-Q5287 (jpn)-Fukujinzuke-ノート.wav",
+  "はな": "File:LL-Q5287 (jpn)-Fukujinzuke-はな.wav",
+  "ふゆ": "File:LL-Q5287 (jpn)-Fukujinzuke-ふゆ.wav",
+  "フォーク": "File:LL-Q5287 (jpn)-Fukujinzuke-フォーク.wav",
+  "へや": "File:LL-Q5287 (jpn)-Fukujinzuke-へや.wav",
+  "ほし": "File:LL-Q5287 (jpn)-Fukujinzuke-ほし.wav",
+  "ほん": "File:LL-Q5287 (jpn)-Fukujinzuke-ほん.wav",
+  "まど": "File:LL-Q5287 (jpn)-Fukujinzuke-まど.wav",
+  "みず": "File:LL-Q5287 (jpn)-Fukujinzuke-みず.wav",
+  "ミルク": "File:LL-Q5287 (jpn)-Fukujinzuke-ミルク.wav",
+  "め": "File:LL-Q5287 (jpn)-Fukujinzuke-め.wav",
+  "やま": "File:LL-Q5287 (jpn)-Fukujinzuke-やま.wav",
+  "ゆき": "File:LL-Q5287 (jpn)-Fukujinzuke-ゆき.wav",
+  "ゆめ": "File:LL-Q5287 (jpn)-Fukujinzuke-ゆめ.wav",
+  "りんご": "File:LL-Q5287 (jpn)-Fukujinzuke-りんご.wav",
+  "いろ": "File:LL-Q5287 (jpn)-Fukujinzuke-いろ.wav",
+  "わたし": "File:LL-Q5287 (jpn)-Fukujinzuke-わたし.wav",
+  "がっこう": "File:LL-Q5287 (jpn)-Fukujinzuke-がっこう.wav",
+  "ピザ": "File:LL-Q5287 (jpn)-Fukujinzuke-ピザ.wav",
+  "かぜ": "File:LL-Q5287 (jpn)-Fukujinzuke-かぜ.wav",
+  "だいがく": "File:LL-Q5287 (jpn)-Fukujinzuke-だいがく.wav",
+  "どこ": "File:LL-Q5287 (jpn)-Fukujinzuke-どこ.wav",
+  "ドア": "File:LL-Q5287 (jpn)-Fukujinzuke-ドア.wav",
+  "ベッド": "File:LL-Q5287 (jpn)-Fukujinzuke-ベッド.wav",
+  "ペン": "File:LL-Q5287 (jpn)-Fukujinzuke-ペン.wav",
+  "きょう": "File:LL-Q5287 (jpn)-Fukujinzuke-きょう.wav",
+  "ビール": "File:LL-Q5287 (jpn)-Fukujinzuke-ビール.wav",
+  "する": "File:LL-Q5287 (jpn)-Fukujinzuke-する.wav"
+ },
+ "byReading": {
+  "うた": {
+   "meaning": "歌",
+   "options": [
+    [
+     "歌",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-歌.wav"
+    ]
+   ]
+  },
+  "えき": {
+   "meaning": "车站",
+   "options": [
+    [
+     "駅",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-駅.wav"
+    ]
+   ]
+  },
+  "おと": {
+   "meaning": "声音",
+   "options": [
+    [
+     "音",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-音.wav"
+    ]
+   ]
+  },
+  "くも": {
+   "meaning": "云",
+   "options": [
+    [
+     "蜘蛛",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-蜘蛛.wav"
+    ],
+    [
+     "雲",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-雲.wav"
+    ]
+   ]
+  },
+  "けん": {
+   "meaning": "剑",
+   "options": [
+    [
+     "県",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-県.wav"
+    ]
+   ]
+  },
+  "すし": {
+   "meaning": "寿司",
+   "options": [
+    [
+     "寿司",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-寿司.wav"
+    ]
+   ]
+  },
+  "つくえ": {
+   "meaning": "桌子",
+   "options": [
+    [
+     "机",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-机.wav"
+    ]
+   ]
+  },
+  "なまえ": {
+   "meaning": "名字",
+   "options": [
+    [
+     "名前",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-名前.wav"
+    ]
+   ]
+  },
+  "にく": {
+   "meaning": "肉",
+   "options": [
+    [
+     "肉",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-肉.wav"
+    ]
+   ]
+  },
+  "ねる": {
+   "meaning": "睡觉",
+   "options": [
+    [
+     "寝る",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-寝る.wav"
+    ]
+   ]
+  },
+  "のむ": {
+   "meaning": "喝",
+   "options": [
+    [
+     "飲む",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-飲む.wav"
+    ]
+   ]
+  },
+  "はし": {
+   "meaning": "筷子 / 桥",
+   "options": [
+    [
+     "橋",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-橋.wav"
+    ]
+   ]
+  },
+  "ひかり": {
+   "meaning": "光",
+   "options": [
+    [
+     "光",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-光.wav"
+    ]
+   ]
+  },
+  "ふね": {
+   "meaning": "船",
+   "options": [
+    [
+     "船",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-船.wav"
+    ]
+   ]
+  },
+  "へび": {
+   "meaning": "蛇",
+   "options": [
+    [
+     "蛇",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-蛇.wav"
+    ]
+   ]
+  },
+  "みみ": {
+   "meaning": "耳朵",
+   "options": [
+    [
+     "耳",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-耳.wav"
+    ]
+   ]
+  },
+  "むし": {
+   "meaning": "虫子",
+   "options": [
+    [
+     "虫",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-虫.wav"
+    ]
+   ]
+  },
+  "むら": {
+   "meaning": "村子",
+   "options": [
+    [
+     "村",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-村.wav"
+    ]
+   ]
+  },
+  "もり": {
+   "meaning": "森林",
+   "options": [
+    [
+     "森",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-森.wav"
+    ]
+   ]
+  },
+  "もも": {
+   "meaning": "桃子",
+   "options": [
+    [
+     "桃",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-桃.wav"
+    ]
+   ]
+  },
+  "やさい": {
+   "meaning": "蔬菜",
+   "options": [
+    [
+     "野菜",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-野菜.wav"
+    ]
+   ]
+  },
+  "よる": {
+   "meaning": "夜晚",
+   "options": [
+    [
+     "夜",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-夜.wav"
+    ]
+   ]
+  },
+  "よむ": {
+   "meaning": "读",
+   "options": [
+    [
+     "読む",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-読む.wav"
+    ]
+   ]
+  },
+  "はる": {
+   "meaning": "春天",
+   "options": [
+    [
+     "春",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-春.wav"
+    ]
+   ]
+  },
+  "れきし": {
+   "meaning": "历史",
+   "options": [
+    [
+     "歴史",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-歴史.wav"
+    ]
+   ]
+  },
+  "れいぞうこ": {
+   "meaning": "冰箱",
+   "options": [
+    [
+     "冷蔵庫",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-冷蔵庫.wav"
+    ]
+   ]
+  },
+  "ろく": {
+   "meaning": "六",
+   "options": [
+    [
+     "六",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-六.wav"
+    ]
+   ]
+  },
+  "かわ": {
+   "meaning": "河",
+   "options": [
+    [
+     "川",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-川.wav"
+    ]
+   ]
+  },
+  "かぎ": {
+   "meaning": "钥匙",
+   "options": [
+    [
+     "鍵",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-鍵.wav"
+    ]
+   ]
+  },
+  "げんき": {
+   "meaning": "精神，健康",
+   "options": [
+    [
+     "元気",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-元気.wav"
+    ]
+   ]
+  },
+  "ざっし": {
+   "meaning": "杂志",
+   "options": [
+    [
+     "雑誌",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-雑誌.wav"
+    ]
+   ]
+  },
+  "じかん": {
+   "meaning": "时间",
+   "options": [
+    [
+     "時間",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-時間.wav"
+    ]
+   ]
+  },
+  "ぞう": {
+   "meaning": "大象",
+   "options": [
+    [
+     "象",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-象.wav"
+    ]
+   ]
+  },
+  "でんしゃ": {
+   "meaning": "电车",
+   "options": [
+    [
+     "電車",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-電車.wav"
+    ]
+   ]
+  },
+  "ぶた": {
+   "meaning": "猪",
+   "options": [
+    [
+     "豚",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-豚.wav"
+    ]
+   ]
+  },
+  "ぼうし": {
+   "meaning": "帽子",
+   "options": [
+    [
+     "帽子",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-帽子.wav"
+    ]
+   ]
+  },
+  "きょうしつ": {
+   "meaning": "教室",
+   "options": [
+    [
+     "教室",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-教室.wav"
+    ]
+   ]
+  },
+  "しゃしん": {
+   "meaning": "照片",
+   "options": [
+    [
+     "写真",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-写真.wav"
+    ]
+   ]
+  },
+  "おちゃ": {
+   "meaning": "茶",
+   "options": [
+    [
+     "お茶",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-お茶.wav"
+    ]
+   ]
+  },
+  "ちゅうごく": {
+   "meaning": "中国",
+   "options": [
+    [
+     "中国",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-中国.wav"
+    ]
+   ]
+  },
+  "ぎゅうにゅう": {
+   "meaning": "牛奶",
+   "options": [
+    [
+     "牛乳",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-牛乳.wav"
+    ]
+   ]
+  },
+  "ひゃく": {
+   "meaning": "一百",
+   "options": [
+    [
+     "百",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-百.wav"
+    ]
+   ]
+  },
+  "りゅう": {
+   "meaning": "龙",
+   "options": [
+    [
+     "竜",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-竜.wav"
+    ],
+    [
+     "龍",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-龍.wav"
+    ]
+   ]
+  },
+  "りょこう": {
+   "meaning": "旅行",
+   "options": [
+    [
+     "旅行",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-旅行.wav"
+    ]
+   ]
+  },
+  "びょういん": {
+   "meaning": "医院",
+   "options": [
+    [
+     "病院",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-病院.wav"
+    ]
+   ]
+  },
+  "びょうき": {
+   "meaning": "生病",
+   "options": [
+    [
+     "病気",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-病気.wav"
+    ]
+   ]
+  },
+  "きって": {
+   "meaning": "邮票",
+   "options": [
+    [
+     "切手",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-切手.wav"
+    ]
+   ]
+  },
+  "おにいさん": {
+   "meaning": "哥哥",
+   "options": [
+    [
+     "お兄さん",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-お兄さん.wav"
+    ]
+   ]
+  },
+  "おおきい": {
+   "meaning": "大的",
+   "options": [
+    [
+     "大きい",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-大きい.wav"
+    ]
+   ]
+  },
+  "とおい": {
+   "meaning": "远的",
+   "options": [
+    [
+     "遠い",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-遠い.wav"
+    ]
+   ]
+  },
+  "おっと": {
+   "meaning": "丈夫",
+   "options": [
+    [
+     "夫",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-夫.wav"
+    ]
+   ]
+  },
+  "おばあさん": {
+   "meaning": "奶奶",
+   "options": [
+    [
+     "お婆さん",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-お婆さん.wav"
+    ]
+   ]
+  },
+  "じゆう": {
+   "meaning": "自由",
+   "options": [
+    [
+     "自由",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-自由.wav"
+    ]
+   ]
+  },
+  "でんき": {
+   "meaning": "电",
+   "options": [
+    [
+     "電気",
+     "File:LL-Q5287 (jpn)-Fukujinzuke-電気.wav"
+    ]
+   ]
+  }
+ }
+}

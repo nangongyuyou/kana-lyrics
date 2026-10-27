@@ -1,0 +1,1985 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F6EFE4">
+<title>五十音歌词记忆</title>
+<style>
+@font-face{font-family:"RHR";src:url(data:font/woff2;base64,/*__FONT__*/) format("woff2");font-weight:100 900;font-display:block}
+:root{--fz:1;
+  --bg:#F6EFE4;--card:#FFFBF4;--ink:#2B2420;--sub:#7A6C60;--line:#E6DACB;
+  --accent:#E8674A;--accent-soft:#FBE1D8;--teal:#2F8F83;--teal-soft:#D6EEEA;
+  --gold:#D9A21B;--gold-soft:#F8EBC6;--mark:#FFD86B;--shadow:0 2px 10px rgba(80,50,20,.08);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1C1815;--card:#28221D;--ink:#F3EBE1;--sub:#B3A595;--line:#3D342C;
+  --accent:#FF8A6B;--accent-soft:#4A2A22;--teal:#5CC4B5;--teal-soft:#1F3B37;
+  --gold:#F0C04A;--gold-soft:#41361A;--mark:#8A6A10;--shadow:none;}}
+:root[data-theme="dark"]{
+  --bg:#1C1815;--card:#28221D;--ink:#F3EBE1;--sub:#B3A595;--line:#3D342C;
+  --accent:#FF8A6B;--accent-soft:#4A2A22;--teal:#5CC4B5;--teal-soft:#1F3B37;
+  --gold:#F0C04A;--gold-soft:#41361A;--mark:#8A6A10;--shadow:none;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:"RHR","Resource Han Rounded CN","Noto Sans CJK JP",sans-serif;font-size:20px;line-height:1.6;
+  padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+button{font:inherit;color:inherit;cursor:pointer}
+button:disabled{opacity:.4}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:14px 0 10px;border-bottom:1px solid var(--line)}
+header h1{font-size:26px;margin:0;letter-spacing:1px}
+header .sub{font-size:16px;color:var(--sub)}
+.seg{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px;margin-top:10px}
+.seg button{flex:1;border:0;background:transparent;border-radius:999px;padding:8px 4px;font-size:17px;color:var(--sub)}
+.seg button.on{background:var(--accent);color:#fff}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--card);border-top:1px solid var(--line);
+  display:flex;padding-bottom:env(safe-area-inset-bottom)}
+nav.tabs button{flex:1;border:0;background:none;padding:10px 0 12px;font-size:17px;color:var(--sub);display:flex;flex-direction:column;align-items:center;gap:2px}
+nav.tabs button .ic{font-size:26px;line-height:1}
+nav.tabs button.on{color:var(--accent)}
+section.page{display:none}section.page.on{display:block}
+h2{font-size:22px;margin:22px 0 10px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:15px;color:var(--sub);margin:12px 0 0}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:4px;vertical-align:-1px}
+.grid{display:grid;grid-template-columns:auto repeat(5,1fr);gap:6px;align-items:stretch}
+.grid.y{grid-template-columns:auto repeat(3,1fr)}
+.grid.x{grid-template-columns:repeat(4,1fr)}
+.rowlab{font-size:14px;color:var(--sub);writing-mode:vertical-rl;text-align:center;align-self:center;padding:0 2px}
+.cell{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:6px 2px 4px;text-align:center;min-height:78px;
+  display:flex;flex-direction:column;justify-content:center;box-shadow:var(--shadow);position:relative}
+.cell.empty{background:transparent;border:0;box-shadow:none}
+.cell .k{font-size: calc(34px * min(var(--fz), 1.12));line-height:1.1;font-weight:900}
+.cell .k2{font-size: calc(34px * min(var(--fz), 1.12));line-height:1.1;font-weight:900;color:var(--teal)}
+.cell.y,.cell.x{flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:0 8px}
+.cell.y .k,.cell.y .k2,.cell.x .k,.cell.x .k2{font-size: calc(30px * min(var(--fz), 1.12))}
+.cell.y .r,.cell.x .r{flex-basis:100%}
+.cell .r{font-size:14px;color:var(--sub);line-height:1.2}
+.cell.s1{border-color:var(--gold)}.cell.s2{border-color:var(--teal)}.cell.s3{border-color:var(--teal);background:var(--teal-soft)}
+.cell.weak::after{content:"";position:absolute;top:6px;right:6px;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow);margin:12px 0}
+.btn{border:0;border-radius:14px;padding:12px 18px;font-size:19px;background:var(--accent);color:#fff}
+.btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn.teal{background:var(--teal)}
+.btn.small{padding:6px 12px;font-size:16px;border-radius:10px}
+.btn.big{width:100%;font-size:26px;padding:20px;border-radius:20px;font-weight:900;letter-spacing:2px}
+.say{border:0;background:var(--teal-soft);color:var(--teal);border-radius:999px;width:44px;height:44px;font-size:22px;flex:none}
+.homegrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+details.more summary,details.fold summary{cursor:pointer;list-style:none;font-size:19px}
+details.more summary::-webkit-details-marker,details.fold summary::-webkit-details-marker{display:none}
+details.more summary::after,details.fold summary::after{content:"▸";float:right;color:var(--sub)}
+details.more[open] summary::after,details.fold[open] summary::after{content:"▾"}
+.hbtn{border:2px solid var(--line);background:var(--card);border-radius:18px;padding:14px;text-align:left;box-shadow:var(--shadow)}
+.hbtn b{display:block;font-size:21px}.hbtn span{font-size:15px;color:var(--sub)}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.stats3 b{display:block;font-size:28px;line-height:1.2}.stats3 span{font-size:14px;color:var(--sub)}
+.bar{height:14px;border-radius:999px;background:var(--line);overflow:hidden;margin:8px 0;display:flex}
+.bar i{display:block;height:100%}
+.focus{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.focus button{border:2px solid var(--accent);background:var(--accent-soft);border-radius:14px;padding:4px 14px;font-size:30px;font-weight:900}
+/* overlays */
+.overlay{position:fixed;inset:0;background:var(--bg);overflow-y:auto;display:none;padding-bottom:40px}
+.overlay.on{display:block}
+#drill{z-index:25}#sheet{z-index:30}
+.otop{position:sticky;top:0;background:var(--bg);display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--line);z-index:2}
+.otop .t{flex:1;text-align:center;font-size:16px;color:var(--sub);line-height:1.3}
+.modal{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:16px}
+.modal.on{display:flex}
+.modal .card{max-width:420px;width:100%;text-align:center}
+/* detail */
+.hero{display:flex;align-items:center;justify-content:center;gap:28px;padding:18px 0 6px;flex-wrap:wrap}
+.hero .big{font-size: calc(120px * min(var(--fz), 1.15));line-height:1;font-weight:900}
+.hero .big.kata{color:var(--teal)}
+.hero .lab{font-size:15px;color:var(--sub);text-align:center}
+.roma{text-align:center;font-size:30px;font-weight:900;color:var(--accent);letter-spacing:2px}
+.roma small{font-size:18px;color:var(--sub);font-weight:400;letter-spacing:0}
+.kv{display:grid;grid-template-columns:5.2em 1fr;gap:6px 10px;font-size:19px}
+.kv b{color:var(--sub);font-weight:400}
+.tip{background:var(--gold-soft);border-radius:14px;padding:12px 14px;font-size:19px;margin-top:10px}
+.tip.red{background:var(--accent-soft)}
+.word{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.word:last-child{border-bottom:0}
+.word .w{font-size:28px;font-weight:900}
+.word .m{color:var(--sub);font-size:18px}
+.lyric{padding:14px 0;border-bottom:1px dashed var(--line)}
+.lyric:last-child{border-bottom:0}
+.ln{font-size:27px;line-height:1.3;font-weight:700}
+.rm{font-size:16px;color:var(--sub);line-height:1.4;margin-top:2px;word-break:break-word}
+.src{font-size:15px;color:var(--sub);margin-top:6px;display:flex;align-items:center;gap:10px}
+.src span{flex:1}
+rt{font-size:13px;color:var(--sub);font-weight:400}
+.hide-rt rt{visibility:hidden}.hide-rm .rm{display:none}
+mark{background:var(--mark);color:inherit;border-radius:6px;padding:0 2px}
+rt mark{padding:0;border-radius:3px}
+.pill{display:inline-block;font-size:14px;padding:2px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);margin-left:6px;vertical-align:3px}
+.conf{display:flex;gap:10px;flex-wrap:wrap}
+.conf button{border:1px solid var(--line);background:var(--bg);border-radius:14px;padding:6px 14px;font-size:30px;font-weight:900}
+.conf .why{flex-basis:100%;font-size:18px;color:var(--sub)}
+.toggles{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 14px;font-size:16px}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.strokes{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.strokes svg{width:150px;height:150px;background:var(--bg);border:2px solid var(--line);border-radius:16px}
+.strokes .gh{fill:none;stroke:var(--line);stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+.strokes .an{fill:none;stroke:var(--accent);stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+.strokes .num{font-size:9px;fill:var(--sub);font-family:sans-serif}
+.pic{background:var(--bg);border-radius:18px;margin:8px auto;display:block}
+.pictitle{font-size:24px;font-weight:900;text-align:center;margin-top:6px}
+.pic .pk{fill:none;stroke:var(--ink);stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.pic .d1{fill:none;stroke:var(--accent);stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}
+.pic .d2{fill:none;stroke:var(--teal);stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}
+.pic .df{fill:var(--gold);stroke:none}
+.pic .dk{fill:var(--ink);stroke:none}
+.pic .du{fill:var(--teal-soft);stroke:none}
+.pic .dg{fill:var(--gold-soft);stroke:var(--gold);stroke-width:2}
+.pic .dt{fill:var(--accent);font-size: 22px;font-weight:900}
+canvas.pad{width:100%;aspect-ratio:1/1;max-width:340px;display:block;margin:6px auto;background:var(--bg);border:2px dashed var(--line);border-radius:18px;touch-action:none}
+.padbg{position:relative;max-width:340px;margin:0 auto}
+.padbg .ghost{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size: 230px;font-weight:900;color:var(--ink);opacity:.09;pointer-events:none;line-height:1}
+.padbg.y .ghost{font-size: 150px}
+.navrow{display:flex;gap:10px;margin-top:16px}.navrow .btn{flex:1}
+/* drill */
+.qbox{text-align:center;padding:10px 0}
+.qk{font-size: calc(140px * min(var(--fz), 1.15));line-height:1.1;font-weight:900}
+.qk.mid{font-size:64px;padding:24px 0}
+.qline{font-size:28px;line-height:1.3;font-weight:700;text-align:left}
+.qhint{font-size:19px;color:var(--sub)}
+.badge{display:inline-block;background:var(--gold-soft);color:var(--ink);border-radius:999px;padding:2px 12px;font-size:16px}
+.qopts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.qopts button{border:2px solid var(--line);background:var(--card);border-radius:16px;padding:16px 6px;font-size:30px;font-weight:900}
+.qopts.kana button{font-size:48px;padding:8px 6px}
+.qopts.gridpick{grid-template-columns:repeat(5,1fr);gap:6px}
+.qopts.gridpick button{font-size:30px;padding:6px 2px;border-radius:12px}
+.qopts button.sel{border-color:var(--gold);background:var(--gold-soft)}
+/* one word = three stacked layers: furigana (ruby, above) / the word / romaji (below) */
+/* lyric layout: word (.tk) → columns (.mo); each column = furigana (ruby) / character / its own romaji */
+.tk{border-radius:8px;transition:background .08s;display:inline;margin-right:5px;padding:2px 1px}
+.mo{display:inline-flex;flex-direction:column;align-items:center;vertical-align:top;margin:0 0 14px;min-width:.9em}
+.ms{line-height:1.25;padding-top:16px;white-space:nowrap}
+.ms ruby{ruby-position:over}
+.ms rt{font-size:13px;line-height:1;padding-bottom:3px}
+.tr{font-size:12px;line-height:1.1;margin-top:3px;color:var(--accent);font-weight:700;font-family:system-ui,sans-serif;white-space:nowrap}
+.tsp{display:inline-block;width:.5em}
+.hide-rm .tr{visibility:hidden}
+.mo.kara{background:var(--teal-soft);box-shadow:0 0 0 2px var(--teal);border-radius:6px}
+/* big text sizes: never let anything push the page wider than the phone */
+.overlay{overflow-x:hidden}
+.otop{flex-wrap:wrap}
+.otop .btn.small,.otop .chip{font-size: 15px;padding:5px 10px}
+.src{flex-wrap:wrap}
+.ln,.qline{overflow-wrap:anywhere}
+.tcell{width:100%;min-height:58px;border:2px dashed var(--line);border-radius:12px;background:var(--card);font-size:30px;font-weight:900}
+.tcell.ok{border-style:solid;border-color:var(--teal);background:var(--teal-soft)}
+.tcell.ng{border-style:solid;border-color:var(--accent);background:var(--accent-soft)}
+.banner{background:var(--gold-soft);border-radius:16px;padding:12px 14px;margin:12px 0;display:flex;align-items:center;gap:10px;font-size:17px}
+.qopts button.ok{border-color:var(--teal);background:var(--teal-soft)}
+.qopts button.ng{border-color:var(--accent);background:var(--accent-soft)}
+.grade{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.grade button{border:0;border-radius:16px;padding:16px 4px;font-size:20px;font-weight:900;color:#fff}
+.g0{background:var(--accent)}.g1{background:var(--gold)}.g2{background:var(--teal)}
+.qfb{min-height:40px;font-size:19px;margin-top:12px}
+.seqbox{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:16px 0}
+.seqbox div{width:62px;height:72px;border:2px dashed var(--line);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:900}
+.seqbox div.show{border-style:solid;border-color:var(--teal);background:var(--teal-soft)}
+.guide p,.guide li{font-size:19px}
+.guide table{width:100%;border-collapse:collapse;font-size:19px}
+.guide td,.guide th{border-bottom:1px solid var(--line);padding:8px 4px;text-align:left;vertical-align:top}
+.kk{font-size:28px;font-weight:900}
+.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:12px;font-size:17px;z-index:50;display:none;max-width:90vw}
+.chart{width:100%;height:auto;display:block}
+.chart text{font-size:11px;fill:var(--sub);font-family:sans-serif}
+.list{font-size:19px}.list div{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--line)}
+@media (max-width:380px){.cell .k,.cell .k2{font-size: calc(29px * min(var(--fz), 1.12))}.hero .big{font-size: calc(100px * min(var(--fz), 1.15))}.cell{min-height:70px}.qk{font-size: calc(120px * min(var(--fz), 1.15))}}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<!-- ================= 训练 ================= -->
+<section class="page on" id="p-home">
+  <header><div class="wrap"><button class="chip" id="fzBtn" style="float:right;margin-top:4px">Aa 字号</button><h1>五十音 · 歌词记忆</h1><div class="sub" id="homeSub"></div></div></header>
+  <div class="wrap">
+    <div class="card" id="goalCard"></div>
+    <button class="btn big" id="goMain">▶ 开始刷</button>
+    <p style="font-size:16px;color:var(--sub);margin:8px 2px 0">平时只点这一个就够了：新字、复习和各种题型都混在里面，系统自己安排。</p>
+    <div id="banner"></div>
+    <div id="suggest"></div>
+    <div class="card" id="progCard"></div>
+    <details class="card more"><summary><b>更多练习</b><span style="color:var(--sub);font-size:15px">　想自己选的时候再打开</span></summary>
+    <div class="homegrid">
+      <button class="hbtn" id="goFlash"><b>⚡ 乱序闪认</b><span>全部假名随机闪，先混个眼熟</span></button>
+      <button class="hbtn" id="goSeq"><b>🔁 顺背 / 倒背</b><span>按行、按段，正着、倒着背</span></button>
+      <button class="hbtn" id="goSprint"><b>⏱ 60 秒冲刺</b><span id="bestScore">限时连答，练反应速度</span></button>
+      <button class="hbtn" id="goTable"><b>📋 全表默写</b><span id="tableHint">每周一次，彻底检验</span></button>
+      <button class="hbtn" id="goKata"><b>カ 片假名专练</b><span id="kataHint">只练片假名，最弱的先出</span></button>
+      <button class="hbtn" id="goFocusAll"><b>🎯 薄弱字专练</b><span>系统找出的易错、慢的字</span></button>
+    </div></details>
+  </div>
+</section>
+
+<!-- ================= 五十音表 ================= -->
+<section class="page" id="p-table">
+  <header><div class="wrap"><h1>五十音表</h1>
+    <div class="sub">每格上面是<b style="color:var(--ink)">平假名</b>、下面是<b style="color:var(--teal)">片假名</b>，点开看讲解、笔顺、歌词</div></div></header>
+  <div class="wrap">
+    <div class="legend"><span><i style="background:var(--line)"></i>未学</span><span><i style="background:var(--gold)"></i>学习中</span><span><i style="background:var(--teal)"></i>复习中</span><span><i style="background:var(--teal-soft);border:2px solid var(--teal)"></i>稳固</span><span><i style="background:var(--accent);border-radius:50%"></i>易错</span></div>
+    <h2>清音</h2><div class="grid" id="g-basic"></div>
+    <h2>浊音 · 半浊音</h2><div class="grid" id="g-daku"></div>
+    <h2>拗音</h2><div class="grid y" id="g-you"></div>
+    <h2>促音 · 长音 · 外来语扩展音</h2><div class="grid x" id="g-ext"></div>
+  </div>
+</section>
+
+<!-- ================= 统计 ================= -->
+<section class="page" id="p-stats">
+  <header><div class="wrap"><h1>学习统计</h1><div class="sub">数据只存在这台设备的浏览器里，记得定期备份</div></div></header>
+  <div class="wrap" id="statsBody"></div>
+</section>
+
+<!-- ================= 指南 ================= -->
+<section class="page" id="p-guide">
+  <header><div class="wrap"><h1>指南 · 设置</h1><div class="sub">系统怎么安排复习、发音要点、备份</div></div></header>
+  <div class="wrap guide" id="guide"></div>
+</section>
+
+<nav class="tabs" id="tabs">
+  <button data-p="p-home" class="on"><span class="ic">▶</span>训练</button>
+  <button data-p="p-table"><span class="ic">あ</span>五十音</button>
+  <button data-p="p-stats"><span class="ic">▤</span>统计</button>
+  <button data-p="p-guide"><span class="ic">☰</span>指南</button>
+</nav>
+
+<div class="overlay" id="drill"></div>
+<div class="overlay" id="sheet"></div>
+<div class="modal" id="modal"><div class="card" id="modalBody"></div></div>
+<input type="file" id="importFile" accept=".json,application/json" style="display:none">
+
+<script>
+const DATA = /*__DATA__*/null;
+
+// ---------------- knowledge ----------------
+// [hira, romaji, 平假名字源, 片假名字源说明, 记忆口诀, [词,意思], [词,意思], [片假名词,意思]]
+const BASIC = [
+['あ','a','安','阿 的左耳旁「阝」','“安”字草书。张大嘴喊“啊——”，像在山顶上大喊。',['あめ','雨'],['あさ','早上'],['アニメ','动画']],
+['い','i','以','伊 的单人旁「亻」','两笔像“以”的左右两竖，读“衣”。两根小草并排站。',['いぬ','狗'],['いえ','家'],['イヤホン','耳机']],
+['う','u','宇','宇 的宝盖头「宀」','“宇”的宝盖+一勾。嘴唇放松、不要撅圆，扁扁地发“乌”。',['うみ','大海'],['うた','歌'],['ウイルス','病毒']],
+['え','e','衣','江 的右边「工」','“衣”的草书，像一个人在跳舞。读“诶”。',['えき','车站'],['え','画'],['エアコン','空调']],
+['お','o','於','於 的左边「方」变形','“於”的草书，比あ多一点。读“哦”，像跑步时甩出汗珠。',['おと','声音'],['おかし','点心'],['オレンジ','橙子']],
+['か','ka','加','加 的左边「力」','“加”的草书；片假名カ就是“力”。读“咖”。',['かさ','伞'],['かお','脸'],['カメラ','相机']],
+['き','ki','幾','幾 的变形','“幾”的草书，像一把钥匙（かぎ）。读“key”。',['き','树'],['きく','听'],['キッチン','厨房']],
+['く','ku','久','久 的左上半','像张开的鸟嘴“<”，鸟在“哭”。',['くも','云'],['くつ','鞋'],['クラス','班级']],
+['け','ke','計','介 的变形','“计”的左右结构，左边一竖、右边像“十”。',['けん','剑'],['けいたい','手机'],['ケーキ','蛋糕']],
+['こ','ko','己','己 的上下两横','上下两横，像两条小鱼在游，读“扣”。',['ここ','这里'],['こころ','心'],['コーヒー','咖啡']],
+['さ','sa','左','散 的左上角','“左”的草书。注意：さ 和 ち 是左右镜像。',['さくら','樱花'],['さかな','鱼'],['サッカー','足球']],
+['し','shi','之','之 的变形（三点）','一根鱼钩“J”，读“西”，罗马音写 shi。',['しろ','白色'],['しお','盐'],['シャツ','衬衫']],
+['す','su','寸','須 的右边','“寸”的草书，中间打个圈像领结。读“丝”（嘴唇不撅）。',['すし','寿司'],['すき','喜欢'],['スープ','汤']],
+['せ','se','世','世 的变形','就是“世”字。读“塞”。',['せかい','世界'],['せんせい','老师'],['セーブ','存档（游戏）']],
+['そ','so','曽','曽 的上面两点','像一道闪电“Z”，“嗖”地一下。',['そら','天空'],['そと','外面'],['ソファ','沙发']],
+['た','ta','太','多 的上半「夕」','“太”的草书，左边一个“ナ”、右边一个“こ”。读“他”。',['たまご','鸡蛋'],['たべる','吃'],['タクシー','出租车']],
+['ち','chi','知','千','“知”的草书；片假名チ就是“千”。读“七”。注意 ち 和 さ 镜像。',['ちず','地图'],['ちかてつ','地铁'],['チーズ','奶酪']],
+['つ','tsu','川','川 的三笔变三点','一道浪花“つ”。读 tsu：舌尖抵上齿发“次”，不是“苏”。',['つき','月亮'],['つくえ','桌子'],['ツアー','旅行团']],
+['て','te','天','天 的变形','“天”的草书，像伸出来的一只手（て＝手）。读“tei”的前半“忒”。',['て','手'],['てがみ','信'],['テレビ','电视']],
+['と','to','止','止 的右上「卜」','“止”的草书，像一根钉子钉在板上。读“托”。',['とり','鸟'],['とけい','钟表'],['トマト','番茄']],
+['な','na','奈','奈 的上半','“奈”的草书，十字架旁边打个结。读“那”。',['なつ','夏天'],['なまえ','名字'],['ナイフ','刀']],
+['に','ni','仁','二','“仁”的草书；片假名ニ就是“二”。读“尼”。',['にく','肉'],['にほん','日本'],['ニュース','新闻']],
+['ぬ','nu','奴','奴 的右边「又」','像一碗面条（ヌードル），尾巴打圈；め 没有圈。读“奴”。',['いぬ','狗'],['ぬいぐるみ','布偶'],['ヌードル','面条']],
+['ね','ne','祢','祢 的左边「示」','像一只尾巴卷成圈的猫（ねこ）。读“内”。',['ねこ','猫'],['ねる','睡觉'],['ネクタイ','领带']],
+['の','no','乃','乃 的一撇','一个圈，像“禁止(no)”标志。读“诺”。',['のむ','喝'],['のり','海苔'],['ノート','笔记本']],
+['は','ha','波','八','“波”的草书；片假名ハ就是“八”，读“哈”。⚠ 作助词时读 wa。',['はな','花'],['はし','桥'],['ハート','爱心']],
+['ひ','hi','比','比 的右边「匕」','像一张咧嘴笑的脸，“嘿嘿”。',['ひかり','光'],['ひと','人'],['ヒーロー','英雄']],
+['ふ','fu','不','不 的上半','“不”的草书，像富士山（ふじ）上的云。上齿不碰唇，轻轻吹气“呼”。',['ふね','船'],['ふゆ','冬天'],['フォーク','叉子']],
+['へ','he','部','部 的右边「阝」变形','一座小山“^”，平假名片假名几乎一样。⚠ 作助词时读 e。',['へや','房间'],['へび','蛇'],['ヘルメット','头盔']],
+['ほ','ho','保','保 的右下','“保”的草书，比 は 多一横。读“吼”。',['ほし','星星'],['ほん','书'],['ホテル','酒店']],
+['ま','ma','末','末 的变形','“末”的草书，两横一竖打个圈。读“妈”。',['まど','窗户'],['まほう','魔法'],['マンガ','漫画']],
+['み','mi','美','三','“美”的草书，像音符“21”；片假名ミ是三点。读“咪”。',['みず','水'],['みみ','耳朵'],['ミルク','牛奶']],
+['む','mu','武','牟 的上半「厶」','“武”的草书，像一头牛在“哞”。',['むし','虫子'],['むら','村子'],['ムード','气氛']],
+['め','me','女','女 的下半','“女”的草书，像一只眼睛（め＝目），没有尾巴圈。',['め','眼睛'],['あめ','雨'],['メール','邮件']],
+['も','mo','毛','毛 的下半','“毛”字的样子，鱼钩上挂两横。读“摸”。',['もり','森林'],['もも','桃子'],['モデル','模特']],
+['や','ya','也','也','“也”的草书。读“呀”。',['やま','山'],['やさい','蔬菜'],['タイヤ','轮胎']],
+['ゆ','yu','由','由 的变形','“由”的草书，像一条鱼（ゆ）在游。读“油”。',['ゆき','雪'],['ゆめ','梦'],['ユーザー','用户']],
+['よ','yo','与','与 的变形','“与”的草书，像一面插在地上的小旗。读“哟”。',['よる','夜晚'],['よむ','读'],['ヨーグルト','酸奶']],
+['ら','ra','良','良 的上半','“良”的草书。读“拉”，但舌尖轻弹上颚，介于 l 和 r 之间。',['らいねん','明年'],['さくら','樱花'],['ラーメン','拉面']],
+['り','ri','利','利 的右边「刂」','就是“利”字的立刀旁。读“哩”（舌尖轻弹）。',['りんご','苹果'],['りす','松鼠'],['リボン','丝带']],
+['る','ru','留','流 的右下','“留”的草书，尾巴打个圈（ろ 没有圈）。读“噜”。',['はる','春天'],['くるま','汽车'],['ルール','规则']],
+['れ','re','礼','礼 的右边','“礼”的草书，像一个人走路踢腿。读“雷”的前半。',['れきし','历史'],['れいぞうこ','冰箱'],['レベル','等级']],
+['ろ','ro','呂','呂 的一个口','“吕”的草书；片假名ロ就是“口”。读“咯”。',['いろ','颜色'],['ろく','六'],['ロボット','机器人']],
+['わ','wa','和','和 的右边「口」','“和”的草书，比 れ 多一个圆肚子。读“哇”。',['わたし','我'],['かわ','河'],['ワイン','葡萄酒']],
+['を','o','遠','乎 的变形','“远”的草书。现代只当助词用，读 o（和 お 同音）。',['ほんをよむ','读书'],['みずをのむ','喝水'],['ヲタク','宅（网络写法）']],
+['ん','n','无','尓 的变形','“无”的草书。鼻音“嗯”，不能放在词首。',['ほん','书'],['にほん','日本'],['パン','面包']],
+];
+const ROWS = [['あ','い','う','え','お'],['か','き','く','け','こ'],['さ','し','す','せ','そ'],['た','ち','つ','て','と'],['な','に','ぬ','ね','の'],['は','ひ','ふ','へ','ほ'],['ま','み','む','め','も'],['や',null,'ゆ',null,'よ'],['ら','り','る','れ','ろ'],['わ',null,null,null,'を'],['ん',null,null,null,null]];
+const ROWNAME = ['あ行','か行','さ行','た行','な行','は行','ま行','や行','ら行','わ行','ん'];
+const DROWS = [['が','ぎ','ぐ','げ','ご'],['ざ','じ','ず','ぜ','ぞ'],['だ','ぢ','づ','で','ど'],['ば','び','ぶ','べ','ぼ'],['ぱ','ぴ','ぷ','ぺ','ぽ']];
+const DROWNAME = ['が行','ざ行','だ行','ば行','ぱ行'];
+const DWORDS = {
+'が':[['がっこう','学校'],['ガム','口香糖']],'ぎ':[['かぎ','钥匙'],['ギター','吉他']],'ぐ':[['かぐ','家具'],['グラス','玻璃杯']],'げ':[['げんき','精神，健康'],['ゲーム','游戏']],'ご':[['ごはん','米饭'],['ゴール','终点']],
+'ざ':[['ざっし','杂志'],['ピザ','披萨']],'じ':[['じかん','时间'],['ジュース','果汁']],'ず':[['みず','水'],['チーズ','奶酪']],'ぜ':[['かぜ','风'],['ゼロ','零']],'ぞ':[['ぞう','大象'],['ゾンビ','僵尸']],
+'だ':[['だいがく','大学'],['ダンス','舞蹈']],'ぢ':[['はなぢ','鼻血'],['ちぢむ','缩小']],'づ':[['つづく','继续'],['てづくり','手工制作']],'で':[['でんしゃ','电车'],['デート','约会']],'ど':[['どこ','哪里'],['ドア','门']],
+'ば':[['ばら','玫瑰'],['バス','公交车']],'び':[['へび','蛇'],['ビル','大楼']],'ぶ':[['ぶた','猪'],['ブログ','博客']],'べ':[['べんきょう','学习'],['ベッド','床']],'ぼ':[['ぼうし','帽子'],['ボール','球']],
+'ぱ':[['かんぱい','干杯'],['パン','面包']],'ぴ':[['ぴかぴか','闪闪发亮'],['ピアノ','钢琴']],'ぷ':[['てんぷら','天妇罗'],['プール','游泳池']],'ぺ':[['ぺこぺこ','肚子饿瘪'],['ペン','笔']],'ぽ':[['さんぽ','散步'],['ポスト','邮筒']],
+};
+const YBASE = ['き','し','ち','に','ひ','み','り','ぎ','じ','び','ぴ'];
+const YWORDS = {
+'きゃ':[['きゃく','客人'],['キャンプ','露营']],'きゅ':[['きゅうり','黄瓜'],['キュート','可爱']],'きょ':[['きょう','今天'],['きょうしつ','教室']],
+'しゃ':[['しゃしん','照片'],['シャツ','衬衫']],'しゅ':[['しゅくだい','作业'],['シュート','射门']],'しょ':[['しょくじ','吃饭'],['ショップ','商店']],
+'ちゃ':[['おちゃ','茶'],['チャンス','机会']],'ちゅ':[['ちゅうごく','中国'],['ちゅうにびょう','中二病']],'ちょ':[['ちょっと','稍微'],['チョコ','巧克力']],
+'にゃ':[['にゃー','喵'],['こんにゃく','魔芋']],'にゅ':[['ぎゅうにゅう','牛奶'],['ニュース','新闻']],'にょ':[['にょろにょろ','蜿蜒爬行'],['にょきにょき','一根根冒出来']],
+'ひゃ':[['ひゃく','一百'],['ひゃくえん','一百日元']],'ひゅ':[['ヒューマノイド','人形机器人'],['ヒューマン','人类']],'ひょ':[['ひょう','表格'],['ひょうじょう','表情']],
+'みゃ':[['みゃく','脉搏'],['さんみゃく','山脉']],'みゅ':[['ミュージック','音乐'],['ミュージカル','音乐剧']],'みょ':[['みょうじ','姓氏'],['きみょう','奇妙']],
+'りゃ':[['りゃくご','略语'],['しょうりゃく','省略']],'りゅ':[['りゅう','龙'],['りゅうがく','留学']],'りょ':[['りょこう','旅行'],['りょうり','料理']],
+'ぎゃ':[['ぎゃく','相反'],['ギャグ','搞笑段子']],'ぎゅ':[['ぎゅうにゅう','牛奶'],['ぎゅうどん','牛肉饭']],'ぎょ':[['きんぎょ','金鱼'],['ぎょうざ','饺子']],
+'じゃ':[['じゃま','打扰'],['ジャム','果酱']],'じゅ':[['じゅぎょう','上课'],['ジュース','果汁']],'じょ':[['じょうず','擅长'],['じょせい','女性']],
+'びゃ':[['さんびゃく','三百'],['びゃっこ','白虎']],'びゅ':[['ビュー','景观'],['インタビュー','采访']],'びょ':[['びょういん','医院'],['びょうき','生病']],
+'ぴゃ':[['はっぴゃく','八百'],['ろっぴゃく','六百']],'ぴゅ':[['ピュア','纯洁'],['コンピュータ','电脑']],'ぴょ':[['はっぴょう','发表'],['ぴょんぴょん','蹦蹦跳跳']],
+};
+// 外来语扩展音: [片假名, 罗马音, 例词, 意思]
+const EXT = [
+['ファ','fa','ファン','粉丝'],['フィ','fi','フィルム','胶卷'],['フェ','fe','カフェ','咖啡馆'],['フォ','fo','フォーク','叉子'],
+['ティ','ti','パーティー','派对'],['ディ','di','ディナー','晚餐'],['トゥ','tu','タトゥー','纹身'],['デュ','dyu','デュエット','二重唱'],
+['ウィ','wi','ウィンク','眨眼'],['ウェ','we','ウェブ','网络'],['ウォ','wo','ウォーター','水（外来语）'],['シェ','she','シェフ','厨师'],
+['ジェ','je','ジェット','喷气式飞机'],['チェ','che','チェック','检查'],['ヴァ','va','ヴァイオリン','小提琴'],['ヴィ','vi','ヴィラン','反派'],
+];
+const SOKU = [['きって','邮票'],['ちょっと','稍微'],['がっこう','学校'],['ざっし','杂志'],['もっと','更加'],['いっしょ','一起'],['きっぷ','车票'],['マッチ','火柴'],['ベッド','床'],['サッカー','足球'],['カップ','杯子'],['ロケット','火箭']];
+const CHOU = [['おかあさん','妈妈'],['おにいさん','哥哥'],['おおきい','大的'],['ゆうき','勇气'],['とおい','远的'],['ケーキ','蛋糕'],['ラーメン','拉面'],['コーヒー','咖啡'],['スーパー','超市'],['ノート','笔记本'],['ビール','啤酒'],['ゲーム','游戏']];
+// 发音要领（按行）
+const ROWTIP = {
+'あ行':'日语只有 a i u e o 五个元音，每个都短促、干脆，发音过程中口型不变、不带滑音。う 嘴唇放松不撅；え 嘴角向两边开，不要滑成汉语的“ei”；お 嘴唇圆但不往前撅。',
+'か行':'k 的送气比汉语的 k 弱，放在词中间时常常听起来接近 g，但声带不振动。き 是 ki，不是汉语拼音的 qi。',
+'さ行':'し 是 shi：舌面抬起，介于汉语的 xi 和 shi 之间，不要卷舌。す 嘴唇不撅，句末的 す 常常只剩一个 s 音（です 读 des）。',
+'た行':'た て と 的 t 送气较弱。ち 是 chi，介于 qi 和 chi 之间。つ 是 tsu，舌尖先顶住上齿再放开，相当于“次”的声母加上 u，汉语里没有完全对应的音。',
+'な行':'n 要发清楚。に 舌面贴近上颚，接近“尼”；ぬ 嘴唇不撅。',
+'は行':'は へ ほ 是轻轻的 h。ひ 接近“希”的气流音。ふ 不咬下唇，双唇靠近轻轻吹气，介于 f 和 h 之间。は 作助词读 wa，へ 作助词读 e。',
+'ま行':'双唇闭合再打开。む 嘴唇不撅；め 不要滑成“mei”。',
+'や行':'只有 や ゆ よ 三个，没有 yi、ye。ゆ 不要读成带 o 尾巴的“you”。',
+'ら行':'舌尖在上齿龈轻轻弹一下（闪音），介于 l、r、d 之间。不卷舌，也不要发成长长的 l。',
+'わ行':'わ 嘴唇只微微收圆。を 现代读 o，和 お 同音，只当助词用。',
+'ん':'鼻音，自己占一整拍。在 m/b/p 前读成 m（さんぽ），在 k/g 前读成 ng（ぎんこう），在元音前鼻化，不能当作“-n”一带而过。',
+'が行':'声带振动的 g。传统标准语里，词中的 が 会读成带鼻音的 nga（鼻浊音），现在很多人不读，了解即可。',
+'ざ行':'じ 是 ji，ず 是 zu，都要振动声带。ぢ 和 じ、づ 和 ず 读音完全相同。',
+'だ行':'だ で ど 是浊音 d。ぢ づ 很少用，读音同 じ ず。',
+'ば行':'双唇闭合的浊音 b，声带振动。',
+'ぱ行':'双唇爆破的 p，不送气或轻送气，比汉语的 p 弱。',
+'拗音':'い段假名加小写 ゃゅょ，合成一拍：きゃ 是一拍 kya，きや 是两拍 ki-ya。小字要明显写小。',
+'促音':'小写 っ/ッ 自己占一拍但不发声：口型摆好下一个辅音，停一拍再发出来。',
+'长音':'元音拉长一拍，长短会改变意思。平假名用加元音表示（おかあさん、とおい、せんせい、おとうさん），片假名用「ー」。',
+'扩展音':'外来语专用的组合：大字 + 小写 ァィゥェォ 合成一拍。读得和英语原词接近即可。',
+};
+// 书写要点（容易写错的地方）；笔画数由笔顺数据自动算出
+const WRITETIP = {
+'あ':'第二笔竖要稍微弯着穿过横；第三笔绕一大圈收尾。','い':'左笔长、末尾带一点挑，右笔短；两笔不连。','え':'第二笔写“フ”后折回再往右下拖。',
+'お':'右上那一点最后写；中间竖笔下面绕一圈。','か':'右边那一点单独写；左边像“力”。','き':'两横上短下长；下面的弯可以分开写一笔。',
+'け':'右边竖写长，末尾向左撇。','さ':'下面的弯和上面分开写（和 き 少一横）。','そ':'印刷体一笔写完，手写也常写成上点 + 下折两笔。',
+'ち':'和 さ 方向相反，下面的弯朝右。','な':'右下最后绕一个小圈。','ぬ':'和 め 很像，末尾要打圈。','ね':'右下末尾打圈（れ 不打圈，わ 是圆肚子）。',
+'は':'右边竖下面打圈；比 ほ 少一横。','ほ':'右边两横都要写，竖下面打圈。','ま':'竖下面打圈。','み':'第一笔写“21”的形状，再补一撇。',
+'む':'中间竖下面打圈，右边一点最后写。','め':'和 ぬ 很像但末尾不打圈。','も':'竖钩从两横中间穿过去。','ゆ':'先写左边的弯，再写中间竖。',
+'ら':'第一笔是短短的点或短撇。','り':'有的字体连成一笔，手写两笔更清楚。','る':'末尾打圈（ろ 不打圈）。','ろ':'末尾不打圈。',
+'わ':'右边圆肚子不打圈；比 れ 圆。','を':'三笔：横、斜折、最后绕一笔。','ん':'一笔写完，像小写的 h 拉长。',
+'シ':'两点横着排，最后一笔从左下往右上挑。','ツ':'两点竖着排，最后一笔从右上往左下撇。','ソ':'一点一撇都是从上往下写。','ン':'点在上，最后一笔从左下往右上挑。',
+'ク':'两笔，第二笔是横折撇。','ケ':'中间的横穿出去，比 ク 长。','タ':'像 ク 中间多一点。','チ':'第一笔是撇（テ 是横）。','テ':'上面两横（チ 是一撇一横）。',
+'ナ':'横 + 撇，像十字。','メ':'撇 + 点交叉成“×”。','ヌ':'像 ス 中间多一点。','ス':'两笔，第二笔是右下一点。','ユ':'下面一横伸出去（コ 不伸出）。',
+'コ':'两笔，右边是封口的折。','ウ':'顶上一点 + 左竖 + 横折撇。','ワ':'没有顶上那一点（ウ 有）。','フ':'一笔横折撇（ワ 左边多一竖）。',
+'ロ':'像“口”，三笔，比汉字口小。','カ':'和汉字“力”几乎一样，日语里写得更小更斜。','エ':'和“工”一样。','ニ':'和“二”一样，下横较长。',
+'ハ':'和“八”一样，两笔分开。','ヘ':'一笔，平片几乎相同。','リ':'左短右长，平片几乎相同。','モ':'两横一竖弯，和 も 比少了穿过的钩。',
+'ヲ':'横、横、撇三笔：フ 中间加一横。','セ':'横折加一竖弯（せ 中间两竖）。','キ':'两横一竖（き 下面多一个弯）。',
+};
+// 平假名和片假名形状上的关联
+const KLINK = {
+'か':'か 去掉右边那一点就是 カ（都来自“加”）。','き':'き 去掉下面的弯就是 キ（都来自“幾”）。','せ':'せ 和 セ 都来自“世”，形状很像。',
+'へ':'へ 和 ヘ 几乎完全一样。','も':'も 和 モ 都来自“毛”，モ 少了穿过的钩。','や':'や 和 ヤ 都来自“也”，形状很像。',
+'り':'り 和 リ 几乎一样，都来自“利”的立刀旁。','に':'に 去掉左边的竖就是 ニ（“二”）。','こ':'こ 写方了就是 コ（都来自“己”）。',
+'う':'う 和 ウ 都来自“宇”：上面一点，下面一个宝盖。','ふ':'ふ 和 フ 都来自“不”。','ほ':'ほ 来自“保”，ホ 是“保”右下的“木”。',
+'ら':'ら 和 ラ 都来自“良”，上面一短笔 + 下面一弯。','の':'の 和 ノ 都来自“乃”，ノ 就是 の 的第一笔。','て':'て 和 テ 都来自“天”。',
+'と':'と 和 ト 都来自“止”的一部分。','な':'な 和 ナ 都来自“奈”，ナ 是 な 的左半。','ゆ':'ゆ 和 ユ 都来自“由”。','よ':'よ 和 ヨ 都来自“与”。',
+'む':'む 和 ム 来源不同（武 / 牟），但都有“厶”的感觉。','ね':'ね 和 ネ 都来自“祢”，ネ 是“示”字旁。','そ':'そ 和 ソ 都来自“曽”，ソ 是上面两点。',
+'つ':'つ 和 ツ 都来自“川”，ツ 是三笔的“川”。','ろ':'ろ 和 ロ 都来自“吕”，ロ 就是“口”。','わ':'わ 和 ワ 都来自“和”。',
+};
+// 听辨对比：只差一点的两个词 [[词,意思],[词,意思],考点]
+const MINI = [
+[['きて','来'],['きって','邮票'],'促音'],[['さか','坡'],['さっか','作家'],'促音'],[['おと','声音'],['おっと','丈夫'],'促音'],[['いた','在（过去式）'],['いった','去了'],'促音'],
+[['おばさん','阿姨'],['おばあさん','奶奶'],'长音'],[['おじさん','叔叔'],['おじいさん','爷爷'],'长音'],[['ゆき','雪'],['ゆうき','勇气'],'长音'],[['とり','鸟'],['とおり','大街'],'长音'],
+[['ここ','这里'],['こうこう','高中'],'长音'],[['ビル','大楼'],['ビール','啤酒'],'长音'],
+[['びょういん','医院'],['びよういん','美容院'],'拗音'],[['きょう','今天'],['きよう','灵巧'],'拗音'],[['じゆう','自由'],['じゅう','十'],'拗音'],[['しゅじん','丈夫'],['しゅうじん','囚犯'],'长音'],
+[['つき','月亮'],['すき','喜欢'],'つ / す'],[['つる','鹤'],['する','做'],'つ / す'],
+[['てんき','天气'],['でんき','电'],'清音 / 浊音'],[['かき','柿子'],['かぎ','钥匙'],'清音 / 浊音'],[['たいがく','退学'],['だいがく','大学'],'清音 / 浊音'],[['こま','陀螺'],['ごま','芝麻'],'清音 / 浊音'],
+[['へや','房间'],['へいや','平原'],'长音'],[['しじん','诗人'],['しんじん','新人'],'拨音 ん'],[['こい','恋爱'],['こうい','好意'],'长音'],
+];
+// 易混字
+const CONFUSE = [
+['あ','お','め'],'お 右上多一点；め 没有竖穿过',['ぬ','め'],'ぬ 尾巴打圈，め 不打圈',['ね','れ','わ'],'右边：ね 打圈、れ 踢腿、わ 圆肚子',
+['る','ろ'],'る 尾巴打圈，ろ 不打圈',['さ','ち'],'左右镜像：さ 开口朝左下，ち 开口朝右',['さ','き'],'き 比 さ 多一横',
+['は','ほ'],'ほ 比 は 上面多一横',['い','り'],'い 左长右短；り 右边长',['こ','い'],'こ 上下两横，い 左右两竖',
+['シ','ツ'],'シ 点横排、最后一笔从下往上挑；ツ 点竖排、最后一笔从上往下撇',['ソ','ン'],'ソ 点竖排从上往下撇；ン 点横排从下往上挑',
+['ク','タ'],'タ 中间多一点',['ク','ケ'],'ケ 的横穿出去',['ユ','コ'],'ユ 下面一横伸出去',['ウ','ワ'],'ウ 顶上多一点',['フ','ワ'],'ワ 左边多一竖',
+['チ','テ'],'チ 上面是撇，テ 上面是横',['ナ','メ'],'ナ 十字，メ 交叉斜',['ノ','メ'],'メ 多一点',['ヌ','ス'],'ヌ 中间有点',
+['ハ','へ'],'ハ 两笔分开，ヘ 一笔连着',['ロ','コ'],'ロ 是封闭的口',['ラ','ヲ','フ'],'ラ 上横下フ；ヲ 中间多一横',
+['ヘ','へ'],'平假名片假名几乎一样，看上下文',['カ','か'],'か 多一点',['セ','せ'],'せ 中间两竖，セ 一竖',['キ','き'],'き 下面多一个弯',
+['リ','り'],'几乎一样',['モ','も'],'も 竖钩从上穿过',['っ','つ'],'小写 っ 是促音（停一拍），大写 つ 读 tsu',['ッ','ツ'],'小写 ッ 是促音，大写 ツ 读 tsu',
+];
+const NOTE = {
+'し':'罗马音 shi，不是 si。','ち':'罗马音 chi，不是 ti。','つ':'罗马音 tsu。舌尖先抵上齿再放开，“ts”音，汉语里没有完全对应的音。',
+'ふ':'罗马音 fu，但不咬下唇：双唇轻轻靠近吹气，介于 f 和 h 之间。','は':'作助词时（わたし“は”）读 wa。','へ':'作助词时（がっこう“へ”）读 e。',
+'を':'只作助词，读 o，打字输入 wo。','ん':'不能出现在词首；在 b/p/m 前更接近 m，在 k/g 前更接近 ng。','う':'嘴唇不要撅圆，比汉语“乌”扁。',
+'ら':'ら行都用舌尖轻弹一下上颚，介于 l 和 r 之间。','り':'ら行都用舌尖轻弹一下上颚。','る':'ら行都用舌尖轻弹一下上颚。','れ':'ら行都用舌尖轻弹一下上颚。','ろ':'ら行都用舌尖轻弹一下上颚。',
+'ぢ':'读音和 じ 一样（ji），很少用，多见于 はなぢ 这类连浊词。','づ':'读音和 ず 一样（zu），多见于 つづく 这类连浊词。',
+'じ':'和 ぢ 同音。','ず':'和 づ 同音。',
+};
+
+// 图像记忆：原创简笔画，贴着 KanjiVG 笔画的真实坐标画（109×109）。
+// [叠在字上面的图案, 记忆口诀, 垫在字下面的色块(可选)]
+// d1 红线 d2 绿线 df 金色填充 dk 墨色填充 du 浅绿底 dg 浅金底 dt 文字
+const PICS = {
+'あ':['<path class="d1" d="M96 36 q8 10 0 20 M104 28 q14 18 0 36"/>','一个人站在山顶，张大嘴喊“啊——”','<path class="du" d="M-10 112 L26 66 L46 88 L70 58 L118 112z"/>'],
+'い':['<path class="df" d="M22 30 q-14 -14 -2 -26 q10 12 2 26z M73 37 q14 -14 4 -28 q-10 12 -4 28z"/><path class="d2" d="M6 96 H104 M14 96 l-4 -10 M88 96 l4 -10"/>','两根小草从地里冒出来，读“衣”'],
+'う':['<path class="d1" d="M84 50 q8 10 0 20 M94 42 q14 18 0 36 M104 34 q18 26 0 52"/>','像一只竖起的耳朵，在听“乌——”','<ellipse class="du" cx="52" cy="64" rx="28" ry="36"/>'],
+'え':['<circle class="df" cx="51" cy="3" r="8"/><path class="d1" d="M8 66 q-8 -6 -2 -16 M96 96 q10 -2 10 -12 M12 84 l-8 4"/>','一个人在跳舞：上面一点是头，甩手踢脚“诶！”'],
+'お':['<path class="df" d="M79 12 q-10 16 0 24 q10 -8 0 -24z"/><path class="d2" d="M-2 52 H16 M-6 64 H12 M-2 76 H16"/>','跑步的人甩出一滴汗：“哦！”（右上角那一点）'],
+'か':['<path class="df" d="M100 30 l4 -10 l2 10 l10 2 l-10 4 l-2 10 l-4 -10 l-10 -2z"/><path class="d1" d="M14 30 q-8 4 -6 14"/>','左边是“力”(カ)，右边一点是用力时迸出的火花，“咖！”'],
+'き':['<circle class="d2" cx="53" cy="92" r="11"/><path class="d2" d="M70 23 v10 M78 22 v8"/>','一把钥匙（key / かぎ）：下面是圆柄，上面两横是齿'],
+'く':['<circle class="d2" cx="82" cy="54" r="22"/><circle class="dk" cx="80" cy="46" r="4"/>','小鸟张开尖嘴“<”在哭(ku)，右边是它的脑袋'],
+'け':['<path class="dg" d="M66 -8 h14 v22 h-14z"/><circle class="df" cx="73" cy="-12" r="6"/>','右边是一把剑（けん）：横是护手，竖是剑身，顶上是剑柄'],
+'こ':['<ellipse class="d2" cx="53" cy="30" rx="24" ry="10"/><path class="d2" d="M29 30 l-12 -9 v18z"/><circle class="dk" cx="68" cy="28" r="3"/><ellipse class="d2" cx="55" cy="77" rx="28" ry="11"/><path class="d2" d="M27 77 l-12 -9 v18z"/><circle class="dk" cx="73" cy="75" r="3"/>','两条小鱼一上一下在游，“扣(ko)”'],
+'さ':['<g class="df"><circle cx="90" cy="10" r="6"/><circle cx="100" cy="17" r="6"/><circle cx="96" cy="29" r="6"/><circle cx="83" cy="29" r="6"/><circle cx="80" cy="17" r="6"/></g><circle class="dk" cx="90" cy="20" r="3"/>','头顶开了一朵樱花（さくら），“撒(sa)”'],
+'し':['<path class="d2" d="M39 18 V-10"/><path class="df" d="M84 84 q14 -12 26 0 q-12 12 -26 0z M110 84 l8 -8 v16z"/><circle class="dk" cx="90" cy="82" r="2.5"/>','一根鱼钩“J”，钩住了一条鱼：“西(shi)～”'],
+'す':['','竖线中间绕了个圈，像线上拴着的气球，“丝(su)～”','<circle class="dg" cx="49" cy="66" r="14"/>'],
+'せ':['<circle class="d2" cx="102" cy="90" r="13"/><path class="d2" d="M89 90 h26 M102 77 q-9 13 0 26 q9 -13 0 -26"/>','就是“世”字的样子，看看世界（せかい）'],
+'そ':['<path class="df" d="M100 4 l-12 20 h10 l-8 20 l20 -26 h-10 l8 -14z"/>','像一道“Z”字闪电，“嗖(so)”地划过'],
+'た':['<ellipse class="df" cx="102" cy="94" rx="9" ry="11"/><path class="d1" d="M97 92 l4 4 l4 -4"/>','左边“ナ”，右边“こ”，旁边滚出一颗蛋（たまご），“他(ta)”'],
+'ち':['<circle class="dk" cx="66" cy="60" r="4"/><circle class="df" cx="76" cy="74" r="5"/><rect class="dg" x="86" y="2" width="28" height="20" rx="4"/><circle class="d2" cx="100" cy="12" r="6"/><rect class="df" x="90" y="-2" width="8" height="4"/>','像一张侧脸，圆鼓鼓的脸颊，拍照说 cheese(chi)'],
+'つ':['<path class="d2" d="M-6 100 q10 -10 20 0 t20 0 t20 0 t20 0 t20 0 t20 0"/><circle class="d2" cx="96" cy="30" r="4"/><circle class="d2" cx="104" cy="44" r="3"/>','一道卷起来的浪花，“次(tsu)”'],
+'て':['<path class="d1" d="M20 26 l-14 -12 M20 26 l-18 -2 M20 26 l-14 10 M20 26 l-6 -18"/>','伸出来的一只手（て＝手），左边张开的是手指'],
+'と':['<path class="dg" d="M28 0 h24 v10 h-24z"/><path class="d2" d="M40 10 V-10"/><path class="d2" d="M10 98 H104"/>','左上那一笔是钉子，锤子正在往下敲，“托(to)”'],
+'な':['<path class="d1" d="M84 88 q10 6 8 18 M76 92 q-2 12 -12 16"/>','左上是“十”，右下绕了一个圈：一根打了结的绳子，那(na)','<circle class="dg" cx="62" cy="72" r="19"/>'],
+'に':['<rect class="d2" x="47" y="20" width="50" height="70" rx="10"/><text class="dt" x="98" y="16">二</text>','右边两横就是“二”，读“尼(ni)”'],
+'ぬ':['<path class="d2" d="M84 -6 L104 26 M94 -10 L112 22"/><path class="d1" d="M30 14 q-4 -8 0 -14 M48 12 q-4 -8 0 -14"/>','一碗热乎乎的面条（ヌードル），筷子插着，尾巴打圈','<path class="dg" d="M6 86 h100 q-6 26 -50 26 q-44 0 -50 -26z"/>'],
+'ね':['<path class="d2" d="M22 18 l2 -20 l11 12 M33 10 l11 -12 l2 20"/><circle class="dk" cx="30" cy="20" r="2.5"/><circle class="dk" cx="40" cy="20" r="2.5"/>','左边一竖是坐着的猫（ねこ），顶上是猫耳，右下打圈是卷起来的尾巴'],
+'の':['<circle class="d1" cx="55" cy="56" r="50"/><path class="d1" d="M20 21 L90 91"/>','一个圈加一道斜线：禁止标志，NO！'],
+'は':['<g class="df"><circle cx="72" cy="4" r="7"/><circle cx="84" cy="12" r="7"/><circle cx="78" cy="24" r="6"/><circle cx="64" cy="22" r="6"/><circle cx="60" cy="10" r="6"/></g><circle class="dk" cx="72" cy="14" r="3"/>','右边竖线顶上开出一朵花（はな），“哈(ha)”'],
+'ひ':['<circle class="dk" cx="42" cy="50" r="5"/><circle class="dk" cx="70" cy="50" r="5"/>','一张咧嘴大笑的脸：“嘿嘿(hi)”'],
+'ふ':['<path class="d2" d="M40 46 l7 6 l7 -6 l7 6 l7 -6"/>','富士山（ふじ）：上面一点是山顶的云，“呼(fu)～”','<path class="du" d="M-8 110 L42 44 L66 44 L118 110z"/>'],
+'へ':['<path class="d2" d="M55 44 V14"/><path class="df" d="M55 14 l20 7 l-20 7z"/>','一座小山“^”，山顶插着一面旗，“嘿(he)”'],
+'ほ':['<path class="df" d="M104 0 l4 9 l10 1 l-8 7 l3 10 l-9 -6 l-9 6 l3 -10 l-8 -7 l10 -1z"/>','比 は 多一横，像一座塔，塔顶挂着星星（ほし）'],
+'ま':['<path class="d2" d="M84 8 L104 -8"/><path class="df" d="M106 -12 l3 7 l8 0 l-6 5 l2 8 l-7 -5 l-7 5 l2 -8 l-6 -5 l8 0z"/>','魔法师挥着魔法棒（まほう）念咒：“妈(ma)～”'],
+'み':['<path class="d1" d="M100 16 v28"/><ellipse class="df" cx="95" cy="46" rx="7" ry="5"/><path class="d1" d="M100 16 l12 -6 v8 l-12 6"/>','像写着“21”，哼着音符“咪(mi)～”'],
+'む':['<path class="d2" d="M33 14 q-10 -10 -20 -6 M41 14 q10 -10 20 -6"/><rect class="dg" x="84" y="64" width="34" height="20" rx="8"/><text class="dt" x="88" y="80" style="font-size:14px">哞～</text>','一头长着角的牛，“哞(mu)～”地叫'],
+'め':['<path class="d2" d="M28 18 l-6 -10 M42 14 l-2 -12 M58 14 l2 -12 M72 18 l6 -10"/><circle class="dk" cx="56" cy="62" r="7"/>','一只大眼睛（め＝目）：上面是睫毛，中间是眼珠','<ellipse class="dg" cx="56" cy="58" rx="40" ry="30"/>'],
+'も':['<circle class="df" cx="90" cy="66" r="10"/><path class="d2" d="M90 56 q2 -8 10 -10"/>','钓鱼钩上挂着一颗桃子（もも），“摸(mo)”'],
+'や':['<path class="df" d="M56 102 l-12 -12 l14 -4z"/><path class="d1" d="M30 24 l-10 -8 M30 24 l-2 -12"/>','右上的弯像弓，斜线是射出去的箭（矢＝や），“呀！”'],
+'ゆ':['<circle class="dg" cx="38" cy="44" r="7"/><circle class="dk" cx="38" cy="44" r="3"/><path class="d2" d="M92 52 l16 -12 v26z"/>','一条大鱼在游（ゆ），左边是眼睛，右边是尾巴，“油(yu)～”'],
+'よ':['<path class="df" d="M57 12 h30 v18 h-30z"/><path class="d2" d="M22 100 h66"/>','竖线是旗杆，上面挂着小旗，插在地上，“哟(yo)！”'],
+'ら':['<path class="d2" d="M46 18 l8 -16"/><circle class="dk" cx="60" cy="66" r="4"/><circle class="dg" cx="30" cy="92" r="7"/>','蹲着的兔子：上面两只竖起的耳朵，下面圆圆的是身体，拉(ra)'],
+'り':['<circle class="df" cx="54" cy="52" r="11"/><path class="d2" d="M54 41 q2 -8 10 -8"/>','两根竖中间夹着一颗苹果（りんご），“哩(ri)”'],
+'る':['<path class="d2" d="M70 88 q22 0 22 -14 M90 74 l-2 -20 M92 76 l14 -14"/><circle class="dk" cx="88" cy="52" r="3.5"/><circle class="dk" cx="108" cy="60" r="3.5"/>','尾巴卷成壳，是一只慢慢爬的蜗牛，“噜(ru)”'],
+'れ':['<circle class="df" cx="35" cy="3" r="8"/><path class="d1" d="M100 82 l10 4 M98 92 l10 2"/>','一个人大步往前走、往后踢腿：竖是身体，上面是头，“雷(re)”'],
+'ろ':['<text class="dt" x="84" y="22" style="font-size:30px;fill:var(--sub)">3</text>','像一个数字 3，但下面不打圈（打圈的是 る），咯(ro)'],
+'わ':['<circle class="dk" cx="68" cy="66" r="4"/>','吃饱了，挺着圆滚滚的肚子：“哇(wa)～”','<circle class="dg" cx="66" cy="66" r="22"/>'],
+'を':['<g class="dk"><ellipse cx="96" cy="100" rx="4" ry="6"/><ellipse cx="108" cy="90" rx="4" ry="6"/><ellipse cx="100" cy="76" rx="4" ry="6"/><ellipse cx="112" cy="66" rx="4" ry="6"/></g>','一个人往远处（遠）走去，留下一串脚印；只当助词，读 o'],
+'ん':['<circle class="df" cx="56" cy="5" r="9"/><path class="d1" d="M68 -2 q8 6 4 16"/>','一个人点点头：“嗯(n)”'],
+};
+const PICLABEL = {"あ":"⛰ 山顶大喊","い":"🌱 两根小草","う":"👂 竖起的耳朵","え":"💃 跳舞的人","お":"🏃 跑步甩汗","か":"💪 用力迸出火花","き":"🔑 钥匙","く":"🐦 张嘴的小鸟","け":"🗡 一把剑","こ":"🐟 两条小鱼","さ":"🌸 樱花","し":"🎣 鱼钩","す":"🎈 线上的气球","せ":"🌍 世界","そ":"⚡ 闪电","た":"🥚 滚出一颗蛋","ち":"📸 拍照喊 cheese","つ":"🌊 浪花","て":"✋ 伸出的手","と":"🔨 钉钉子","な":"🪢 打结的绳子","に":"2️⃣ 数字“二”","ぬ":"🍜 一碗面","ね":"🐱 卷尾巴的猫","の":"🚫 禁止标志","は":"🌼 竖线上开花","ひ":"😄 咧嘴笑","ふ":"🗻 富士山","へ":"⛳ 小山插旗","ほ":"⭐ 塔顶的星星","ま":"🪄 魔法棒","み":"🎵 音符“21”","む":"🐮 牛哞哞叫","め":"👁 大眼睛","も":"🍑 钩上挂桃子","や":"🏹 射出的箭","ゆ":"🐟 游动的鱼","よ":"🚩 插在地上的旗","ら":"🐰 蹲着的兔子","り":"🍎 夹着苹果","る":"🐌 蜗牛","れ":"🚶 大步走路","ろ":"3️⃣ 不打圈的 3","わ":"😋 吃饱的肚子","を":"👣 往远处走","ん":"🙂 点头说嗯"};
+// 片假名图像记忆（原创简笔画，坐标对齐 KanjiVG 片假名笔画）。格式同 PICS：[叠加图案, 口诀, 底层色块]
+const KPICS = {
+'ア':['<path class="d2" d="M22 92 h24"/>','上面一横一折是迎风飘的旗面，斜线是旗杆。取自“阿”的左耳旁，读 a','<path class="dg" d="M24 26 L86 22 L60 42z"/>'],
+'イ':['<circle class="df" cx="72" cy="8" r="7"/>','单人旁“亻”：一个侧身站着的人（取自“伊”），读 i'],
+'ウ':['','“宀”宝盖头就是屋顶，下面是房子（取自“宇”），读 u','<rect class="du" x="30" y="58" width="54" height="40"/><rect class="dg" x="50" y="74" width="14" height="24"/>'],
+'エ':['<circle class="d2" cx="32" cy="34" r="4"/><circle class="d2" cx="80" cy="34" r="4"/><circle class="d2" cx="19" cy="75" r="4"/><circle class="d2" cx="91" cy="75" r="4"/>','就是“工”字，像一根工字钢梁（取自“江”的右边），读 e'],
+'オ':['<circle class="df" cx="58" cy="6" r="8"/><path class="d2" d="M46 0 h24"/>','横是张开的手臂，竖是身体，斜线是一条腿：田里的稻草人（取自“於”），读 o'],
+'カ':['<path class="df" d="M96 22 l4 -10 l2 10 l10 2 l-10 4 l-2 10 l-4 -10 l-10 -2z"/>','就是“力”字（取自“加”），比平假名 か 少了一点，用力“咖(ka)”'],
+'キ':['<circle class="d2" cx="62" cy="102" r="8"/>','两横一竖像一把钥匙，下面套个环：key(ki)（取自“幾”）'],
+'ク':['<circle class="df" cx="46" cy="10" r="9"/><path class="d2" d="M10 98 H100"/>','一个人深深弯腰鞠躬：左上是头，往下是弯着的背（取自“久”），哭(ku)'],
+'ケ':['<text class="dt" x="88" y="22">K</text>','整体像一个歪着的字母 K：K→ke（取自“介”）'],
+'コ':['','一个开着左边口的箱子（取自“己”的上半），扣(ko)','<path class="dg" d="M30 31 h53 v47 h-53z"/>'],
+'サ':['<path class="d2" d="M40 54 H62 M40 66 H60 M40 78 H58 M46 48 V90 M54 46 V90"/><circle class="df" cx="94" cy="88" r="10"/><path class="dk" d="M90 84 l8 0 l0 8 l-8 0z" style="opacity:.25"/>','一横两竖就是足球门（サッカー）：横是门梁，两竖是门柱，中间是网，撒(sa)'],
+'シ':['<circle class="d2" cx="58" cy="54" r="44"/>','一张抬头的笑脸：两点横着排是眼睛，最后一笔从左下往右上挑是笑嘴。西(shi)。对比 ツ：点竖排、往下撇'],
+'ス':['<circle class="df" cx="54" cy="12" r="8"/>','迈开大步跑的人：上面是头，横是手臂，两条斜线是腿（取自“須”），丝(su)'],
+'セ':['<circle class="d2" cx="100" cy="90" r="12"/><path class="d2" d="M88 90 h24 M100 78 q-8 12 0 24 q8 -12 0 -24"/>','“世”字的变形，看看世界（せかい），塞(se)'],
+'ソ':['<path class="d2" d="M90 4 v10 M100 10 v10 M14 6 v10"/>','两笔都是从上往下：像雨落下来，“嗖(so)”。对比 ン：最后一笔从下往上挑'],
+'タ':['<path class="df" d="M70 104 a16 16 0 0 1 32 0z"/><path class="d1" d="M86 82 v-8 M72 88 l-6 -6 M100 88 l6 -6"/>','“夕”字：傍晚的夕阳（取自“多”的上半），他(ta)'],
+'チ':['<text class="dt" x="84" y="20" style="fill:var(--sub)">千</text>','就是“千”字的样子，七(chi)。对比 テ：チ 上面是一撇，テ 上面是一横'],
+'ツ':['<path class="d2" d="M24 54 q-4 8 0 12 q4 -4 0 -12z M50 46 q-4 8 0 12 q4 -4 0 -12z"/><path class="d2" d="M30 100 q-6 10 0 14 q6 -4 0 -14z"/>','两点竖着排，最后一笔从右上往左下撇：像水一滴滴往下流，次(tsu)。对比 シ'],
+'テ':['<rect class="dg" x="12" y="92" width="44" height="22" rx="4"/><path class="d2" d="M57 19 l10 -14 M57 19 l-8 -14"/>','上面两横像电视（テレビ）的天线，下面是电视（取自“天”），忒(te)'],
+'ト':['<path class="df" d="M74 62 q12 -12 22 -2 q-10 12 -22 2z"/>','竖是树枝，右边一点是长出的嫩芽（取自“止”的一部分“卜”），托(to)'],
+'ナ':['<path class="d2" d="M56 0 l-4 10"/>','一个歪了的十字“十”（取自“奈”的上半），那(na)'],
+'ニ':['<text class="dt" x="92" y="22">二</text>','就是“二”，尼(ni)'],
+'ヌ':['<path class="d1" d="M76 75 q10 6 14 18"/>','像两根交叉的筷子，正夹起面条（ヌードル），奴(nu)。取自“奴”的右边“又”','<path class="dg" d="M8 92 h96 q-6 22 -48 22 q-42 0 -48 -22z"/>'],
+'ネ':['<path class="d2" d="M48 16 l2 -14 l8 8 M58 10 l8 -8 l2 14"/>','像一只站着的猫（ネコ）：上面一点是头，左右张开，下面是身体（取自“祢”的示字旁）'],
+'ノ':['<circle class="df" cx="80" cy="18" r="8"/><path class="d2" d="M20 96 h24"/>','只有一撇：一道滑梯，小人从上面滑下来，“诺(no)～”'],
+'ハ':['<text class="dt" x="44" y="20" style="fill:var(--sub)">八</text>','就是汉字“八”，八（はち）的第一个音就是 ha'],
+'ヒ':['<ellipse class="df" cx="88" cy="86" rx="10" ry="6"/>','就是“匕”（汤匙的匙字头），尾巴像勺子，嘿(hi)（取自“比”的右边）'],
+'フ':['','右上一折像船帆，扬帆出海（ふね），呼(fu)（取自“不”的上半）','<path class="dg" d="M6 96 h80 l-10 14 h-60z"/><path class="du" d="M25 30 L83 25 L40 88z"/>'],
+'ヘ':['<path class="d2" d="M33 34 V12"/><path class="df" d="M33 12 l18 7 l-18 7z"/>','和平假名 へ 几乎一样：一座小山插着旗，嘿(he)'],
+'ホ':['<circle class="df" cx="18" cy="84" r="6"/><circle class="df" cx="94" cy="80" r="6"/>','像汉字“木”：一棵小树，两边是结了果子的树枝（取自“保”的右下），吼(ho)'],
+'マ':['<path class="d2" d="M64 92 v10 M64 106 v4"/>','像一个漏斗，下面一点正在漏下来，妈(ma)（取自“末”）'],
+'ミ':['<text class="dt" x="84" y="22">三</text>','三点就是“三”，咪(mi)'],
+'ム':['<circle class="df" cx="54" cy="16" r="10"/>','像弯起来的胳膊秀肌肉：上面是拳头，下面是肘弯，muscle 的 mu（取自“牟”）'],
+'メ':['<path class="d1" d="M60 2 l-10 0 M96 22 l8 -8"/>','就是一个“×”，打叉！咩(me)（取自“女”的下半）'],
+'モ':['<path class="d2" d="M40 10 q4 -10 10 -8 M54 10 q4 -10 10 -8"/>','“毛”字去掉上面一撇，就像一撮毛，摸(mo)'],
+'ヤ':['<path class="df" d="M60 104 l-10 -10 l14 -4z"/>','横折像弓，斜线是射出去的箭（同 や），呀(ya)（取自“也”）'],
+'ユ':['<path class="d2" d="M17 77 V100 M91 77 V100"/>','侧面看的一把椅子：上面是靠背，下面是腿，油(yu)（取自“由”）'],
+'ヨ':['<path class="d2" d="M83 30 h18 M77 53 h18 M83 79 h18"/>','一把三齿的梳子，哟(yo)（取自“与”）'],
+'ラ':['<path class="d1" d="M48 6 q-4 -8 0 -14 M64 6 q-4 -8 0 -14"/>','上面一横是锅盖，下面弯钩是一碗热拉面（ラーメン），拉(ra)（取自“良”）'],
+'リ':['<path class="d2" d="M26 18 v40"/>','就是立刀旁“刂”（取自“利”），哩(ri)'],
+'ル':['<path class="dg" d="M30 30 h32 v10 h-32z"/>','两条腿走路：像一条裤子，右腿往外踢，噜(ru)（取自“流”）'],
+'レ':['<path class="d2" d="M96 40 l8 -10"/>','像一个对勾 ✓，雷(re)（取自“礼”的右边）'],
+'ロ':['<text class="dt" x="88" y="22">口</text>','就是“口”字，咯(ro)（取自“吕”）'],
+'ワ':['<path class="d2" d="M42 91 V106 M30 108 h24"/>','上面的弯像一只酒杯（ワイン），下面是杯脚，哇(wa)（取自“和”）'],
+'ヲ':['<path class="d1" d="M26 47 h50" stroke-dasharray="6 5"/>','就是 フ 中间多了一横（虚线那一横）：只当助词用，读 o（取自“乎”）'],
+'ン':['<path class="df" d="M86 42 l-12 0 l8 -10z"/>','点横排，最后一笔从左下往右上挑，像往上飞，嗯(n)。对比 ソ：从上往下落'],
+};
+const KPICLABEL = {
+'ア':'🚩 迎风的三角旗','イ':'🧍 侧身站着的人','ウ':'🏠 有屋顶的房子','エ':'🏗 工字钢梁','オ':'🌾 稻草人','カ':'💪 力',
+'キ':'🔑 钥匙','ク':'🙇 弯腰鞠躬的人','ケ':'🔤 歪着的 K','コ':'📦 开着口的箱子','サ':'⚽ 足球门','シ':'😊 抬头的笑脸',
+'ス':'🏃 迈大步的人','セ':'🌍 世界','ソ':'🌧 从上往下落','タ':'🌇 夕阳','チ':'千 字','ツ':'💧 水往下流',
+'テ':'📺 电视天线','ト':'🌿 树枝发芽','ナ':'➕ 歪了的十字','ニ':'二 字','ヌ':'🥢 筷子夹面','ネ':'🐱 站着的猫',
+'ノ':'🛝 一道滑梯','ハ':'八 字','ヒ':'🥄 勺子','フ':'⛵ 船帆','ヘ':'⛳ 小山插旗','ホ':'🌳 一棵小树',
+'マ':'🔻 漏斗','ミ':'三 字','ム':'💪 弯起的胳膊','メ':'❌ 打叉','モ':'🪶 一撮毛','ヤ':'🏹 弓和箭',
+'ユ':'🪑 侧面的椅子','ヨ':'🪮 三齿梳子','ラ':'🍜 一碗拉面','リ':'🔪 立刀旁','ル':'👖 一条裤子','レ':'✅ 对勾',
+'ロ':'口 字','ワ':'🍷 酒杯','ヲ':'🪝 フ 中间加一横','ン':'📈 从下往上挑',
+};
+// ---------------- helpers ----------------
+const STROKES = /*__STROKES__*/{};
+const $ = s => document.querySelector(s);
+const toKata = s => s.replace(/[ぁ-ゖ]/g, c => String.fromCharCode(c.charCodeAt(0) + 0x60));
+const toHira = s => s.replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const isKana = s => /^[ぁ-ゟ゠-ヿー]+$/.test(s);
+const hasKanji = s => /[一-鿿々]/.test(s);
+const isKataStr = s => s !== toHira(s);
+const shuffle = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const dayKey = (t = Date.now()) => { const d = new Date(t); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+
+const RM = {あ:'a',い:'i',う:'u',え:'e',お:'o',か:'ka',き:'ki',く:'ku',け:'ke',こ:'ko',さ:'sa',し:'shi',す:'su',せ:'se',そ:'so',た:'ta',ち:'chi',つ:'tsu',て:'te',と:'to',な:'na',に:'ni',ぬ:'nu',ね:'ne',の:'no',は:'ha',ひ:'hi',ふ:'fu',へ:'he',ほ:'ho',ま:'ma',み:'mi',む:'mu',め:'me',も:'mo',や:'ya',ゆ:'yu',よ:'yo',ら:'ra',り:'ri',る:'ru',れ:'re',ろ:'ro',わ:'wa',を:'o',ん:'n',が:'ga',ぎ:'gi',ぐ:'gu',げ:'ge',ご:'go',ざ:'za',じ:'ji',ず:'zu',ぜ:'ze',ぞ:'zo',だ:'da',ぢ:'ji',づ:'zu',で:'de',ど:'do',ば:'ba',び:'bi',ぶ:'bu',べ:'be',ぼ:'bo',ぱ:'pa',ぴ:'pi',ぷ:'pu',ぺ:'pe',ぽ:'po',ぁ:'a',ぃ:'i',ぅ:'u',ぇ:'e',ぉ:'o',ゃ:'ya',ゅ:'yu',ょ:'yo',ゔ:'vu',ゐ:'i',ゑ:'e',ゎ:'wa',
+しゃ:'sha',しゅ:'shu',しょ:'sho',しぇ:'she',ちゃ:'cha',ちゅ:'chu',ちょ:'cho',ちぇ:'che',じゃ:'ja',じゅ:'ju',じょ:'jo',じぇ:'je',ぢゃ:'ja',ぢゅ:'ju',ぢょ:'jo',
+ふぁ:'fa',ふぃ:'fi',ふぇ:'fe',ふぉ:'fo',てぃ:'ti',でぃ:'di',とぅ:'tu',どぅ:'du',でゅ:'dyu',うぃ:'wi',うぇ:'we',うぉ:'wo',つぁ:'tsa',ゔぁ:'va',ゔぃ:'vi',ゔぇ:'ve',ゔぉ:'vo',いぇ:'ye'};
+for (const c of 'きにひみりぎびぴ') for (const [s, v] of [['ゃ','a'],['ゅ','u'],['ょ','o']]) RM[c + s] = RM[c][0] + 'y' + v;
+function romaji(str) {
+  const s = toHira(str); let out = '', i = 0, prevN = false;
+  while (i < s.length) {
+    const two = s.slice(i, i + 2), one = s[i];
+    if (one === 'っ') { const n = RM[s.slice(i + 1, i + 3)] || RM[s[i + 1]] || ''; out += n.startsWith('ch') ? 't' : (n[0] || ''); i++; prevN = false; continue; }
+    if (one === 'ー') { const v = out.match(/[aeiou](?=[^aeiou]*$)/); out += v ? v[0] : ''; i++; prevN = false; continue; }
+    let r;
+    if (RM[two]) { r = RM[two]; i += 2; } else if (RM[one]) { r = RM[one]; i++; } else { r = one; i++; }
+    if (prevN && /^[aeiouy]/.test(r)) out += "'";
+    prevN = r === 'n' && one === 'ん';
+    out += r;
+  }
+  return out;
+}
+
+// ---------------- units & cards ----------------
+const INFO = {};
+BASIC.forEach(b => INFO[b[0]] = {ko:b[2], ka:b[3], tip:b[4], words:[b[5], b[6], b[7]]});
+const EXTI = {}; EXT.forEach(e => EXTI[e[0]] = e);
+const UNITS = [], UIDX = {}, CH2U = {};
+const addU = x => { UIDX[x.u] = UNITS.length; UNITS.push(x); x.chars.forEach(c => CH2U[c] = x.u); };
+ROWS.forEach((r, ri) => r.forEach(u => u && addU({u, chars:[u, toKata(u)], grp:'b', row:ROWNAME[ri]})));
+DROWS.forEach((r, ri) => r.forEach(u => addU({u, chars:[u, toKata(u)], grp:'d', row:DROWNAME[ri]})));
+YBASE.forEach(b => ['ゃ','ゅ','ょ'].forEach(s => addU({u:b + s, chars:[b + s, toKata(b + s)], grp:'y', row:b + '行拗音'})));
+addU({u:'っ', chars:['っ','ッ'], grp:'s', row:'促音'});
+addU({u:'ー', chars:['ー'], grp:'s', row:'长音'});
+EXT.forEach(e => addU({u:e[0], chars:[e[0]], grp:'x', row:'扩展音'}));
+// learning order: one group at a time, units inside a group come in random order
+const GROUPS = [...ROWS.map(r => r.filter(Boolean)), ...DROWS, ...YBASE.map(b => ['ゃ','ゅ','ょ'].map(s => b + s)), ['っ','ー'],
+  ...[0, 4, 8, 12].map(i => EXT.slice(i, i + 4).map(e => e[0]))];
+const GROUPNAME = [...ROWNAME, ...DROWNAME, ...YBASE.map(b => b + '行拗音'), '促音·长音', '扩展音①', '扩展音②', '扩展音③', '扩展音④'];
+
+const UNITROMA = {'を':'o','ぢ':'ji','づ':'zu','っ':'促音','ー':'长音'};
+const unitRoma = u => UNITROMA[toHira(u)] || UNITROMA[u] || (EXTI[u] ? EXTI[u][1] : romaji(u));
+const romaLabel = u => ({'を':'o <small>(wo)</small>','ぢ':'ji <small>(di)</small>','づ':'zu <small>(du)</small>','は':'ha <small>(助词 wa)</small>','へ':'he <small>(助词 e)</small>','っ':'<small>促音：停一拍</small>','ー':'<small>长音：拉长一拍</small>'}[toHira(u)] || unitRoma(u));
+const unitOf = ch => UNITS[UIDX[CH2U[ch]]];
+// your own imported songs come first, then the built-in lines
+const exList = ch => [...(MYEX[ch] || []), ...(DATA.ex[ch] || [])];
+const hasLyric = ch => exList(ch).some(e => !e.rd);
+
+// skills a character can be trained on; the first one is the "primary" recognition skill
+function skillsOf(ch) {
+  const x = unitOf(ch);
+  if (x.grp === 's') return ['word'];
+  const s = ['see', 'hear'];
+  if (x.grp !== 'x') s.push('pair');
+  s.push('write');
+  if (x.grp === 'b' || x.grp === 'd') if (GRID[toHira(ch)]) s.push('seq');
+  if (hasLyric(ch)) s.push('lyric');
+  return s;
+}
+const PRIMARY = ['see', 'hear', 'pair', 'word'];
+const SKILLNAME = {see:'看字读音', hear:'听音选字', pair:'平片互转', write:'听音默写', seq:'顺序', lyric:'歌词认字', word:'读词', mini:'听辨对比', read:'整句朗读', grid:'全表点字', kword:'读片假名词'};
+// katakana loanwords used for the word-reading drill: [word, meaning]
+const KWORDS = (() => {
+  const all = [...BASIC.map(b => b[7]), ...Object.values(DWORDS).flat(), ...Object.values(YWORDS).flat(), ...EXT.map(e => [e[2], e[3]]), ...SOKU, ...CHOU];
+  const seen = new Set();
+  return all.filter(w => /^[゠-ヿー]+$/.test(w[0]) && !seen.has(w[0]) && seen.add(w[0]));
+})();
+// words that contain this katakana and only use sounds already introduced
+const kwordsFor = ch => KWORDS.filter(w => w[0].includes(ch) && unitsInWord(w[0]).every(u => S.intro.includes(u)));
+
+// grid positions for sequence questions (basic rows without ん, voiced rows)
+const SECS = [ROWS.slice(0, 10), DROWS];
+const GRID = {};
+SECS.forEach((rows, si) => rows.forEach((row, ri) => row.forEach((u, ci) => u && (GRID[u] = {si, ri, ci}))));
+function neighbor(u, kind) {
+  const p = GRID[u]; if (!p) return null; const rows = SECS[p.si];
+  if (kind === 'next') { for (let c = p.ci + 1; c < 5; c++) if (rows[p.ri][c]) return rows[p.ri][c]; }
+  if (kind === 'prev') { for (let c = p.ci - 1; c >= 0; c--) if (rows[p.ri][c]) return rows[p.ri][c]; }
+  if (kind === 'down') { for (let r = p.ri + 1; r < rows.length; r++) if (rows[r][p.ci]) return rows[r][p.ci]; }
+  if (kind === 'up') { for (let r = p.ri - 1; r >= 0; r--) if (rows[r][p.ci]) return rows[r][p.ci]; }
+  return null;
+}
+const RELNAME = {next:'同一行的下一个（往右）', prev:'同一行的上一个（往左）', down:'同一段的下一个（往下）', up:'同一段的上一个（往上）'};
+const RELARROW = {next:'→', prev:'←', down:'↓', up:'↑'};
+
+// ---------------- storage ----------------
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+};
+const blank = () => ({v:2, cards:{}, intro:[], log:{}, conf:{}, mine:{}, myLyrics:[], best:0, created:Date.now(), lastExport:0, lastTable:0, pref:{rt:true, rm:true, fade:false, readLine:true, fz:1}});
+let S = store.get('kana2', null) || blank();
+// fill in fields added in later versions
+S = Object.assign(blank(), S); S.pref = Object.assign(blank().pref, S.pref);
+const save = () => store.set('kana2', S);
+
+// ---------------- your own lyrics ----------------
+// Songs pasted in the app (S.myLyrics: [{title, artist, text}]). A kanji reading can be given as 漢字(よみ);
+// other kanji are shown as they are. These lines have no recording, so the phone's Japanese voice reads them.
+let MYEX = {};
+const MYSAY = {}; // written line → what the voice should read (hand-given readings as kana)
+function myTokens(raw) {
+  const toks = [], RUBY = /([一-鿿々〆ヶ]+)[(（]([ぁ-ゖァ-ヺー]+)[)）]/g;
+  const plain = s => (s.match(/[ぁ-ゟ゠-ヿー]+|\s+|[^ぁ-ゟ゠-ヿー\s]+/g) || []).forEach(p => toks.push(isKana(p) ? {s:p, p:toHira(p)} : {s:p}));
+  let last = 0, m;
+  while ((m = RUBY.exec(raw))) { plain(raw.slice(last, m.index)); toks.push({s:m[1], r:toHira(m[2]), p:toHira(m[2]), f:1}); last = RUBY.lastIndex; }
+  plain(raw.slice(last));
+  return toks;
+}
+function buildMyEx() {
+  MYEX = {}; for (const k in MYSAY) delete MYSAY[k];
+  const lines = [];
+  S.myLyrics.forEach((sg, si) => {
+    const seen = new Set();
+    for (let raw of sg.text.split('\n')) {
+      raw = raw.trim();
+      if (!/[ぁ-ゖァ-ヺ]/.test(raw) || /作词|作曲|编曲|作詞|編曲|[:：]/.test(raw)) continue;
+      const t = myTokens(raw), text = t.map(x => x.s).join(''), len = [...text.replace(/\s/g, '')].length;
+      if (len < 4 || len > 40 || seen.has(text)) continue;
+      seen.add(text);
+      MYSAY[text] = t.map(x => x.f ? x.r : x.s).join('');
+      lines.push({my:si, t, len});
+    }
+  });
+  // up to 3 lines per kana: several hits and a medium length score higher, different songs first
+  const SMALL = 'ゃゅょぁぃぅぇぉゎャュョァィゥェォヮ';
+  for (const tgt of new Set(UNITS.flatMap(x => x.chars))) {
+    const single = [...tgt].length === 1;
+    const hits = lines.map(l => {
+      let n = 0;
+      for (const x of l.t) {
+        if (x.f || !isKana(x.s)) continue;
+        for (let i = x.s.indexOf(tgt); i >= 0; i = x.s.indexOf(tgt, i + 1)) { const nx = x.s[i + tgt.length]; if (!(single && nx && SMALL.includes(nx))) n++; }
+      }
+      return n ? {l, s: Math.min(n, 3) * 3 - Math.abs(l.len - 12) * 0.5} : null;
+    }).filter(Boolean).sort((a, b) => b.s - a.s);
+    const pick = [], songs = new Set();
+    for (const pass of [0, 1]) for (const h of hits) {
+      if (pick.length >= 3) break;
+      if (pick.includes(h.l) || (pass === 0 && songs.has(h.l.my))) continue;
+      pick.push(h.l); songs.add(h.l.my);
+    }
+    if (pick.length) MYEX[tgt] = pick.map(l => ({my:l.my, t:l.t}));
+  }
+  return lines.length;
+}
+
+// ---------------- scheduler ----------------
+// learning steps inside a session, then day intervals. A card is "solid" after good answers on 3 different days.
+const MIN = 60e3, HOUR = 36e5, DAY = 864e5;
+const LEARN = [0, 1 * MIN, 10 * MIN, 30 * MIN];
+const REVIEW = [1, 2, 4, 8, 16, 32];
+const stepMs = st => st < 4 ? LEARN[st] : REVIEW[Math.min(st - 4, 5)] * DAY - 4 * HOUR;
+const cid = (ch, sk) => ch + '|' + sk;
+const card = id => S.cards[id];
+const solid = c => c && c.days >= 3;
+function activate(ch, sk, st = 0) {
+  const id = cid(ch, sk);
+  if (!S.cards[id]) S.cards[id] = {st, due:Date.now() + LEARN[st], lap:0, n:0, ok:0, slow:0, days:0, last:'', rt:0};
+}
+const primOf = ch => unitOf(ch).grp === 's' ? 'word' : 'see';
+// a sequence question needs at least one neighbour that has already been introduced
+const seqKinds = ch => ['next', 'prev', 'down', 'up'].filter(k => { const n = neighbor(toHira(ch), k); return n && S.intro.includes(n); });
+// units needed to read a word (っ / ー / 拗音 count as their own units)
+function unitsInWord(w) {
+  const s = toHira(w), out = [];
+  for (let i = 0; i < s.length; i++) {
+    if (s[i + 1] && 'ゃゅょ'.includes(s[i + 1]) && CH2U[s[i] + s[i + 1]]) { out.push(s[i] + s[i + 1]); i++; continue; }
+    out.push(s[i] === 'ー' ? 'ー' : s[i]);
+  }
+  return out.map(c => CH2U[c] || c);
+}
+// a listening pair opens once every sound in both words has been introduced
+function unlockMini() {
+  MINI.forEach((m, i) => { if ([m[0][0], m[1][0]].every(w => unitsInWord(w).every(u => S.intro.includes(u)))) activate('mp' + i, 'mini', 1); });
+}
+function unlockFor(ch) {
+  if (!CH2U[ch]) return;
+  const c = card(cid(ch, primOf(ch)));
+  if (!c) return;
+  const sk = skillsOf(ch);
+  // later skills start one step in: recognition already got them past the first exposure
+  if (c.st >= 2) sk.filter(s => s === 'hear' || s === 'pair').forEach(s => activate(ch, s, 1));
+  if (c.st >= 3) sk.filter(s => s === 'write' || s === 'lyric').forEach(s => activate(ch, s, 1));
+  if (c.st >= 3 && sk.includes('seq') && seqKinds(ch).length) activate(ch, 'seq', 1);
+  if (c.st >= 3 && unitOf(ch).grp !== 's' && S.intro.length >= 6) activate(ch, 'grid', 1);
+  if (c.st >= 3 && isKataStr(ch) && kwordsFor(ch).length) activate(ch, 'kword', 1);
+  // reading a whole line comes once the character has held up on two different days
+  if (c.days >= 2 && S.pref.readLine && hasLyric(ch)) activate(ch, 'read', 1);
+}
+// introducing a unit can make old units' sequence questions possible
+const unlockSeqAll = () => { S.intro.forEach(u => UNITS[UIDX[u]].chars.forEach(unlockFor)); unlockMini(); };
+function grade(id, r, opt = {}) {
+  const c = card(id); if (!c) return;
+  const now = Date.now(), today = dayKey(now);
+  c.n++;
+  if (opt.rt && r > 0) c.rt = c.rt ? Math.round(c.rt * 0.7 + opt.rt * 0.3) : opt.rt;
+  if (r === 0) { c.lap++; c.st = 1; c.due = now + MIN; c.days = Math.max(0, c.days - 1); }
+  else if (r === 1) { c.slow++; if (!opt.ahead || c.due <= now) c.due = now + Math.max(stepMs(c.st), MIN); }
+  else if (opt.ahead && c.st >= 4 && c.due - now > 12 * HOUR) { /* early review of a long-interval card: leave the schedule alone */ }
+  else {
+    if (c.st >= 3 && c.last !== today) { c.days++; c.last = today; }
+    c.ok++; c.st++; c.due = now + stepMs(c.st);
+  }
+  const ch = id.split('|')[0];
+  unlockFor(ch);
+  const L = S.log[today] || (S.log[today] = {q:0, ok:0, ms:0, nu:0});
+  L.q++; if (r === 2) L.ok++;
+  save();
+}
+const activeCards = () => Object.keys(S.cards);
+function nextGroupIndex() { for (let g = 0; g < GROUPS.length; g++) if (GROUPS[g].some(u => !S.intro.includes(u))) return g; return -1; }
+function gateOpen() {
+  const now = Date.now(), ids = activeCards();
+  // new characters still in their first steps (recognition not yet answered right twice)
+  const fresh = S.intro.flatMap(u => UNITS[UIDX[u]].chars).filter(ch => { const c = card(cid(ch, primOf(ch))); return c && c.st < 2; }).length;
+  const reviewDue = ids.filter(id => card(id).st >= 4 && card(id).due <= now).length;
+  const learningDue = ids.filter(id => card(id).st < 4 && card(id).due <= now).length;
+  return fresh < 4 && reviewDue < 40 && learningDue < 15 && nextGroupIndex() >= 0;
+}
+function introduceNext() {
+  const g = nextGroupIndex(); if (g < 0) return null;
+  const left = GROUPS[g].filter(u => !S.intro.includes(u));
+  const u = left[Math.floor(Math.random() * left.length)];
+  S.intro.push(u);
+  const x = UNITS[UIDX[u]];
+  x.chars.forEach(ch => activate(ch, primOf(ch)));
+  unlockSeqAll();
+  const L = S.log[dayKey()] || (S.log[dayKey()] = {q:0, ok:0, ms:0, nu:0}); L.nu++;
+  save();
+  return x;
+}
+function weakness(ch) {
+  let w = 0;
+  for (const sk of ['see','hear','pair','write','seq','lyric','word']) { const c = card(cid(ch, sk)); if (c) w += c.lap * 3 + c.slow + (c.st < 4 ? 0.5 : 0) + (c.rt > 3500 ? 1 : 0); }
+  for (const k in S.conf) if (k.startsWith(ch + '>')) w += S.conf[k] * 2;
+  return w;
+}
+// pick the next card; filter limits to some characters (focus drill)
+function pickCard(filter, allowNew, recent) {
+  const now = Date.now();
+  const recentU = new Set(recent.slice(-3).map(id => CH2U[id.split('|')[0]]));
+  // lyric questions only while the character still has lines (an imported song may have been deleted)
+  const ok = id => (!filter || filter(id)) && !recentU.has(CH2U[id.split('|')[0]]) && !(id.endsWith('|read') && !S.pref.readLine)
+    && !(/\|(lyric|read)$/.test(id) && !hasLyric(id.split('|')[0]));
+  let ids = activeCards().filter(ok);
+  const due = ids.filter(id => card(id).due <= now);
+  const learn = due.filter(id => card(id).st < 4).sort((a, b) => card(a).due - card(b).due);
+  if (learn.length) return {id: learn[Math.floor(Math.random() * Math.min(3, learn.length))]};
+  if (allowNew && gateOpen()) { const x = introduceNext(); if (x) { const ch = x.chars[Math.floor(Math.random() * x.chars.length)]; return {id: cid(ch, x.grp === 's' ? 'word' : 'see'), isNew: true}; } }
+  const rev = due.filter(id => card(id).st >= 4).sort((a, b) => card(a).due - card(b).due);
+  if (rev.length) return {id: rev[Math.floor(Math.random() * Math.min(5, rev.length))]};
+  if (!ids.length) ids = activeCards().filter(id => !filter || filter(id));
+  if (!ids.length) return null;
+  // nothing due: practise ahead, weakest / soonest first
+  const scored = ids.map(id => ({id, s: weakness(id.split('|')[0]) * 2 - (card(id).due - now) / HOUR})).sort((a, b) => b.s - a.s);
+  return {id: scored[Math.floor(Math.random() * Math.min(10, scored.length))].id, ahead: true};
+}
+function unitStatus(u) {
+  if (!S.intro.includes(u)) return 0;
+  const x = UNITS[UIDX[u]];
+  const cs = x.chars.flatMap(ch => PRIMARY.map(sk => card(cid(ch, sk))).filter(Boolean));
+  if (cs.length && cs.every(solid)) return 3;
+  if (cs.some(c => c.st < 4)) return 1;
+  return 2;
+}
+const unitWeak = u => UNITS[UIDX[u]].chars.some(ch => weakness(ch) >= 6);
+
+// ---------------- audio ----------------
+const AUDIO = /*__AUDIO__*/{};
+// words whose clip is a native speaker's recording (Fukujinzuke) rather than VOICEVOX
+const HUMAN = new Set(/*__HUMAN__*/[]);
+// set when the page runs inside the Android app
+const APP = window.AndroidApp || null;
+// per lyric line: end time (ms) of every mora in its recording, for karaoke highlighting
+const TIMINGS = /*__TIMINGS__*/{};
+let jaVoice = null, warned = false;
+function pickVoice() { const vs = speechSynthesis.getVoices(); jaVoice = vs.find(v => /^ja/i.test(v.lang)) || null; }
+if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+// one reusable <audio> element fed with blob: URLs works in more Android browsers than new Audio(data:...)
+const player = document.createElement('audio');
+player.preload = 'auto'; player.setAttribute('playsinline', ''); document.body.appendChild(player);
+const blobUrls = new Map();
+function clipUrl(key) {
+  if (!blobUrls.has(key)) {
+    const bin = atob(AUDIO[key]), buf = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+    blobUrls.set(key, URL.createObjectURL(new Blob([buf], {type:'audio/mpeg'})));
+  }
+  return blobUrls.get(key);
+}
+let audioFailShown = false, ttsRate = 0.85;
+function speak(text, slow) {
+  const key = AUDIO[text] ? text : AUDIO[toHira(text)] ? toHira(text) : null;
+  player.pause();
+  ttsRate = slow ? 0.55 : 0.85;
+  if (key) {
+    player.src = clipUrl(key);
+    player.playbackRate = slow ? 0.7 : 1;
+    // highlighting must never be able to stop the sound
+    const hl = () => { try { karaoke(key).catch(e => console.warn('karaoke', e)); } catch (e) { console.warn('karaoke', e); } };
+    player.play().then(hl).catch(() => {
+      // second try with a data: URL (some browsers refuse blob: media), then the system voice
+      player.src = 'data:audio/mpeg;base64,' + AUDIO[key];
+      player.play().then(hl).catch(err => {
+        if (!audioFailShown) { audioFailShown = true; toast('录音播放失败（' + (err && err.name || '未知') + '），请到“指南”里点“声音自检”'); }
+        ttsFallback(text);
+      });
+    });
+    return;
+  }
+  ttsFallback(MYSAY[text] || text);
+}
+function ttsFallback(text) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text); u.lang = 'ja-JP'; u.rate = ttsRate; if (jaVoice) u.voice = jaVoice;
+  else if (!warned) { warned = true; toast('这句没有内置录音，且没找到日语语音'); }
+  speechSynthesis.speak(u);
+}
+// what to play for a character: its own clip, or for っ/ー an example word
+const sayOf = ch => ch === 'っ' ? 'きって' : ch === 'ッ' ? 'マッチ' : ch === 'ー' ? 'ケーキ' : ch;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.style.display = 'block'; clearTimeout(toast.h); toast.h = setTimeout(() => t.style.display = 'none', 3000); }
+document.addEventListener('click', e => { const s = e.target.closest('[data-say]'); if (s) speak(s.dataset.say, !!s.dataset.slow); });
+// a normal-speed and a slow play button side by side
+const sayBtns = (t, style = '') => `<button class="say" data-say="${esc(t)}" aria-label="朗读" style="${style}">🔊</button><button class="say" data-say="${esc(t)}" data-slow="1" aria-label="慢速朗读" style="${style};font-size:19px">🐢</button>`;
+
+// ---------------- lyric rendering ----------------
+function splitTok(t) {
+  let s = t.s, r = t.r || '';
+  if (!r || !hasKanji(s) || r === s) return [{k:s}];
+  let pre = '', post = '';
+  while (s.length && r.length && isKana(s[0]) && toHira(s[0]) === r[0]) { pre += s[0]; s = s.slice(1); r = r.slice(1); }
+  while (s.length && r.length && isKana(s[s.length - 1]) && toHira(s[s.length - 1]) === r[r.length - 1]) { post = s[s.length - 1] + post; s = s.slice(0, -1); r = r.slice(0, -1); }
+  const parts = []; if (pre) parts.push({k:pre}); parts.push({k:s, r}); if (post) parts.push({k:post}); return parts;
+}
+function hl(str, tgt) {
+  if (!tgt) return esc(str);
+  let out = '', i = 0;
+  while (i < str.length) {
+    // (a missing next char must not count as "small kana": ''.includes is always true)
+    const next = str[i + 1];
+    if (str.startsWith(tgt, i) && !(tgt.length === 1 && next && 'ゃゅょャュョァィゥェォ'.includes(next))) { out += `<mark>${esc(tgt)}</mark>`; i += tgt.length; }
+    else { out += esc(str[i]); i++; }
+  }
+  return out;
+}
+// a mora = one kana plus any small ゃゅょ/ぁぃぅぇぉ attached to it (きゃ is one beat)
+const SMALLK = 'ゃゅょぁぃぅぇぉゎャュョァィゥェォヮ';
+function moraeOf(s) { const out = []; for (const c of s) { if (SMALLK.includes(c) && out.length && isKana(out[out.length - 1])) out[out.length - 1] += c; else out.push(c); } return out; }
+// Lyric line laid out column by column: every kana (or kanji block) has its own romaji directly
+// under it. Each token stays in a .tk span so karaoke can light it up while the audio plays.
+function lineHTML(ex, tgt) {
+  // 1. flatten the line into cells: kana morae, kanji blocks (with reading), other characters
+  const cells = [];
+  ex.t.forEach((t, ti) => {
+    if (/^\s+$/.test(t.s)) { cells.push({ti, space:true}); return; }
+    // particles は/へ/を are read wa/e/o
+    const particle = isKana(t.s) && t.s.length === 1 && {'は':'わ','へ':'え','を':'お'}[toHira(t.s)] === toHira(t.p || '') ? romaji(t.p) : null;
+    for (const p of splitTok(t)) {
+      if (p.r) { cells.push({ti, k:p.k, r:p.r, rm:romaji(p.r)}); continue; }
+      for (const m of moraeOf(p.k)) cells.push({ti, k:m, rm: particle || (isKana(m) && !'っッー'.includes(m) ? romaji(m) : ''), kana:isKana(m)});
+    }
+  });
+  // 2. っ takes the next consonant (even across words), ー repeats the vowel before it
+  cells.forEach((c, i) => {
+    if (c.k === 'っ' || c.k === 'ッ') { const n = (cells.slice(i + 1).find(x => x.rm) || {}).rm || ''; c.rm = n.startsWith('ch') ? 't' : (n[0] || ''); }
+    if (c.k === 'ー') { const prev = (cells.slice(0, i).reverse().find(x => /[aeiou]/.test(x.rm || '')) || {}).rm || ''; c.rm = (prev.match(/[aeiou](?=[^aeiou]*$)/) || [''])[0]; }
+  });
+  // beats each column takes in the recording (kanji: beats of its reading), for per-character karaoke
+  let beat = 0;
+  for (const c of cells) { c.mn = c.space ? 0 : c.r ? moraCount(c.r) : (c.kana ? 1 : 0); c.m0 = beat; beat += c.mn; }
+  // 3. render, grouping cells back into their token spans
+  let html = '', open = -1;
+  for (const c of cells) {
+    if (c.ti !== open) { if (open >= 0) html += '</span>'; html += `<span class="tk" data-ti="${c.ti}">`; open = c.ti; }
+    if (c.space) { html += '<span class="tsp"> </span>'; continue; }
+    const top = c.r ? `<ruby>${esc(c.k)}<rt>${ex.rd ? hl(c.r, toHira(tgt)) : esc(c.r)}</rt></ruby>` : (ex.rd ? esc(c.k) : hl(c.k, tgt));
+    html += `<span class="mo" data-m0="${c.m0}" data-mn="${c.mn}"><span class="ms">${top}</span><span class="tr">${esc(c.rm) || '&nbsp;'}</span></span>`;
+  }
+  if (open >= 0) html += '</span>';
+  return html;
+}
+const lineText = ex => ex.t.map(t => t.s).join('');
+const lineRoma = ex => ex.t.map(t => t.p ? romaji(t.p) : '').filter(x => x && /[a-z]/.test(x)).join(' ');
+const songOf = ex => { const s = ex.my != null ? [S.myLyrics[ex.my].title, S.myLyrics[ex.my].artist] : DATA.songs[ex.song]; return s[0] + (s[1] ? ' — ' + s[1] : ''); };
+
+// ---------------- stroke order ----------------
+function strokeSVG(ch) {
+  const ds = STROKES[ch]; if (!ds) return '';
+  return `<svg viewBox="0 0 109 109" data-ch="${ch}">${ds.map(d => `<path class="gh" d="${d}"/>`).join('')}${ds.map(d => `<path class="an" d="${d}"/>`).join('')}</svg>`;
+}
+function animateStrokes(root) {
+  root.querySelectorAll('svg[data-ch]').forEach((svg, si) => {
+    const ps = [...svg.querySelectorAll('.an')];
+    ps.forEach(p => { const L = p.getTotalLength(); p.style.transition = 'none'; p.style.strokeDasharray = L; p.style.strokeDashoffset = L; });
+    let t = 200 + si * 150;
+    ps.forEach(p => { const L = p.getTotalLength(), dur = Math.max(350, L * 9);
+      setTimeout(() => { p.style.transition = `stroke-dashoffset ${dur}ms ease`; p.style.strokeDashoffset = 0; }, t); t += dur + 180; });
+  });
+}
+// picture mnemonic: the kana's own strokes with an original doodle on top
+const picOf = ch => isKataStr(ch) ? KPICS[ch] : PICS[ch];
+const labelOf = ch => isKataStr(ch) ? KPICLABEL[ch] : PICLABEL[ch];
+function picSVG(ch, size = 200) {
+  const p = picOf(ch), ds = STROKES[ch];
+  if (!p || !ds) return '';
+  return `<svg class="pic" viewBox="-12 -16 134 134" width="${size}" height="${size}">${p[2] || ''}${ds.map(d => `<path class="pk" d="${d}"/>`).join('')}${p[0]}</svg>`;
+}
+const SHOW_PICS = true;
+const picTitle = ch => labelOf(ch) ? `<div class="pictitle">${labelOf(ch)}</div>` : '';
+// one card per script of the unit (hiragana and katakana side by side)
+const picCol = ch => picOf(ch) ? `<div style="flex:1;min-width:150px">${picTitle(ch)}${picSVG(ch, 170)}<div class="tip" style="text-align:left;font-size:17px">${picOf(ch)[1]}</div></div>` : '';
+const picBlock = u => {
+  const x = UNITS[UIDX[u]]; if (!SHOW_PICS || !x) return '';
+  const cols = x.chars.map(picCol).join('');
+  return cols ? `<div class="card" style="text-align:center"><b style="display:block;text-align:left">🎨 图像记忆</b><div style="display:flex;gap:10px;flex-wrap:wrap">${cols}</div></div>` : '';
+};
+const strokeBlock = chars => {
+  const cs = [...chars].filter(c => STROKES[c]);
+  return cs.length ? `<div class="strokes">${cs.map(strokeSVG).join('')}</div>` : '';
+};
+
+// ---------------- writing pad ----------------
+function setupPad(c) {
+  if (!c) return;
+  const r = c.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  c.width = r.width * dpr; c.height = r.height * dpr;
+  const ctx = c.getContext('2d'); ctx.scale(dpr, dpr);
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = Math.max(10, r.width / 28);
+  ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent');
+  let drawing = false;
+  const pos = e => { const b = c.getBoundingClientRect(); return [e.clientX - b.left, e.clientY - b.top]; };
+  c.onpointerdown = e => { drawing = true; c.setPointerCapture(e.pointerId); const [x, y] = pos(e); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + .1, y + .1); ctx.stroke(); };
+  c.onpointermove = e => { if (!drawing) return; const [x, y] = pos(e); ctx.lineTo(x, y); ctx.stroke(); };
+  c.onpointerup = c.onpointercancel = () => drawing = false;
+  c.clear = () => ctx.clearRect(0, 0, c.width, c.height);
+}
+
+// ---------------- table ----------------
+function cellHTML(u, cls) {
+  const x = UNITS[UIDX[u]];
+  const top = x.chars[0], bot = x.chars[1];
+  return `<button class="cell ${cls || ''} s${unitStatus(u)} ${unitWeak(u) ? 'weak' : ''}" data-u="${u}" lang="ja">
+    <span class="${isKataStr(top) && x.grp === 'x' ? 'k2' : 'k'}">${top}</span>${bot ? `<span class="k2">${bot}</span>` : ''}<span class="r">${unitRoma(u)}</span></button>`;
+}
+function renderTable() {
+  const g = (rows, names) => rows.map((r, i) => `<div class="rowlab">${names[i]}</div>` + r.map(u => u ? cellHTML(u) : '<div class="cell empty"></div>').join('')).join('');
+  $('#g-basic').innerHTML = g(ROWS, ROWNAME);
+  $('#g-daku').innerHTML = g(DROWS, DROWNAME);
+  $('#g-you').innerHTML = YBASE.map(b => `<div class="rowlab">${b}</div>` + ['ゃ','ゅ','ょ'].map(s => cellHTML(b + s, 'y')).join('')).join('');
+  $('#g-ext').innerHTML = ['っ','ー', ...EXT.map(e => e[0])].map(u => cellHTML(u, 'x')).join('');
+}
+$('#p-table').addEventListener('click', e => { const c = e.target.closest('.cell[data-u]'); if (c) openSheet(c.dataset.u); });
+
+// ---------------- detail sheet ----------------
+let sheetU = null, sheetFromDrill = false;
+function wordRow(w, m) { return `<div class="word">${sayBtns(w)}<div><div class="w" lang="ja">${esc(w)}${HUMAN.has(w) ? '<span class="pill" style="background:var(--teal-soft);color:var(--teal)">真人</span>' : ''}</div><div class="m">${esc(romaji(w))} · ${esc(m)}</div></div></div>`; }
+function lyricBlock(k) {
+  const list = exList(k);
+  if (!list.length) return `<div class="card"><b>歌词里的「${k}」</b><p style="color:var(--sub);margin:6px 0 0">暂时没有合适的含「${k}」的歌词，先记上面的单词。<br>想用自己喜欢的歌：到「指南」页底部的“我的歌词”把歌词贴进来。</p></div>`;
+  return `<div class="card"><b>歌词里的「${k}」</b>${list.some(e => e.rd) ? '<span class="pill">藏在汉字读音里</span>' : ''}
+    ${list.map(ex => `<div class="lyric"><div class="ln" lang="ja" data-kline="${esc(lineText(ex))}">${lineHTML(ex, k)}</div>
+      <div class="src"><span>♪ ${esc(songOf(ex))}</span>${sayBtns(lineText(ex))}<button class="say" data-shadow="${esc(lineText(ex))}" aria-label="跟读对比" style="font-size:19px">🎙</button></div></div>`).join('')}</div>`;
+}
+function wordsOf(x) {
+  if (INFO[x.u]) return INFO[x.u].words;
+  if (x.u === 'っ') return SOKU.slice(0, 6);
+  if (x.u === 'ー') return CHOU.slice(0, 6);
+  if (EXTI[x.u]) return [[EXTI[x.u][2], EXTI[x.u][3]]];
+  return DWORDS[x.u] || YWORDS[x.u] || [];
+}
+function tipOf(x) {
+  const mine = S.mine && S.mine[x.u] ? `<div class="tip" style="background:var(--teal-soft)">✍ 我的口诀：${esc(S.mine[x.u])}</div>` : '';
+  return mine + tipOfBase(x);
+}
+function tipOfBase(x) {
+  const u = x.u, info = INFO[u];
+  if (info) return `<div class="kv"><b>平假名</b><span>来自汉字「${info.ko}」的草书</span><b>片假名</b><span>取自 ${info.ka}</span></div><div class="tip">💡 ${info.tip}</div>`;
+  if (x.grp === 'd') {
+    const plain = u.normalize('NFD').replace(/[゙゚]/g, '').normalize('NFC');
+    return /[ぱぴぷぺぽ]/.test(u) ? `<div class="tip">💡 「${plain}」右上角加个小圈「゜」就是半浊音：h → p，像嘴唇“噗”地弹开。</div>`
+      : `<div class="tip">💡 「${plain}」右上角加两点「゛」就变成浊音，声带要振动：${plain} (${unitRoma(plain)}) → ${u} (${unitRoma(u)})。</div>`;
+  }
+  if (x.grp === 'y') { const a = u[0], b = u[1];
+    return `<div class="tip">💡 拗音 = い段的「${a}」+ 小写的「${b}」，合成<b>一拍</b>：${unitRoma(a)} + ${unitRoma(b)} → <b>${unitRoma(u)}</b>。小字要写小一号，写大了就变成两拍的「${a}${String.fromCharCode(b.charCodeAt(0) + 1)}」。</div>`; }
+  if (u === 'っ') return `<div class="tip">💡 促音：小写的「っ / ッ」本身不发音，表示<b>停顿一拍</b>，下一个辅音写两遍。きって = ki・(停)・te → kitte。写成大的 きつて 就成了三个音 ki-tsu-te。</div>`;
+  if (u === 'ー') return `<div class="tip">💡 长音：前一个音的元音<b>拉长一拍</b>。片假名用「ー」：ケーキ = ke-e-ki。平假名直接加元音：おかあさん（o-ka-a-san）、とおい、せんせい（读 sensee）。长短不同意思就不同：おばさん（阿姨）≠ おばあさん（奶奶）。</div>`;
+  const e = EXTI[u];
+  return `<div class="tip">💡 外来语专用：大字「${u[0]}」+ 小写的「${u[1]}」合成一拍，读 <b>${e[1]}</b>。五十音表里没有这个音，专门用来拼外来词。</div>`;
+}
+// pronunciation, writing and hiragana↔katakana notes for one unit
+function detailNotes(x) {
+  const u = x.u, rowKey = x.grp === 'y' ? '拗音' : x.row;
+  let h = '';
+  const pron = [NOTE[u], ROWTIP[rowKey] && `<span style="color:var(--sub)">${x.grp === 'b' ? rowKey + '：' : ''}${ROWTIP[rowKey]}</span>`].filter(Boolean);
+  if (pron.length) h += `<div class="tip red"><b>🗣 发音要领</b><br>${pron.join('<br>')}</div>`;
+  const wr = x.chars.filter(c => STROKES[c] || WRITETIP[c]).map(c => `<b lang="ja" style="font-size:22px">${c}</b>　${STROKES[c] ? STROKES[c].length + ' 画。' : ''}${WRITETIP[c] || ''}`);
+  if (wr.length) h += `<div class="tip" style="background:var(--teal-soft)"><b>✏ 书写要点</b><br>${wr.join('<br>')}</div>`;
+  if (x.grp === 'b' && INFO[u]) {
+    const link = KLINK[u] || `平假名来自「${INFO[u].ko}」的草书，片假名取自 ${INFO[u].ka}，形状差别大，要分开记，多做“平片互转”。`;
+    h += `<div class="tip" style="background:var(--bg)"><b>🔗 平假名 ↔ 片假名</b><br>${link}</div>`;
+  }
+  return h;
+}
+function openSheet(u, fromDrill) {
+  sheetU = u; sheetFromDrill = !!fromDrill;
+  const i = UIDX[u], x = UNITS[i];
+  const say = sayOf(x.chars[0]);
+  let html = `<div class="otop"><button class="btn ghost small" id="sClose">✕ ${fromDrill ? '回到题目' : '返回'}</button><div class="t">${x.row}</div>
+    <div class="toggles" style="margin:0"><button class="chip ${S.pref.rt ? 'on' : ''}" id="tRt">注音</button><button class="chip ${S.pref.rm ? 'on' : ''}" id="tRm">罗马音</button></div></div>
+  <div class="wrap ${S.pref.rt ? '' : 'hide-rt'} ${S.pref.rm ? '' : 'hide-rm'}" id="sheetBody">
+    <div class="hero" lang="ja">${x.chars.map((c, j) => `<div><div class="big ${isKataStr(c) ? 'kata' : ''}">${c}</div><div class="lab">${c === 'ー' ? '长音符' : isKataStr(c) ? '片假名' : '平假名'}</div></div>`).join('')}</div>
+    <div class="roma">${romaLabel(u)} ${sayBtns(say, 'vertical-align:middle')}</div>
+    <div class="card">${tipOf(x)}${detailNotes(x)}</div>${picBlock(u)}`;
+  // main content first: words and lyrics; tools you only need sometimes are folded below
+  const words = wordsOf(x);
+  if (words.length) html += `<div class="card"><b>常用词</b>${words.map(w => wordRow(w[0], w[1])).join('')}</div>`;
+  html += x.chars.map(lyricBlock).join('');
+  const conf = [];
+  for (let j = 0; j < CONFUSE.length; j += 2) if (x.chars.some(c => CONFUSE[j].includes(c))) conf.push([CONFUSE[j], CONFUSE[j + 1]]);
+  const wrongHere = x.chars.some(c => Object.keys(S.conf).some(k => k.startsWith(c + '>')));
+  if (conf.length) html += `<details class="card fold" ${wrongHere ? 'open' : ''}><summary><b>⚠ 别和它们搞混</b>${wrongHere ? '<span class="pill">你搞混过</span>' : ''}</summary>${conf.map(([set, why]) => `<div class="conf" style="margin-top:10px" lang="ja">${set.map(c => `<button data-go="${CH2U[c] || ''}">${c}</button>`).join('')}<div class="why">${why}</div></div>`).join('')}</details>`;
+  const sk = strokeBlock(x.chars.join(''));
+  if (sk) html += `<details class="card fold" id="foldStroke"><summary><b>✏ 笔顺动画</b></summary><button class="btn ghost small" id="replay" style="margin-top:8px">▶ 再放一遍</button><div style="margin-top:10px">${sk}</div></details>`;
+  html += `<details class="card fold" id="foldPad"><summary><b>🖊 手写描红</b></summary>
+    <div class="toggles" style="justify-content:center;margin-top:8px">${x.chars.map((c, j) => `<button class="chip ${j ? '' : 'on'}" data-pad="${c}">${c}</button>`).join('')}</div>
+    <div class="padbg ${x.chars[0].length > 1 ? 'y' : ''}"><div class="ghost" id="padGhost" lang="ja">${x.chars[0]}</div><canvas class="pad" id="sPad"></canvas></div>
+    <div style="text-align:center"><button class="btn ghost small" id="padClear">清空重写</button></div></details>`;
+  const mineTxt = (S.mine || {})[u] || '';
+  html += `<details class="card fold" ${mineTxt ? 'open' : ''}><summary><b>✍ 我的口诀</b><span style="color:var(--sub);font-size:15px">　${mineTxt ? '' : '自己编的联想最好记'}</span></summary>
+    <textarea id="mine" rows="2" style="width:100%;margin-top:8px;font:inherit;font-size:18px;padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink)" placeholder="写下你自己的记法，会自动保存">${esc(mineTxt)}</textarea></details>`;
+  if (!fromDrill) html += `<div class="navrow"><button class="btn ghost" id="prev" ${i === 0 ? 'disabled' : ''}>← ${i > 0 ? UNITS[i - 1].chars[0] : ''}</button><button class="btn" id="next" ${i === UNITS.length - 1 ? 'disabled' : ''}>${i < UNITS.length - 1 ? UNITS[i + 1].chars[0] : ''} →</button></div>`;
+  html += '</div>';
+  const sh = $('#sheet'); sh.innerHTML = html; sh.classList.add('on'); sh.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  // folded sections size themselves when opened (a hidden canvas has no size)
+  const fp = $('#foldPad'); if (fp) fp.addEventListener('toggle', () => { if (fp.open) setupPad($('#sPad')); });
+  const fs = $('#foldStroke'); if (fs) fs.addEventListener('toggle', () => { if (fs.open) animateStrokes(fs); });
+  $('#mine').oninput = e => { S.mine[u] = e.target.value.trim(); if (!S.mine[u]) delete S.mine[u]; save(); };
+}
+function closeSheet() {
+  $('#sheet').classList.remove('on');
+  if (!$('#drill').classList.contains('on')) { document.body.style.overflow = ''; renderTable(); }
+}
+$('#sheet').addEventListener('click', e => {
+  const t = e.target;
+  if (t.closest('#sClose')) return closeSheet();
+  if (t.closest('#prev')) return openSheet(UNITS[UIDX[sheetU] - 1].u);
+  if (t.closest('#next')) return openSheet(UNITS[UIDX[sheetU] + 1].u);
+  if (t.closest('#replay')) return animateStrokes($('#sheet'));
+  const g = t.closest('[data-go]'); if (g && g.dataset.go && !sheetFromDrill) return openSheet(g.dataset.go);
+  if (t.closest('#tRt')) { S.pref.rt = !S.pref.rt; save(); $('#sheetBody').classList.toggle('hide-rt', !S.pref.rt); t.closest('#tRt').classList.toggle('on', S.pref.rt); return; }
+  if (t.closest('#tRm')) { S.pref.rm = !S.pref.rm; save(); $('#sheetBody').classList.toggle('hide-rm', !S.pref.rm); t.closest('#tRm').classList.toggle('on', S.pref.rm); return; }
+  const p = t.closest('[data-pad]'); if (p) { document.querySelectorAll('#sheet [data-pad]').forEach(b => b.classList.toggle('on', b === p)); $('#padGhost').textContent = p.dataset.pad; $('#sPad').clear(); return; }
+  if (t.closest('#padClear')) return $('#sPad').clear();
+});
+(() => { let sx = 0, sy = 0; const sh = $('#sheet');
+  sh.addEventListener('touchstart', e => { if (e.target.tagName === 'CANVAS') { sx = 0; return; } sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive:true});
+  sh.addEventListener('touchend', e => { if (!sx || sheetFromDrill) return; const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy, i = UIDX[sheetU];
+    if (Math.abs(dx) > 80 && Math.abs(dx) > Math.abs(dy) * 2) { if (dx < 0 && i < UNITS.length - 1) openSheet(UNITS[i + 1].u); else if (dx > 0 && i > 0) openSheet(UNITS[i - 1].u); } sx = 0; });
+})();
+
+// ---------------- distractors ----------------
+function sameScript(c, ref) { return isKataStr(ref) ? toKata(c) : toHira(c); }
+function distractors(ch, n) {
+  const out = [], seenR = new Set([unitRoma(ch)]);
+  const add = c => { if (!c || out.length >= n || c === ch || out.includes(c) || !CH2U[c]) return; if (seenR.has(unitRoma(c))) return; seenR.add(unitRoma(c)); out.push(c); };
+  // your own past mix-ups first
+  Object.entries(S.conf).filter(([k]) => k.startsWith(ch + '>')).sort((a, b) => b[1] - a[1]).forEach(([k]) => add(k.split('>')[1]));
+  lookAlikes(ch).forEach(add);
+  const x = unitOf(ch), conv = y => x.grp === 'x' ? y.chars[0] : sameScript(y.chars[0], ch);
+  // characters you have already met come first; unseen ones only fill up when too few are learned
+  const learned = y => S.intro.includes(y.u);
+  shuffle(UNITS.filter(y => y.row === x.row && learned(y))).forEach(y => add(conv(y)));
+  shuffle(UNITS.filter(y => y.grp === x.grp && learned(y))).forEach(y => add(conv(y)));
+  shuffle(UNITS.filter(y => learned(y) && y.grp !== 's' && (y.grp === 'x') === (x.grp === 'x'))).forEach(y => add(conv(y)));
+  shuffle(UNITS.filter(y => y.row === x.row)).forEach(y => add(conv(y)));
+  shuffle(UNITS.filter(y => y.grp === x.grp)).forEach(y => add(conv(y)));
+  return out;
+}
+// look-alike / confusable entries first, but only ones you have learned (or the target itself)
+function lookAlikes(ch) {
+  const res = [];
+  for (let j = 0; j < CONFUSE.length; j += 2) if (CONFUSE[j].includes(ch)) CONFUSE[j].forEach(c => { if (c !== ch && CH2U[c] && S.intro.includes(CH2U[c])) res.push(c); });
+  return res;
+}
+// near-miss spellings for っ / ー words
+function wordVariants(w) {
+  const r = romaji(w), out = new Set();
+  out.add(r.replace(/([bcdfghjkmnprstvwz])\1/, '$1'));
+  out.add(r.replace(/(aa|ii|uu|ee|oo|ou|ei)/, m => m[0]));
+  out.add(r.replace(/([aiueo])([bdgkmnprstz])/, '$1$2$2'));
+  out.add(r.replace(/([aiueo])(?=[^aiueo]*$)/, '$1$1'));
+  out.add(r.replace(/([aiueo])/, '$1$1'));
+  out.delete(r);
+  return shuffle([...out]).slice(0, 3);
+}
+
+// ---------------- drill ----------------
+let D = null; // current drill session
+function startDrill(mode, opt = {}) {
+  D = {mode, opt, recent:[], q:0, ok:0, t0:Date.now(), last:Date.now(), sinceBreak:0, cur:null};
+  $('#drill').classList.add('on'); document.body.style.overflow = 'hidden';
+  if (APP) APP.keepScreenOn(true);
+  if (mode === 'flash') D.list = shuffle(UNITS.filter(x => x.grp !== 's').flatMap(x => x.chars)), D.pos = 0;
+  if (mode === 'seq') { D.lines = seqLines(opt.dir); D.pos = 0; if (!D.lines.length) { toast('先在“开始刷”里学完至少一整行，再来背'); return endDrill(true); } }
+  if (mode === 'sprint') {
+    if (sprintPool().length < 4) { toast('先在“开始刷”里学几个字再来冲刺'); return endDrill(true); }
+    D.end = Date.now() + 60e3; D.wrong = [];
+    D.timer = setInterval(() => { if (!D || D.mode !== 'sprint') return; const left = D.end - Date.now(), el = $('#spLeft'); if (el) el.textContent = Math.max(0, Math.ceil(left / 1000)); if (left <= 0 && !D.ended) { D.ended = true; sprintEnd(); } }, 250);
+  }
+  next();
+}
+function endDrill(silent) {
+  if (D && D.timer) clearInterval(D.timer);
+  $('#drill').classList.remove('on'); document.body.style.overflow = '';
+  if (APP) APP.keepScreenOn(false);
+  if (player) player.pause();
+  if (!silent && D && D.q) toast(`本次 ${D.q} 题 · 正确率 ${Math.round(D.ok / D.q * 100)}% · ${Math.round((Date.now() - D.t0) / MIN)} 分钟`);
+  D = null; renderHome(); renderTable();
+}
+function tick() {
+  // count active time (gaps longer than a minute are treated as idle)
+  const now = Date.now(), dt = Math.min(now - D.last, MIN); D.last = now; D.sinceBreak += dt;
+  const L = S.log[dayKey()] || (S.log[dayKey()] = {q:0, ok:0, ms:0, nu:0}); L.ms += dt; save();
+  if (D.sinceBreak >= 30 * MIN) { D.sinceBreak = 0; showModal(`<h2 style="margin-top:0">休息 5 分钟 ☕</h2><p>已经连续练了 30 分钟。站起来走走、看看远处，大脑会趁休息整理刚学的东西。</p><button class="btn big" onclick="hideModal()">休息好了，继续</button>`); }
+}
+function topBar(title) {
+  const L = S.log[dayKey()] || {q:0, ms:0};
+  return `<div class="otop"><button class="btn ghost small" id="dEnd">✕ 结束</button><div class="t">${title}<br>今日 ${L.q} 题 · ${Math.round(L.ms / MIN)} 分钟</div>
+    ${D.cur && D.cur.u ? `<button class="btn ghost small" id="dPeek">💡 讲解</button>` : '<span style="width:70px"></span>'}</div>`;
+}
+function next() {
+  if (!D) return;
+  if (D.mode === 'flash') return flashQ();
+  if (D.mode === 'seq') return seqQ();
+  if (D.mode === 'sprint') return sprintQ();
+  if (D.mode === 'table') return tableQ();
+  const filter = D.mode === 'focus' ? id => D.opt.chars.includes(id.split('|')[0]) : null;
+  const p = pickCard(filter, D.mode === 'main', D.recent);
+  if (!p) { $('#drill').innerHTML = topBar('') + '<div class="wrap"><p>没有可练的题了。</p></div>'; return; }
+  D.recent.push(p.id); if (D.recent.length > 10) D.recent.shift();
+  const [ch, sk] = p.id.split('|');
+  D.cur = {id:p.id, ch, sk, u:CH2U[ch], ahead:p.ahead, isNew:p.isNew || card(p.id).n === 0, peek:false, done:false};
+  renderQ();
+}
+function renderQ() {
+  const q = D.cur, ch = q.ch, x = unitOf(ch), kata = isKataStr(ch);
+  if (q.sk === 'seq' && !seqKinds(ch).length) q.sk = 'see';
+  if (q.sk === 'mini') {
+    const m = MINI[+ch.slice(2)]; q.mini = m;
+    q.answer = m[Math.random() < .5 ? 0 : 1][0];
+    $('#drill').innerHTML = topBar(SKILLNAME.mini) + `<div class="wrap"><div class="qbox"><div class="qk mid">🔊</div>
+      <div class="qhint">听到的是哪个？<span class="badge">考点：${m[2]}</span></div>
+      <button class="btn ghost small" data-say="${esc(q.answer)}">再听一遍</button> <button class="btn ghost small" data-say="${esc(q.answer)}" data-slow="1">🐢 慢速</button></div>
+      <div class="qopts kana" lang="ja" style="grid-template-columns:1fr">${shuffle([m[0][0], m[1][0]]).map(w => `<button data-v="${esc(w)}" style="font-size:40px">${esc(w)}</button>`).join('')}</div>
+      <div class="qfb" id="qfb"></div></div>`;
+    setTimeout(() => speak(q.answer), 150);
+    q.t0 = Date.now() + 400;
+    return;
+  }
+  const scriptName = ch === 'ー' ? '' : kata ? '片假名' : '平假名';
+  let prompt = '', opts = null, answer = ch, kanaOpts = false, self = false;
+  const newBadge = q.isNew ? `<div><span class="badge">🌱 新字 · 先猜一猜，猜错也没关系</span></div>` : q.ahead ? `<div><span class="badge">提前练习</span></div>` : '';
+  // romaji fade-out: once a character is well established, answer with sounds instead of romaji
+  const fade = S.pref.fade && card(q.id) && card(q.id).st >= 5;
+  q.fade = fade;
+  if (q.sk === 'see') {
+    prompt = `${newBadge}<div class="qk" lang="ja">${ch}</div><div class="qhint">${fade ? '读什么？点一下听，再点一次确认' : '读什么？'}</div>`;
+    opts = shuffle([ch, ...distractors(ch, 3)]).map((c, i) => ({v:c, label: fade ? '🔊 ' + (i + 1) : unitRoma(c)}));
+  } else if (q.sk === 'grid') {
+    // recall from the whole table of learned characters, not 4 choices
+    prompt = `<div class="qk mid">🔊</div><div class="qhint">听音，在下面的表里点出这个${scriptName}</div><button class="btn ghost small" data-say="${esc(sayOf(ch))}">再听一遍</button> <button class="btn ghost small" data-say="${esc(sayOf(ch))}" data-slow="1">🐢 慢速</button>`;
+    const all = UNITS.filter(y => S.intro.includes(y.u) && y.grp !== 's').map(y => y.grp === 'x' ? y.chars[0] : sameScript(y.chars[0], ch)).filter(c => isKataStr(c) === kata || unitOf(c).grp === 'x' && kata);
+    opts = [...new Set(all)].map(c => ({v:c, label:c})); kanaOpts = 'grid';
+    setTimeout(() => speak(sayOf(ch)), 150);
+  } else if (q.sk === 'read') {
+    const list = exList(ch).filter(e => !e.rd); q.ex = list[Math.floor(Math.random() * list.length)];
+    prompt = `<div class="qhint" style="text-align:left">先自己把整句读出来（汉字看注音），再播放核对</div>
+      <div class="qline hide-rm" lang="ja" id="rLine" data-kline="${esc(lineText(q.ex))}">${lineHTML(q.ex, ch)}</div><div style="color:var(--sub);font-size:16px;text-align:left">♪ ${esc(songOf(q.ex))}</div>
+      <div id="rAns"></div>`;
+    q.selfRead = true;
+  } else if (q.sk === 'hear') {
+    prompt = `<div class="qk mid">🔊</div><div class="qhint">听到的是哪个${scriptName}？</div><button class="btn ghost small" data-say="${esc(sayOf(ch))}">再听一遍</button> <button class="btn ghost small" data-say="${esc(sayOf(ch))}" data-slow="1">🐢 慢速</button>`;
+    opts = shuffle([ch, ...distractors(ch, 3)]).map(c => ({v:c, label:c})); kanaOpts = true;
+    setTimeout(() => speak(sayOf(ch)), 150);
+  } else if (q.sk === 'pair') {
+    answer = kata ? toHira(ch) : toKata(ch);
+    prompt = `<div class="qk" lang="ja">${ch}</div><div class="qhint">它的${kata ? '平假名' : '片假名'}是哪个？</div>`;
+    opts = shuffle([answer, ...distractors(answer, 3)]).map(c => ({v:c, label:c})); kanaOpts = true;
+  } else if (q.sk === 'seq') {
+    const h = toHira(ch), kinds = shuffle(seqKinds(ch));
+    const kind = kinds[0]; answer = sameScript(neighbor(h, kind), ch);
+    prompt = `<div class="qk mid" lang="ja">${ch} ${RELARROW[kind]} ？</div><div class="qhint">「${ch}」${RELNAME[kind]}是？</div>`;
+    const others = kinds.slice(1).map(k => sameScript(neighbor(h, k), ch));
+    const ds = [...new Set([...others, ...distractors(answer, 4)])].filter(c => c !== answer && unitRoma(c) !== unitRoma(answer)).slice(0, 3);
+    opts = shuffle([answer, ...ds]).map(c => ({v:c, label:c})); kanaOpts = true;
+  } else if (q.sk === 'lyric') {
+    const list = exList(ch).filter(e => !e.rd); q.ex = list[Math.floor(Math.random() * list.length)];
+    prompt = `<div class="qline hide-rt hide-rm" lang="ja" id="qLine">${lineHTML(q.ex, ch)}</div><div style="color:var(--sub);font-size:16px;text-align:left">♪ ${esc(songOf(q.ex))}</div><div class="qhint" style="text-align:left">黄色高亮的字读什么？</div>`;
+    opts = shuffle([ch, ...distractors(ch, 3)]).map((c, i) => ({v:c, label: fade ? '🔊 ' + (i + 1) : unitRoma(c)}));
+    if (fade) prompt = prompt.replace('读什么？', '读什么？点一下听，再点一次确认');
+  } else if (q.sk === 'kword') {
+    // read a real katakana loanword; wrong options swap a letter for its look-alike (シ/ツ, ソ/ン…)
+    const pool = kwordsFor(ch), w = pool[Math.floor(Math.random() * pool.length)] || KWORDS[0]; q.word = w;
+    answer = romaji(w[0]);
+    const wrong = new Set();
+    for (const c of [...w[0]]) for (const alt of [...lookAlikes(c), ...distractors(c, 3)]) {
+      if (wrong.size >= 6) break;
+      if (!isKataStr(alt) || alt.length !== 1) continue;
+      const r = romaji(w[0].replace(c, alt)); if (r !== answer) wrong.add(r);
+    }
+    wordVariants(w[0]).forEach(r => wrong.add(r));
+    opts = shuffle([answer, ...shuffle([...wrong]).slice(0, 3)]).map(r => ({v:r, label:r}));
+    prompt = `<div class="qk mid" lang="ja" style="font-size:64px">${hl(w[0], ch)}</div><div class="qhint">这个片假名词怎么读？</div>`;
+  } else if (q.sk === 'word') {
+    const pool = ch === 'ー' ? CHOU : SOKU.filter(w => w[0].includes(ch));
+    const w = pool[Math.floor(Math.random() * pool.length)]; q.word = w;
+    prompt = `${newBadge}<div class="qk mid" lang="ja" style="font-size:72px">${w[0]}</div><div class="qhint">怎么读？（注意${ch === 'ー' ? '长音拉长一拍' : '促音停一拍'}）</div>`;
+    answer = romaji(w[0]);
+    opts = shuffle([answer, ...wordVariants(w[0])]).map(r => ({v:r, label:r}));
+  } else if (q.sk === 'write') {
+    self = true;
+    prompt = `<div class="qhint">写出 <b style="color:var(--accent);font-size:30px">${unitRoma(ch)}</b> 的<b>${scriptName || '写法'}</b></div>
+      <button class="btn ghost small" data-say="${esc(sayOf(ch))}">🔊 听发音</button>
+      <div class="padbg ${ch.length > 1 ? 'y' : ''}" style="margin-top:10px"><div class="ghost" id="wGhost" lang="ja" style="opacity:0">${ch}</div><canvas class="pad" id="wPad"></canvas></div>
+      <div id="wAns"></div>`;
+    setTimeout(() => speak(sayOf(ch)), 150);
+  }
+  q.answer = answer;
+  const title = `${SKILLNAME[q.sk]}${D.mode === 'focus' ? (D.opt.kata ? ' · 片假名专练' : ' · 重点专练') : ''}`;
+  let html = topBar(title) + `<div class="wrap"><div class="qbox">${prompt}</div>`;
+  const audioOpt = fade && (q.sk === 'see' || q.sk === 'lyric');
+  if (opts) html += `<div class="qopts ${kanaOpts === 'grid' ? 'kana gridpick' : kanaOpts ? 'kana' : ''}" lang="ja">${opts.map(o => `<button data-v="${esc(o.v)}" ${audioOpt ? 'data-audio="1"' : ''}>${esc(o.label)}</button>`).join('')}</div>`;
+  if (self) html += `<div style="display:flex;gap:10px;margin-top:10px"><button class="btn ghost" id="wClear" style="flex:1">清空</button><button class="btn" id="wShow" style="flex:2">对答案</button></div><div id="wGrade"></div>`;
+  if (q.selfRead) html += `<button class="btn big" id="rShow" style="margin-top:10px">🔊 播放核对</button><div id="wGrade"></div>`;
+  html += `<div class="qfb" id="qfb"></div></div>`;
+  $('#drill').innerHTML = html; $('#drill').scrollTop = 0;
+  q.t0 = Date.now() + (q.sk === 'hear' ? 400 : 0);
+  if (self) setupPad($('#wPad'));
+}
+// side-by-side view of the right character and the one you picked
+function compareHTML(right, wrong) {
+  const why = [];
+  for (let j = 0; j < CONFUSE.length; j += 2) if (CONFUSE[j].includes(right) && CONFUSE[j].includes(wrong)) why.push(CONFUSE[j + 1]);
+  const col = (c, lab, color) => `<div><div style="font-size:15px;color:var(--sub)">${lab}</div><div class="kk" style="font-size:80px;line-height:1.1;color:${color}">${c}</div><div><b>${unitRoma(c)}</b></div></div>`;
+  const tips = why.length ? why.map(w => `<div class="tip">🔍 ${w}</div>`).join('')
+    : [right, wrong].map(c => INFO[toHira(c)] ? `<div class="tip"><b>${c}</b>：${INFO[toHira(c)].tip}</div>` : '').join('');
+  return `<div class="card" style="margin-top:10px"><div style="display:grid;grid-template-columns:1fr 1fr;text-align:center" lang="ja">${col(right, '正确', 'var(--teal)')}${col(wrong, '你选的', 'var(--accent)')}</div>${tips}</div>`;
+}
+function feedbackHTML(ok, chosen) {
+  const q = D.cur, ch = q.ch, x = unitOf(ch);
+  if (q.sk === 'mini') {
+    return (ok ? `<b style="color:var(--teal)">✓ 对了</b>` : `<b style="color:var(--accent)">✗ 听到的是「${esc(q.answer)}」</b>`) +
+      `<div class="card">${q.mini.slice(0, 2).map(w => wordRow(w[0], w[1])).join('')}<div class="tip">两个词都点开听一听，注意差别：${q.mini[2]}</div></div>
+      <button class="btn big" id="dNext" style="margin-top:12px">下一题 →</button>`;
+  }
+  const pair = x.chars.length > 1 ? `<span lang="ja" style="font-size:30px;font-weight:900">${x.chars[0]} · <span style="color:var(--teal)">${x.chars[1]}</span></span>` : `<span lang="ja" style="font-size:30px;font-weight:900">${x.chars[0]}</span>`;
+  let h = ok ? `<b style="color:var(--teal)">✓ 对了</b> ` : `<b style="color:var(--accent)">✗ 答案</b> `;
+  h += `${pair} <b>${unitRoma(ch)}</b>`;
+  if (!ok && chosen && CH2U[chosen] && CH2U[q.answer]) h += compareHTML(q.answer, chosen);
+  else if (!ok || q.isNew) { h += `<div class="card" style="margin-top:10px">${SHOW_PICS && picOf(ch) ? picTitle(ch) + picSVG(ch, 150) : ''}${tipOf(x)}${SHOW_PICS && picOf(ch) ? `<div class="tip">🎨 ${picOf(ch)[1]}</div>` : ''}${NOTE[x.u] ? `<div class="tip red">🗣 ${NOTE[x.u]}</div>` : ''}</div>`; }
+  if (q.sk === 'lyric') h += `<div class="card"><div class="ln" lang="ja" data-kline="${esc(lineText(q.ex))}">${lineHTML(q.ex, ch)}</div><div class="src"><span>♪ ${esc(songOf(q.ex))}</span>${sayBtns(lineText(q.ex))}</div></div>`;
+  if (q.sk === 'word' || q.sk === 'kword') h +=`<div class="tip">${esc(q.word[0])} = ${esc(romaji(q.word[0]))} · ${esc(q.word[1])}</div>`;
+  h += `<button class="btn big" id="dNext" style="margin-top:12px">下一题 →</button>`;
+  return h;
+}
+function answerAuto(b) {
+  if (D.mode === 'sprint') return sprintAnswer(b);
+  const q = D.cur; if (q.done) return; q.done = true;
+  const rt = Date.now() - q.t0, ok = b.dataset.v === q.answer;
+  const limit = ['lyric', 'word', 'kword', 'seq', 'mini'].includes(q.sk) ? 5000 : 3000;
+  let r = ok ? (rt <= limit ? 2 : 1) : 0;
+  if (q.peek) r = 0;
+  if (!ok && CH2U[b.dataset.v] && CH2U[q.answer]) { const k = q.answer + '>' + b.dataset.v; S.conf[k] = (S.conf[k] || 0) + 1; }
+  grade(q.id, r, {rt, ahead:q.ahead});
+  D.q++; if (r === 2) D.ok++;
+  document.querySelectorAll('.qopts button').forEach(x => { if (x.dataset.v === q.answer) x.classList.add('ok'); else if (x === b) x.classList.add('ng'); });
+  if (q.sk === 'lyric') { const l = $('#qLine'); if (l) l.classList.remove('hide-rt', 'hide-rm'); }
+  $('#qfb').innerHTML = feedbackHTML(ok, b.dataset.v) + (ok && r === 1 ? '<div class="qhint">答对了，但有点慢，这个字会再多出现几次。</div>' : '') + (q.peek ? '<div class="qhint">看了讲解，这题按“没想起”记，会更早再考。</div>' : '');
+  speak(q.sk === 'lyric' ? lineText(q.ex) : (q.sk === 'word' || q.sk === 'kword') ? q.word[0] : q.sk === 'mini' ? q.answer : sayOf(ch2say(q)));
+  tick();
+  if (ok && r === 2 && !q.isNew && q.sk !== 'lyric') setTimeout(() => { if (D && D.cur === q) next(); }, 1100);
+}
+const ch2say = q => q.sk === 'pair' ? q.answer : q.ch;
+function showWriteAnswer() {
+  const q = D.cur; if (q.shown) return; q.shown = true;
+  $('#wGhost').style.opacity = .18;
+  $('#wAns').innerHTML = `<div style="margin-top:10px">${strokeBlock(q.ch)}</div>`;
+  animateStrokes($('#wAns'));
+  $('#wShow').disabled = true;
+  $('#wGrade').innerHTML = `<div class="grade"><button class="g0" data-g="0">想不起</button><button class="g1" data-g="1">想起但慢</button><button class="g2" data-g="2">秒写</button></div>`;
+}
+function answerSelf(r) {
+  const q = D.cur; if (q.done) return; q.done = true;
+  if (q.peek) r = 0;
+  grade(q.id, r, {ahead:q.ahead});
+  D.q++; if (r === 2) D.ok++;
+  tick();
+  next();
+}
+// flash: whole table in random order, just exposure
+function flashQ() {
+  if (D.pos >= D.list.length) { D.list = shuffle(D.list); D.pos = 0; toast('一轮闪完了，再来一轮'); }
+  const ch = D.list[D.pos]; D.cur = {u:CH2U[ch], ch, flash:true};
+  $('#drill').innerHTML = topBar(`乱序闪认 ${D.pos + 1} / ${D.list.length}`) + `<div class="wrap"><div class="qbox"><div class="qk" lang="ja">${ch}</div>
+    <div id="fAns" style="min-height:120px"></div></div>
+    <button class="btn big" id="fShow">显示读音</button></div>`;
+}
+function flashShow() {
+  const ch = D.cur.ch, x = unitOf(ch);
+  $('#fAns').innerHTML = `<div class="roma">${romaLabel(x.u)}</div><div style="font-size:30px" lang="ja">${x.chars.join(' · ')}</div>${INFO[x.u] ? `<div class="tip" style="text-align:left">💡 ${INFO[x.u].tip}</div>` : ''}`;
+  speak(sayOf(ch));
+  $('#fShow').outerHTML = `<div class="grade" style="grid-template-columns:1fr 1fr"><button class="g0" data-f="0">不认识</button><button class="g2" data-f="1">认识</button></div>`;
+}
+function flashGrade(known) {
+  const ch = D.cur.ch;
+  // only counts for characters already being learned, and only as an early review
+  const id = cid(ch, unitOf(ch).grp === 's' ? 'word' : 'see');
+  if (card(id)) grade(id, known ? 2 : 0, {ahead:true});
+  else { const L = S.log[dayKey()] || (S.log[dayKey()] = {q:0, ok:0, ms:0, nu:0}); L.q++; if (known) L.ok++; save(); }
+  D.q++; if (known) D.ok++; D.pos++; tick(); next();
+}
+// sequence recital
+function seqLines(dir) {
+  const lines = [];
+  const intro = u => S.intro.includes(u);
+  if (dir === 'h' || dir === 'hr') {
+    ROWS.forEach((r, i) => { const cs = r.filter(Boolean); if (cs.every(intro)) lines.push({name:ROWNAME[i], cs}); });
+    DROWS.forEach((r, i) => { if (r.every(intro)) lines.push({name:DROWNAME[i], cs:r}); });
+  } else {
+    const dan = ['a 段（あ段）','i 段（い段）','u 段（う段）','e 段（え段）','o 段（お段）'];
+    SECS.forEach((rows, si) => { for (let c = 0; c < 5; c++) { const cs = rows.map(r => r[c]).filter(Boolean); if (cs.length && cs.every(intro)) lines.push({name:(si ? '浊音 ' : '') + dan[c], cs}); } });
+  }
+  if (dir === 'hr' || dir === 'vr') { lines.reverse(); lines.forEach(l => l.cs = [...l.cs].reverse()); }
+  return lines;
+}
+function seqQ() {
+  if (D.pos >= D.lines.length) { D.pos = 0; toast('背完一整轮了 👏 再来一轮'); }
+  const L = D.lines[D.pos], sc = D.opt.script === 'alt' ? (D.pos % 2 ? 'k' : 'h') : D.opt.script;
+  const cs = L.cs.map(u => sc === 'k' ? toKata(u) : u);
+  D.cur = {line:L, cs, shown:0};
+  const dirName = {h:'顺着背', hr:'倒着背', v:'竖着背', vr:'竖着倒背'}[D.opt.dir];
+  $('#drill').innerHTML = topBar(`${dirName} · ${sc === 'k' ? '片假名' : '平假名'} ${D.pos + 1}/${D.lines.length}`) + `<div class="wrap">
+    <div class="qbox"><div class="qhint">${L.name}${D.opt.dir.endsWith('r') ? '（倒着）' : ''}：先在心里或小声背出来，再逐个揭开核对</div>
+    <div class="seqbox" lang="ja">${cs.map(() => '<div></div>').join('')}</div></div>
+    <div style="display:flex;gap:10px"><button class="btn ghost" id="sOne" style="flex:1">揭开一个</button><button class="btn" id="sAll" style="flex:1">全部揭开</button></div>
+    <div id="sGrade"></div></div>`;
+}
+function seqReveal(all) {
+  const q = D.cur, boxes = document.querySelectorAll('.seqbox div');
+  const upto = all ? q.cs.length : Math.min(q.cs.length, q.shown + 1);
+  for (let i = q.shown; i < upto; i++) { boxes[i].textContent = q.cs[i]; boxes[i].classList.add('show'); }
+  if (upto > q.shown) speak(sayOf(q.cs[upto - 1]));
+  q.shown = upto;
+  if (q.shown >= q.cs.length && !$('#sGrade').innerHTML) $('#sGrade').innerHTML = `<div class="grade"><button class="g0" data-s="0">想不起</button><button class="g1" data-s="1">卡顿</button><button class="g2" data-s="2">顺</button></div>`;
+}
+// ---- 60-second sprint: recognition only, as fast as possible ----
+function sprintPool() { return S.intro.flatMap(u => UNITS[UIDX[u]].chars).filter(c => unitOf(c).grp !== 's'); }
+function sprintQ() {
+  const left = D.end - Date.now();
+  if (left <= 0) { if (!D.ended) { D.ended = true; sprintEnd(); } return; }
+  const pool = sprintPool();
+  const w = pool.map(c => 1 + weakness(c));
+  let ch, r;
+  do { r = Math.random() * w.reduce((a, b) => a + b, 0); ch = pool.find((c, i) => (r -= w[i]) <= 0) || pool[0]; } while (pool.length > 1 && D.cur && ch === D.cur.ch);
+  D.cur = {id:cid(ch, 'see'), ch, sk:'see', u:CH2U[ch], answer:ch, sprint:true, t0:Date.now()};
+  $('#drill').innerHTML = topBar(`⏱ 60 秒冲刺 · 已答对 ${D.ok}`) + `<div class="wrap"><div class="qhint" style="text-align:center">剩余 <b id="spLeft" style="font-size:28px;color:var(--accent)">${Math.ceil(left / 1000)}</b> 秒</div>
+    <div class="qbox"><div class="qk" lang="ja">${ch}</div></div>
+    <div class="qopts">${shuffle([ch, ...distractors(ch, 3)]).map(c => `<button data-v="${esc(c)}">${esc(unitRoma(c))}</button>`).join('')}</div></div>`;
+}
+function sprintAnswer(b) {
+  const q = D.cur; if (q.done) return; q.done = true;
+  const rt = Date.now() - q.t0, ok = b.dataset.v === q.answer;
+  D.q++; if (ok) D.ok++; else { D.wrong.push(q.ch); const k = q.answer + '>' + b.dataset.v; S.conf[k] = (S.conf[k] || 0) + 1; }
+  if (card(q.id)) grade(q.id, ok ? (rt <= 2000 ? 2 : 1) : 0, {rt, ahead:true});
+  b.classList.add(ok ? 'ok' : 'ng');
+  if (!ok) document.querySelectorAll('.qopts button').forEach(x => { if (x.dataset.v === q.answer) x.classList.add('ok'); });
+  tick();
+  setTimeout(() => { if (D && D.mode === 'sprint') next(); }, ok ? 120 : 650);
+}
+function sprintEnd() {
+  clearInterval(D.timer);
+  const score = D.ok, best = S.best || 0, isBest = score > best;
+  if (isBest) { S.best = score; save(); }
+  const wrong = [...new Set(D.wrong)];
+  showModal(`<h2 style="margin-top:0">${isBest ? '🎉 新纪录！' : '时间到'}</h2>
+    <div class="stats3"><div><b>${score}</b><span>答对</span></div><div><b>${D.q}</b><span>总题数</span></div><div><b>${Math.max(score, best)}</b><span>最好成绩</span></div></div>
+    ${wrong.length ? `<p>答错的：</p><div class="focus" lang="ja" style="justify-content:center">${wrong.map(c => `<button>${c}</button>`).join('')}</div>` : '<p>一个都没错 👏</p>'}
+    <div style="display:flex;gap:10px;margin-top:14px"><button class="btn ghost" onclick="hideModal();endDrill(true)" style="flex:1">结束</button><button class="btn" onclick="hideModal();startDrill('sprint')" style="flex:2">再来一次</button></div>`);
+}
+// ---- whole-table recall test ----
+function tableQ() {
+  const sc = D.opt.script, units = [...ROWS, ...DROWS].map(r => r.map(u => u && S.intro.includes(u) ? u : null)).filter(r => r.some(Boolean));
+  if (!units.length) { toast('先学几行再来默写'); return endDrill(true); }
+  D.cur = {table:true, marks:{}};
+  $('#drill').innerHTML = topBar(`全表默写 · ${sc === 'k' ? '片假名' : '平假名'}`) + `<div class="wrap">
+    <p class="qhint">先在纸上（或心里）把整张表默写出来，再逐格点开核对。点一下显示答案，写对了不用管；<b>没写出来或写错的，再点一下标成 ✗</b>。</p>
+    <div class="grid" style="grid-template-columns:repeat(5,1fr)" lang="ja">${units.flat().map(u => u ? `<button class="tcell" data-tc="${sc === 'k' ? toKata(u) : u}"></button>` : '<div></div>').join('')}</div>
+    <button class="btn big" id="tDone" style="margin-top:16px">完成，记录结果</button></div>`;
+}
+function tableCell(el) {
+  const ch = el.dataset.tc, m = D.cur.marks;
+  if (!m[ch]) { m[ch] = 'ok'; el.textContent = ch; el.classList.add('ok'); speak(sayOf(ch)); }
+  else if (m[ch] === 'ok') { m[ch] = 'ng'; el.classList.replace('ok', 'ng'); }
+  else { m[ch] = 'ok'; el.classList.replace('ng', 'ok'); }
+}
+function tableDone() {
+  const m = D.cur.marks, cells = [...document.querySelectorAll('.tcell')];
+  cells.forEach(el => { if (!m[el.dataset.tc]) m[el.dataset.tc] = 'ok'; });
+  const bad = Object.keys(m).filter(c => m[c] === 'ng');
+  // anything missed goes straight back into learning; the rest counts as an early review
+  Object.keys(m).forEach(c => { const id = cid(c, 'see'); if (card(id)) grade(id, m[c] === 'ng' ? 0 : 2, {ahead:true}); });
+  D.q += cells.length; D.ok += cells.length - bad.length;
+  S.lastTable = Date.now(); save();
+  showModal(`<h2 style="margin-top:0">默写结果</h2><div class="stats3"><div><b>${cells.length - bad.length}</b><span>写对</span></div><div><b>${bad.length}</b><span>没写出 / 写错</span></div><div><b>${Math.round((cells.length - bad.length) / cells.length * 100)}%</b><span>正确率</span></div></div>
+    ${bad.length ? `<p>这些字已经放回重点复习：</p><div class="focus" lang="ja" style="justify-content:center">${bad.map(c => `<button>${c}</button>`).join('')}</div>` : '<p>整张表全对，倒背如流 👏</p>'}
+    <button class="btn big" onclick="hideModal();endDrill(true)" style="margin-top:14px">好的</button>`);
+}
+// ---- full-line reading (self graded) ----
+function readShow() {
+  const q = D.cur; if (q.shown) return; q.shown = true;
+  $('#rLine').classList.remove('hide-rm');
+  speak(lineText(q.ex));
+  $('#rShow').outerHTML = `<div style="display:flex;gap:10px;margin-top:10px">${sayBtns(lineText(q.ex))}<button class="btn ghost small" data-shadow="${esc(lineText(q.ex))}">🎙 跟读对比</button></div>`;
+  $('#wGrade').innerHTML = `<div class="grade"><button class="g0" data-g="0">读不出</button><button class="g1" data-g="1">卡顿</button><button class="g2" data-g="2">流畅</button></div>`;
+}
+// ---- shadowing: record yourself, then hear the model and your voice back to back ----
+let recStream = null;
+async function shadow(text, btn) {
+  if (!navigator.mediaDevices || !window.MediaRecorder) return toast('这个浏览器不支持录音，请用 Chrome');
+  try { recStream = recStream || await navigator.mediaDevices.getUserMedia({audio:true}); }
+  catch (e) { return toast('没有麦克风权限：请在浏览器里允许使用麦克风'); }
+  const key = AUDIO[text] ? text : AUDIO[toHira(text)] ? toHira(text) : null;
+  const dur = key ? await new Promise(r => { const a = new Audio(clipUrl(key)); a.onloadedmetadata = () => r(a.duration); a.onerror = () => r(3); }) : 3;
+  btn.disabled = true;
+  const label = btn.textContent;
+  btn.textContent = '先听标准发音…';
+  speak(text);
+  await new Promise(r => setTimeout(r, dur * 1000 + 300));
+  const chunks = [], mr = new MediaRecorder(recStream);
+  mr.ondataavailable = e => chunks.push(e.data);
+  const done = new Promise(r => mr.onstop = r);
+  mr.start(); btn.textContent = '🔴 请跟读…';
+  await new Promise(r => setTimeout(r, dur * 1000 + 1200));
+  mr.stop(); await done;
+  const mine = URL.createObjectURL(new Blob(chunks, {type: mr.mimeType}));
+  btn.textContent = '对比播放：标准 → 你的';
+  speak(text);
+  await new Promise(r => setTimeout(r, dur * 1000 + 400));
+  const a = new Audio(mine); await a.play().catch(() => {});
+  await new Promise(r => { a.onended = r; setTimeout(r, (dur + 2) * 1000); });
+  btn.textContent = label; btn.disabled = false;
+}
+// ---- karaoke: light up each word of a lyric line in time with its recording ----
+const KVOWEL = {};
+for (const [v, row] of Object.entries({a:'あかさたなはまやらわがざだばぱゃぁ', i:'いきしちにひみりぎじぢびぴぃ', u:'うくすつぬふむゆるぐずづぶぷゅぅ', e:'えけせてねへめれげぜでべぺぇ', o:'おこそとのほもよろをごぞどぼぽょぉ'})) for (const c of row) KVOWEL[c] = v;
+// number of beats (morae) a token takes, from its pronunciation
+const moraCount = p => [...toHira(p || '').replace(/[^ぁ-ゖー]/g, '')].filter(c => !'ゃゅょぁぃぅぇぉ'.includes(c)).length;
+let karaRAF = 0, karaSeq = 0;
+const PRE_MS = 0.05 / 0.95 * 1000; // silence VOICEVOX puts before the first beat (prePhonemeLength / speedScale)
+// where the voice really starts and stops inside a clip (ms), so the timeline can be pinned to the actual audio
+const boundsCache = new Map();
+async function speechBounds(key) {
+  if (boundsCache.has(key)) return boundsCache.get(key);
+  let res = null;
+  try {
+    const ctx = speechBounds.ctx || (speechBounds.ctx = new (window.AudioContext || window.webkitAudioContext)());
+    const bin = atob(AUDIO[key]), buf = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+    const ab = await new Promise((ok, no) => ctx.decodeAudioData(buf.buffer, ok, no));
+    const d = ab.getChannelData(0), sr = ab.sampleRate, win = Math.round(sr * 0.01);
+    let peak = 0; for (let i = 0; i < d.length; i++) peak = Math.max(peak, Math.abs(d[i]));
+    let a = -1, b = -1;
+    for (let i = 0; i < d.length; i += win) {
+      let e = 0; for (let j = i; j < Math.min(d.length, i + win); j++) e = Math.max(e, Math.abs(d[j]));
+      if (e > peak * 0.08) { if (a < 0) a = i; b = i + win; }
+    }
+    if (a >= 0) res = [a / sr * 1000, b / sr * 1000];
+  } catch (e) { res = null; }
+  boundsCache.set(key, res);
+  return res;
+}
+// light up each character column in time with the recording
+async function karaoke(text) {
+  const seq = ++karaSeq;
+  clearInterval(karaRAF);
+  document.querySelectorAll('.mo.kara').forEach(e => e.classList.remove('kara'));
+  const T = TIMINGS[text]; if (!T || !T.length) return;
+  const lines = [...document.querySelectorAll('[data-kline]')].filter(e => e.dataset.kline === text);
+  if (!lines.length) return;
+  const cols = lines.map(l => [...l.querySelectorAll('.mo[data-mn]')].map(el => ({el, a:+el.dataset.m0, n:+el.dataset.mn})));
+  const total = cols[0].reduce((s, c) => Math.max(s, c.a + c.n), 0) || 1;
+  const scale = T.length / total; // normally 1; keeps working if a reading's beat count differs slightly
+  const starts = [PRE_MS, ...T.slice(0, -1)], t0 = starts[0], t1 = T[T.length - 1];
+  // start right away on the predicted timeline; once the clip has been analysed, pin it to the real voice
+  // (the very first decode can be slow while the browser sets up audio, so never wait for it)
+  let on = t0, off = t1;
+  speechBounds(text).then(b => { if (b && seq === karaSeq) { on = b[0]; off = b[1]; } });
+  // a plain 40 ms timer: requestAnimationFrame can be paused by the browser (background, power saving)
+  clearInterval(karaRAF);
+  karaRAF = setInterval(() => {
+    if (player.paused || player.ended || seq !== karaSeq) {
+      clearInterval(karaRAF);
+      for (const list of cols) for (const c of list) c.el.classList.remove('kara');
+      return;
+    }
+    // map the playback position onto the predicted beat timeline (works for slow playback too)
+    const tl = t0 + (player.currentTime * 1000 - on) * (t1 - t0) / Math.max(1, off - on);
+    let mi = -1;
+    for (let i = 0; i < T.length; i++) if (tl >= starts[i] && tl < T[i]) { mi = i; break; }
+    for (const list of cols) for (const c of list) c.el.classList.toggle('kara', mi >= 0 && c.n > 0 && mi >= c.a * scale && mi < (c.a + c.n) * scale);
+  }, 40);
+}
+function seqGrade(r) {
+  D.cur.cs.forEach(ch => { if (card(cid(ch, 'seq'))) grade(cid(ch, 'seq'), r, {ahead:true}); });
+  D.q++; if (r === 2) D.ok++; D.pos++; tick(); next();
+}
+$('#drill').addEventListener('click', e => {
+  const t = e.target; if (!D) return;
+  if (t.closest('#dEnd')) return endDrill();
+  if (t.closest('#dPeek')) { if (D.cur && !D.cur.done && !D.cur.flash) D.cur.peek = true; return openSheet(D.cur.u, true); }
+  if (t.closest('#dNext')) return next();
+  const o = t.closest('.qopts button');
+  if (o) {
+    // sound-only options: first tap plays, second tap on the same option answers
+    if (o.dataset.audio && !o.classList.contains('sel')) { document.querySelectorAll('.qopts button').forEach(x => x.classList.toggle('sel', x === o)); return speak(sayOf(o.dataset.v)); }
+    return answerAuto(o);
+  }
+  const tc = t.closest('[data-tc]'); if (tc) return tableCell(tc);
+  if (t.closest('#tDone')) return tableDone();
+  if (t.closest('#rShow')) return readShow();
+  const sh = t.closest('[data-shadow]'); if (sh) return shadow(sh.dataset.shadow, sh);
+  if (t.closest('#wClear')) return $('#wPad').clear();
+  if (t.closest('#wShow')) return showWriteAnswer();
+  const g = t.closest('[data-g]'); if (g) return answerSelf(+g.dataset.g);
+  if (t.closest('#fShow')) return flashShow();
+  const f = t.closest('[data-f]'); if (f) return flashGrade(f.dataset.f === '1');
+  if (t.closest('#sOne')) return seqReveal(false);
+  if (t.closest('#sAll')) return seqReveal(true);
+  const s = t.closest('[data-s]'); if (s) return seqGrade(+s.dataset.s);
+});
+function showModal(html) { $('#modalBody').innerHTML = html; $('#modal').classList.add('on'); }
+function hideModal() { $('#modal').classList.remove('on'); }
+
+// ---------------- home ----------------
+function focusChars() {
+  return S.intro.flatMap(u => UNITS[UIDX[u]].chars).map(ch => ({ch, w:weakness(ch)})).filter(x => x.w >= 2).sort((a, b) => b.w - a.w).slice(0, 5).map(x => x.ch);
+}
+// hiragana vs katakana side by side, so a lagging script is obvious
+function scriptStats(kata) {
+  const chars = S.intro.flatMap(u => UNITS[UIDX[u]].chars).filter(c => isKataStr(c) === kata && c !== 'ー');
+  let n = 0, ok = 0, sol = 0;
+  for (const ch of chars) {
+    const p = card(cid(ch, primOf(ch))); if (p && solid(p)) sol++;
+    for (const sk of Object.keys(SKILLNAME)) { const c = card(cid(ch, sk)); if (c) { n += c.n; ok += c.ok; } }
+  }
+  return {learned: chars.length, solid: sol, acc: n ? Math.round(ok / n * 100) : 0};
+}
+function scriptSplitHTML() {
+  const h = scriptStats(false), k = scriptStats(true);
+  const row = (lab, s, col) => `<div style="display:flex;justify-content:space-between;font-size:17px;margin-top:4px"><span><b style="color:${col}">${lab}</b></span><span>已学 ${s.learned} · 稳固 ${s.solid} · 正确率 ${s.acc}%</span></div>`;
+  const warn = k.learned >= 5 && h.acc - k.acc >= 8 ? `<div class="tip red" style="margin-top:8px">片假名比平假名弱 ${h.acc - k.acc}%，建议多点“片假名专练”。</div>` : '';
+  return `<div style="margin-top:10px">${row('平假名', h, 'var(--ink)')}${row('片假名', k, 'var(--teal)')}</div>${warn}`;
+}
+function streak() {
+  let n = 0, t = Date.now();
+  if (!(S.log[dayKey(t)] && S.log[dayKey(t)].q)) t -= DAY;
+  while (S.log[dayKey(t)] && S.log[dayKey(t)].q) { n++; t -= DAY; }
+  return n;
+}
+// today's goal: a short checklist so it is always clear what "done for today" means
+function renderGoal(due) {
+  const now = Date.now(), ids = activeCards(), L = S.log[dayKey()] || {q:0, nu:0};
+  const reviewDue = ids.filter(id => card(id).st >= 4 && card(id).due <= now).length;
+  const g = nextGroupIndex(), h = scriptStats(false), k = scriptStats(true);
+  const items = [];
+  items.push(reviewDue ? [false, `复习到期的字：还剩 <b>${reviewDue}</b> 题`] : [true, '到期复习已清空']);
+  if (g >= 0 && reviewDue >= 40) items.push([false, `先把复习降到 40 题以下，系统才会放新字（下一组 <b>${GROUPNAME[g]}</b>）`]);
+  else if (g >= 0) items.push([L.nu >= 5, `学新字：下一组 <b>${GROUPNAME[g]}</b>（今天已学 ${L.nu || 0} 个）`]);
+  else items.push([false, '全部学过了，把剩下的字练到“稳固”']);
+  if (k.learned >= 5 && h.acc - k.acc >= 8) items.push([false, `片假名正确率比平假名低 ${h.acc - k.acc}%，今天多练片假名`]);
+  const done = items.every(x => x[0]);
+  $('#goalCard').innerHTML = `<b>🎯 今日目标</b>${items.map(([ok, txt]) => `<div style="font-size:18px;margin-top:6px">${ok ? '✅' : '⬜'} ${txt}</div>`).join('')}
+    ${done ? '<div class="tip" style="margin-top:10px">今天的任务完成了 👏 想继续可以接着刷，系统会挑薄弱的字。</div>' : ''}`;
+}
+// extra practice is suggested only when it is actually useful right now (max 2)
+function renderSuggest() {
+  const today = dayKey(), L = S.log[today] || {q:0}, out = [];
+  const fc = focusChars(), h = scriptStats(false), k = scriptStats(true);
+  if (k.learned >= 5 && (h.acc - k.acc >= 8 || k.solid + 3 < h.solid)) out.push(['goKata', 'カ 片假名专练', '片假名比平假名弱，专门练一轮']);
+  if (fc.length >= 3) out.push(['goFocus', '🎯 薄弱字专练', `这几个字最容易错：<span lang="ja" style="font-size:22px;font-weight:900">${fc.join(' ')}</span>`]);
+  const tDays = S.lastTable ? (Date.now() - S.lastTable) / DAY : 99;
+  if (S.intro.length >= 10 && tDays >= 7) out.push(['goTable', '📋 全表默写', S.lastTable ? '一周没默写了，检验一下' : '学了 10 个音了，默写一次整张表看看']);
+  if (S.intro.length >= 10 && L.q >= 150 && S.lastSprint !== today) out.push(['goSprint', '⏱ 60 秒冲刺', '刷了一阵了，换个节奏练反应速度']);
+  if (S.intro.length && S.intro.length < 20 && L.q < 30) out.push(['goFlash', '⚡ 乱序闪认（热身）', '开刷前先把全部假名闪一遍']);
+  $('#suggest').innerHTML = out.slice(0, 2).map(([id, t, d]) => `<button class="hbtn" id="${id}" style="width:100%;margin-top:10px;border-color:var(--teal)"><b>${t}</b><span>${d}</span></button>`).join('');
+}
+function renderHome() {
+  const L = S.log[dayKey()] || {q:0, ok:0, ms:0};
+  const now = Date.now(), ids = activeCards();
+  const due = ids.filter(id => card(id).due <= now).length;
+  $('#homeSub').textContent = `连续打卡 ${streak()} 天 · 今日 ${Math.round(L.ms / MIN)} 分钟 · ${L.q} 题 · 正确率 ${L.q ? Math.round(L.ok / L.q * 100) : 0}%`;
+  renderGoal(due);
+  renderSuggest();
+  $('#bestScore').textContent = S.best ? `最好成绩 ${S.best} 题` : '限时连答，练反应速度';
+  const tDays = S.lastTable ? Math.max(0, Math.floor((Date.now() - S.lastTable) / DAY)) : null;
+  $('#tableHint').textContent = tDays === null ? '每周一次，彻底检验' : tDays >= 7 ? `已经 ${tDays} 天没默写了` : `${tDays ? tDays + ' 天前' : '今天'}默写过`;
+  // weekly backup nudge once there is something worth keeping
+  const totalQ = Object.values(S.log).reduce((a, b) => a + b.q, 0);
+  const since = Date.now() - (S.lastExport || S.created || Date.now());
+  $('#banner').innerHTML = totalQ >= 50 && since > 7 * DAY ? `<div class="banner">💾 <span style="flex:1">学习记录只存在这台手机里，已经 ${Math.floor(since / DAY)} 天没备份了</span><button class="btn small" id="goBackup">立即备份</button></div>` : '';
+  const st = UNITS.map(x => unitStatus(x.u)), n = UNITS.length, c = k => st.filter(s => s === k).length;
+  const g = nextGroupIndex();
+  $('#progCard').innerHTML = `<b>总进度</b><span style="color:var(--sub);font-size:16px"> 共 ${n} 个音（平片都算）</span>
+    <div class="bar"><i style="width:${c(3) / n * 100}%;background:var(--teal)"></i><i style="width:${c(2) / n * 100}%;background:var(--teal-soft)"></i><i style="width:${c(1) / n * 100}%;background:var(--gold)"></i></div>
+    <div style="font-size:17px;color:var(--sub)">稳固 ${c(3)} · 复习中 ${c(2)} · 学习中 ${c(1)} · 未学 ${c(0)}</div>
+    ${scriptSplitHTML()}
+    <div style="font-size:17px;margin-top:6px">${g < 0 ? '全部都学过了，接下来是把它们练到稳固。' : `下一组新字：<b>${GROUPNAME[g]}</b>（当前的字练稳了会自动放出）`}</div>`;
+}
+$('#p-home').addEventListener('click', e => {
+  const t = e.target;
+  if (t.closest('#goMain')) return startDrill('main');
+  if (t.closest('#fzBtn')) { const i = FZ.findIndex(f => f[0] === (S.pref.fz || 1)); return setFz(FZ[(i + 1) % FZ.length][0]); }
+  if (t.closest('#goFlash')) return startDrill('flash');
+  if (t.closest('#goFocus')) return startDrill('focus', {chars:focusChars()});
+  if (t.closest('#goSprint')) { S.lastSprint = dayKey(); save(); return startDrill('sprint'); }
+  if (t.closest('#goFocusAll')) { const fc = focusChars(); return fc.length ? startDrill('focus', {chars:fc}) : toast('还没有明显的薄弱字，先去“开始刷”'); }
+  if (t.closest('#goKata')) {
+    const ks = S.intro.flatMap(u => UNITS[UIDX[u]].chars).filter(isKataStr);
+    if (!ks.length) return toast('先在“开始刷”里学几个字');
+    // weakest katakana first; keep a pool big enough to mix
+    const pick = ks.map(c => ({c, w:weakness(c)})).sort((a, b) => b.w - a.w).slice(0, Math.max(8, Math.ceil(ks.length / 2))).map(x => x.c);
+    return startDrill('focus', {chars:pick, kata:true});
+  }
+  if (t.closest('#goBackup')) return exportBackup();
+  if (t.closest('#goTable')) return showModal(`<h2 style="margin-top:0">全表默写</h2>
+    <p style="font-size:17px">把已经学过的字整张默写一遍，再逐格核对。没写出来的字会自动放回重点复习。建议每周做一次。</p>
+    <div class="seg" id="mSc"><button data-v="h" class="on">平假名</button><button data-v="k">片假名</button></div>
+    <div style="display:flex;gap:10px;margin-top:14px"><button class="btn ghost" onclick="hideModal()" style="flex:1">取消</button><button class="btn" id="mTable" style="flex:2">开始</button></div>`);
+  const fc = t.closest('[data-fc]'); if (fc) return openSheet(CH2U[fc.dataset.fc]);
+  if (t.closest('#goSeq')) return showModal(`<h2 style="margin-top:0">顺背 / 倒背</h2>
+    <div class="qhint" style="text-align:left">方向</div><div class="seg" id="mDir"><button data-v="h" class="on">顺着行</button><button data-v="hr">倒着行</button><button data-v="v">竖着段</button><button data-v="vr">竖着倒</button></div>
+    <div class="qhint" style="text-align:left;margin-top:12px">文字</div><div class="seg" id="mSc"><button data-v="h" class="on">平假名</button><button data-v="k">片假名</button><button data-v="alt">交替</button></div>
+    <p style="font-size:16px;color:var(--sub)">只包含已经学完的整行 / 整段。</p>
+    <div style="display:flex;gap:10px"><button class="btn ghost" onclick="hideModal()" style="flex:1">取消</button><button class="btn" id="mGo" style="flex:2">开始</button></div>`);
+});
+$('#modal').addEventListener('click', e => {
+  const b = e.target.closest('.seg button'); if (b) { b.parentNode.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); return; }
+  if (e.target.closest('#mGo')) { const dir = $('#mDir .on').dataset.v, script = $('#mSc .on').dataset.v; hideModal(); startDrill('seq', {dir, script}); }
+  if (e.target.closest('#mTable')) { const script = $('#mSc .on').dataset.v; hideModal(); startDrill('table', {script}); }
+});
+
+// ---------------- stats ----------------
+function renderStats() {
+  const days = []; for (let i = 13; i >= 0; i--) { const k = dayKey(Date.now() - i * DAY); days.push({k, L:S.log[k] || {q:0, ok:0, ms:0}}); }
+  const maxQ = Math.max(10, ...days.map(d => d.L.q)), W = 340, H = 150, bw = W / 14;
+  const bars = days.map((d, i) => { const h = d.L.q / maxQ * (H - 40); const acc = d.L.q ? Math.round(d.L.ok / d.L.q * 100) : null;
+    return `<rect x="${i * bw + 3}" y="${H - 20 - h}" width="${bw - 6}" height="${h}" rx="3" fill="var(--teal)"/>` +
+      (acc !== null ? `<text x="${i * bw + bw / 2}" y="${H - 24 - h}" text-anchor="middle">${acc}%</text>` : '') +
+      `<text x="${i * bw + bw / 2}" y="${H - 6}" text-anchor="middle">${d.k.slice(8)}</text>`; }).join('');
+  const all = Object.values(S.log), totQ = all.reduce((a, b) => a + b.q, 0), totMs = all.reduce((a, b) => a + b.ms, 0);
+  const conf = Object.entries(S.conf).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const slow = Object.entries(S.cards).filter(([id, c]) => c.rt && CH2U[id.split('|')[0]]).map(([id, c]) => ({ch:id.split('|')[0], sk:id.split('|')[1], rt:c.rt})).sort((a, b) => b.rt - a.rt).slice(0, 8);
+  const ids = activeCards(), sc = k => ids.filter(id => SKILLNAME[id.split('|')[1]] && id.split('|')[1] === k);
+  $('#statsBody').innerHTML = `
+    <div class="card"><div class="stats3"><div><b>${streak()}</b><span>连续打卡天数</span></div><div><b>${Math.round(totMs / HOUR * 10) / 10}</b><span>累计小时</span></div><div><b>${totQ}</b><span>累计题数</span></div></div></div>
+    <div class="card"><b>最近 14 天题数（柱上是正确率）</b><svg class="chart" viewBox="0 0 ${W} ${H}">${bars}</svg></div>
+    <div class="card"><b>各能力掌握情况</b><div class="list">${Object.keys(SKILLNAME).map(k => { const cs = sc(k).map(card); if (!cs.length) return ''; return `<div><span>${SKILLNAME[k]}</span><span>稳固 ${cs.filter(solid).length} / ${cs.length}</span></div>`; }).join('')}</div></div>
+    <div class="card"><b>你最常搞混的</b><div class="list" lang="ja">${conf.length ? conf.map(([k, n]) => `<div><span class="kk" style="font-size:24px">${k.replace('>', ' → 认成 ')}</span><span>${n} 次</span></div>`).join('') : '<p style="color:var(--sub)">还没有记录</p>'}</div></div>
+    <div class="card"><b>反应最慢的</b><div class="list" lang="ja">${slow.length ? slow.map(s => `<div><span class="kk" style="font-size:24px">${s.ch} <small style="font-size:15px;color:var(--sub)">${SKILLNAME[s.sk]}</small></span><span>${(s.rt / 1000).toFixed(1)} 秒</span></div>`).join('') : '<p style="color:var(--sub)">还没有记录</p>'}</div></div>`;
+}
+
+// play one character, one word and one lyric line and report exactly which step fails, and why
+async function soundCheck() {
+  const out = $('#scOut'), lines = [];
+  const show = () => out.innerHTML = lines.join('<br>');
+  const ua = navigator.userAgent, br = (ua.match(/(Edg|OPR|Firefox|Chrome|Version)\/[\d.]+/g) || [ua.slice(0, 50)]).join(' ');
+  lines.push(`浏览器：${esc(br)}${location.protocol === 'file:' ? '（本地文件打开）' : ''}`);
+  const first = Object.values(DATA.ex).flat()[0];
+  for (const [name, key] of [['单字 か', 'か'], ['单词 ねこ', 'ねこ'], ...(first ? [['歌词一句', lineText(first)]] : [])]) {
+    lines.push(`${name}：播放中…`); show();
+    try {
+      if (!AUDIO[key]) throw new Error('网页里没有这段录音');
+      const a = new Audio(clipUrl(key));
+      await a.play();
+      await new Promise(r => { a.onended = r; setTimeout(r, 8000); });
+      lines[lines.length - 1] = `${name}：✅ 播放成功（${a.duration.toFixed(1)} 秒）`;
+    } catch (e) { lines[lines.length - 1] = `${name}：❌ 失败（${esc(e.name || '')} ${esc(e.message || '')}）`; }
+    show();
+  }
+  lines.push('三段都听到了就说明正常。哪一步是 ❌，或者显示成功却没听到声音，把这一段截图发给我。');
+  show();
+}
+// text size levels (multiplier for every font size on the page)
+const FZ = [[1, '标准'], [1.15, '大'], [1.3, '特大'], [1.45, '超大']];
+function applyFz() { document.documentElement.style.setProperty('--fz', S.pref.fz || 1); }
+function setFz(v) {
+  S.pref.fz = v; save(); applyFz();
+  toast('字号：' + (FZ.find(f => f[0] === v) || FZ[0])[1]);
+  if ($('#guide').innerHTML) renderGuide();
+}
+// Android back button: close the top-most layer; false means "nothing left to close"
+window.__appBack = () => {
+  if ($('#modal').classList.contains('on')) { hideModal(); return true; }
+  if ($('#sheet').classList.contains('on')) { closeSheet(); return true; }
+  if ($('#drill').classList.contains('on')) { endDrill(); return true; }
+  const home = document.querySelector('#tabs [data-p=p-home]');
+  if (!home.classList.contains('on')) { home.click(); return true; }
+  return false;
+};
+function exportBackup() {
+  const name = `五十音记录-${dayKey()}.json`;
+  if (APP) {
+    // the app writes straight into the phone's Downloads folder
+    const where = APP.saveFile(name, JSON.stringify(S));
+    if (where.startsWith('ERR')) return toast('备份失败：' + where.slice(4));
+    S.lastExport = Date.now(); save(); renderHome();
+    return toast('已备份到 ' + where);
+  }
+  const blob = new Blob([JSON.stringify(S)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  S.lastExport = Date.now(); save(); renderHome();
+  toast('已导出，文件在下载目录里');
+}
+// ---------------- guide / settings ----------------
+function renderGuide() {
+  $('#guide').innerHTML = `
+  <p style="color:var(--sub);font-size:16px">每一节点开看，用到哪节看哪节。</p>
+  <details class="card fold" open><summary><b>① 这套训练怎么运作</b></summary><ol>
+    <li><b>只管点“开始刷”。</b>新字、复习、各种题型全部混着出，什么时候复习哪个字由系统安排。</li>
+    <li><b>新字先猜再学。</b>第一次见到的字先让你猜，猜完立刻看字源和口诀。先试后学比先看再背记得更牢。</li>
+    <li><b>同一个字会隔开再考。</b>答对后隔 1 分钟、10 分钟、30 分钟再考，之后隔 1、2、4、8、16 天。答错就从头来。</li>
+    <li><b>“稳固” = 在 3 个不同的日子都答对。</b>当天刷熟不算数，隔天还能秒答才是真的记住了。</li>
+    <li><b>又对又快。</b>答对但超过 3 秒，算“慢”，这个字会继续多出现。</li>
+    <li><b>能力一级级解锁：</b>先认读，再听辨、平片互转，再默写、顺序、歌词。</li>
+    <li><b>当前的字稳了才放新字。</b>复习积压太多时，系统会先让你复习。</li>
+    <li><b>每 30 分钟提醒休息。</b>注意力下降后刷题效果会明显变差。</li>
+    <li><b>随时点 💡 看讲解。</b>答题前看了讲解，这题按“没想起”记，这样记录才真实。</li>
+  </ol>
+  <p><b>每天的流程：</b>看首页「今日目标」→ 点「开始刷」→ 每 30 分钟歇一下 → 首页出现推荐练习时顺手做一下 → 睡前再刷 10 分钟复习。</p></details>
+
+  <details class="card fold"><summary><b>② 记得牢的方法（为什么这样练）</b></summary><ol>
+    <li><b>先想再看答案。</b>自己努力回想的那一下，比看十遍都管用。所以每道题都先答，答不出来再看讲解。</li>
+    <li><b>隔开复习。</b>同一个字隔几分钟、隔几天再考，比一口气刷二十遍记得牢得多。当天刷熟只是短期记忆。</li>
+    <li><b>平片混着练。</b>平假名、片假名、不同题型混在一起，逼大脑真正区分，不靠“这一组都是 か 行”去猜。</li>
+    <li><b>多感官一起上。</b>看、听、读出声、手写同时用：读出声的字比默读记得牢，手写能记住笔画细节。</li>
+    <li><b>给每个字找个“钩子”。</b>字源（这个假名是从哪个汉字变来的）、图像卡、口诀，最好再自己编一个和你喜欢的角色、歌有关的口诀——自己想出来的最牢。</li>
+    <li><b>在歌词里见到它。</b>同一个字在熟悉的歌里反复出现，记忆会自动加固。听歌时留意学过的字。</li>
+    <li><b>别把罗马音当拐杖。</b>罗马音只是入门时的辅助。假名应该直接对应声音，而不是“看到 か → 想到 ka → 再发音”。字练稳后可以在设置里打开“罗马音逐步淡出”。</li>
+    <li><b>答错是好事。</b>错过并马上看到正确答案的字，往往记得最牢。易混字选错时，看清两个字的区别再走。</li>
+    <li><b>睡眠帮你巩固。</b>睡前复习一轮效果特别好；熬夜硬刷效果反而差。</li>
+    <li><b>注意细节，不只记“大概样子”。</b>很多混淆（さ/き、ソ/ン、シ/ツ）都是因为只记了整体轮廓。看清笔画的方向、有没有打圈、有没有多一横。</li>
+  </ol></details>
+
+  <details class="card fold"><summary><b>③ 发音要点（总论）</b></summary>
+    <p><b>拍（节拍）：</b>日语按“拍”数节奏，每个假名占一拍，拍与拍时长基本相同。小写的 ゃゅょ 跟前面的字合成一拍；促音 っ、拨音 ん、长音都各自单独占一拍。<span lang="ja">にっぽん</span> 是 に・っ・ぽ・ん 四拍。</p>
+    <p><b>五个元音：</b>a i u e o，短、干脆、口型不变。最常见的问题：う 撅嘴（应放松扁唇）、え 滑成“ei”、お 滑成“ou”。</p>
+    <p><b>清音和浊音：</b>日语区分的是“声带振不振动”（か/が、た/だ、さ/ざ、は/ば），而汉语普通话区分的是“送不送气”。所以中国人容易把词中的 か 听成 が。练习时把手放在喉咙上，浊音能感觉到振动。</p>
+    <p><b>长音：</b>元音拉长一拍，长短不同意思就不同：<span lang="ja">おばさん</span>（阿姨）/ <span lang="ja">おばあさん</span>（奶奶），<span lang="ja">ビル</span>（大楼）/ <span lang="ja">ビール</span>（啤酒）。平假名的写法规律：a 段加 あ、i 段加 い、u 段加 う、e 段多数加 い（<span lang="ja">せんせい</span> 读 sensee）、o 段多数加 う（<span lang="ja">おとうさん</span> 读 otoosan）。片假名统一用「ー」。</p>
+    <p><b>促音 っ：</b>停顿一拍，口型先摆好下一个辅音。<span lang="ja">きて</span>（来）/ <span lang="ja">きって</span>（邮票）意思完全不同。只出现在 か さ た ぱ 行等清音前（外来语例外）。</p>
+    <p><b>拨音 ん：</b>独占一拍的鼻音，会随后一个音变化：b/p/m 前读 m（<span lang="ja">さんぽ</span>），k/g 前读 ng（<span lang="ja">りんご</span>），元音前要断开（<span lang="ja">きんえん</span> 是 kin-en，不是 ki-nen）。</p>
+    <p><b>元音清化：</b>i、u 夹在两个清辅音之间，或在句末的 す 里，常常几乎不发出声，只剩气流：<span lang="ja">すき</span>（s-ki）、<span lang="ja">です</span>（des）、<span lang="ja">した</span>（sh-ta）。听录音时会发现这些音“被吃掉”了，这是正常的。</p>
+    <p><b>音调（高低）：</b>日语靠音的高低区分词（<span lang="ja">はし</span> 读作“低高”是桥，“高低”是筷子），不像汉语那样每个字有声调。五十音阶段先不用专门练，多听录音、跟读就会慢慢有感觉。</p>
+    <p><b>助词的读法：</b>写作 は へ を，作助词时读 wa e o。</p>
+  </details>
+
+  <details class="card fold"><summary><b>④ 书写要点（总论）</b></summary><ul>
+    <li><b>笔顺原则：</b>先上后下、先左后右、先横后竖。五十音表里点开任意一个字，看“笔顺动画”。</li>
+    <li><b>风格：</b>平假名圆润、有弧度，像毛笔草书；片假名直、有棱角，笔画少。片假名写圆了就容易和平假名混。</li>
+    <li><b>区分的关键往往在“结尾”：</b>打不打圈（ぬ/め、る/ろ、ね/れ/わ），往哪个方向收笔（シ 往上挑 / ツ 往下撇，ソ 从上往下 / ン 从下往上）。</li>
+    <li><b>多一笔少一笔：</b>き/さ（き 多一横）、は/ほ（ほ 多一横）、ウ/ワ（ウ 有顶点）、タ/ク（タ 多一点）、ヌ/ス（ヌ 多一点）。</li>
+    <li><b>小字：</b>ゃゅょっァィゥェォ 要写成大约一半大，并靠下。写大了读音就变了（きや ≠ きゃ）。</li>
+    <li><b>浊点和半浊点：</b>「゛」「゜」写在右上角，最后写。</li>
+    <li><b>长音符号：</b>横写时是「ー」，竖写时变成竖线「｜」。不要和数字“一”混淆，ー 比“一”短一点、居中。</li>
+  </ul></details>
+
+  <details class="card fold"><summary><b>⑤ 片假名专题</b></summary>
+    <p><b>来源：</b>片假名都是取汉字的一部分（伊→イ、加→カ、八→ハ），平假名是整个汉字的草书。所以片假名经常能直接对上一个汉字部件，讲解页里每个字都写了来源。</p>
+    <p><b>用在哪里：</b>外来词（<span lang="ja">アニメ、ゲーム</span>）、外国人名地名、拟声词、强调，以及动植物名称等。歌名、角色名、游戏术语里大量出现，所以对 ACG 爱好者特别重要。</p>
+    <p><b>外来语的规律（读懂片假名词的关键）：</b></p><ul>
+      <li>英语的长元音、-er / -or 结尾多变成长音「ー」：<span lang="ja">コーヒー、コンピューター</span>。</li>
+      <li>双写辅音、短促的音变成促音「ッ」：<span lang="ja">ベッド、カップ</span>。</li>
+      <li>辅音结尾要补元音，t/d 后一般补 o，其他多补 u：<span lang="ja">ケーキ、ゲーム、ベッド</span>。</li>
+      <li>日语没有的音用“大字 + 小写”拼：fa → <span lang="ja">ファ</span>、ti → <span lang="ja">ティ</span>、di → <span lang="ja">ディ</span>、v → <span lang="ja">ヴ</span>（也常写成 バ 行）。</li>
+      <li>L 和 R 都写成 ラ 行；th 一般写成 サ 行或 ザ 行。</li>
+      <li>拼出来后要用日语的方式读，不要用英语读法：コート 一定要读长，读短了就不是“大衣”了。</li>
+    </ul>
+    <p><b>为什么片假名更难记：</b>平时见得少、笔画简单彼此很像（シツソン、クケタ、コユ）。对策：多做“平片互转”和“读片假名词”，首页出现“片假名专练”推荐时优先做。</p>
+  </details>
+
+  <details class="card fold"><summary><b>⑥ ぢ / づ 和容易拼错的地方</b></summary><ul>
+    <li><b>ぢ 和 じ、づ 和 ず 读音相同。</b>大多数词用 じ ず；只有两种情况用 ぢ づ：<br>
+      ① 两个词连起来，后一个词的 ち/つ 变浊：<span lang="ja">はな＋ち → はなぢ</span>（鼻血），<span lang="ja">みか＋つき → みかづき</span>（新月）。<br>
+      ② 同一个音紧接着重复并变浊：<span lang="ja">ちぢむ</span>（缩），<span lang="ja">つづく</span>（继续）。</li>
+    <li><b>长音别多写或少写：</b><span lang="ja">おとうさん</span>（不是 おとさん）、<span lang="ja">とおい</span>（例外：这里写 お 不写 う）。</li>
+    <li><b>促音和长音不要写成大字：</b>きって 不是 きつて，ケーキ 的长音是「ー」不是“一”。</li>
+    <li><b>拗音的小字：</b>しゃしん 不是 しやしん。</li>
+  </ul></details>
+
+  <details class="card fold"><summary><b>⑦ 罗马音规则（读音 vs 打字）</b></summary>
+    <p>本工具用的是最常见的“赫本式”拼法，更接近实际读音。用手机/电脑打日文时，有几处输入方法不一样：</p>
+    <table lang="ja">
+      <tr><th>假名</th><th>读音（本工具）</th><th>打字时输入</th></tr>
+      <tr><td class="kk">し ち つ ふ じ</td><td>shi chi tsu fu ji</td><td>shi/si、chi/ti、tsu/tu、fu/hu、ji/zi 都行</td></tr>
+      <tr><td class="kk">を</td><td>o</td><td>wo</td></tr>
+      <tr><td class="kk">ん</td><td>n</td><td>nn（后面是元音或 y 时必须打两个 n）</td></tr>
+      <tr><td class="kk">ぢ づ</td><td>ji zu</td><td>di du</td></tr>
+      <tr><td class="kk">っ</td><td>双写后一个辅音</td><td>双写辅音（kitte），单独打出用 xtu / ltu</td></tr>
+      <tr><td class="kk">ー</td><td>重复元音（本工具写成 aa、ee）</td><td>键盘上的“-”键</td></tr>
+    </table>
+    <p>正式的赫本式会把长音写成 ā ō，本工具为了打字方便写成 aa oo（或 ou、ei）。</p>
+  </details>
+
+  <details class="card fold"><summary><b>⑧ 拼写规则速查</b></summary><table lang="ja">
+    <tr><td class="kk">か→が</td><td>浊音：右上加「゛」，声带振动。</td></tr>
+    <tr><td class="kk">は→ぱ</td><td>半浊音：は 行右上加「゜」，变成 p。</td></tr>
+    <tr><td class="kk">きゃ</td><td>拗音：い段字 + 小写 ゃゅょ，合成一拍。</td></tr>
+    <tr><td class="kk">きって</td><td>促音：小写「っ」停顿一拍，下一个辅音双写（kitte）。</td></tr>
+    <tr><td class="kk">ケーキ</td><td>长音：元音拉长一拍，片假名用「ー」。</td></tr>
+    <tr><td class="kk">ファ</td><td>外来语扩展音：大字 + 小写 ァィゥェォ。</td></tr>
+    <tr><td class="kk">は へ を</td><td>作助词分别读 wa / e / o。</td></tr>
+  </table></details>
+
+  <details class="card fold"><summary><b>⑨ 中国人容易读错的音</b></summary><table lang="ja">${['う','え','し','ち','つ','す','ふ','ら','ん','ぢ'].map(k => `<tr><td class="kk">${k}</td><td>${NOTE[k] || {'え':'嘴角向两边开，不要滑成汉语的“ei”。','す':'嘴唇不撅；句末的 す 常常只剩 s 音（です 读 des）。'}[k] || ''}</td></tr>`).join('')}
+    <tr><td class="kk">か/が</td><td>日语分清浊（声带振动），不分送气。词中的 か 别读成 が，が 要振动声带。</td></tr>
+    <tr><td class="kk">长短</td><td>长音、促音少一拍或多一拍，意思就变了。</td></tr></table></details>
+
+  <details class="card fold"><summary><b>⑩ 常见错误清单（自查）</b></summary><ol>
+    <li>看罗马音读字，不直接把假名和声音连起来。</li>
+    <li>シ/ツ、ソ/ン 只看形状不看笔画方向。</li>
+    <li>ぬ/め、る/ろ、ね/れ/わ 忘了看结尾有没有打圈。</li>
+    <li>さ/ち 镜像搞反；き/さ 少写一横。</li>
+    <li>拗音的小字写成大字：きや ≠ きゃ。</li>
+    <li>促音、长音漏读或多读，节拍不对。</li>
+    <li>助词 は へ を 按字面读成 ha he wo。</li>
+    <li>つ 读成“苏”、ふ 咬下唇读成 fu。</li>
+    <li>ら 行卷舌或读成 l 拖长。</li>
+    <li>ん 读得太短，没占满一拍。</li>
+    <li>外来语按英语读，不按日语的拍子和长音读。</li>
+    <li>只练平假名，片假名长期落后。</li>
+    <li>当天刷到很熟就以为记住了，第二天不复习。</li>
+  </ol></details>
+
+  <details class="card fold"><summary><b>⑪ 易混字一览</b></summary><table lang="ja">${(() => { let s = ''; for (let j = 0; j < CONFUSE.length; j += 2) s += `<tr><td class="kk" style="white-space:nowrap">${CONFUSE[j].join(' ')}</td><td>${CONFUSE[j + 1]}</td></tr>`; return s; })()}</table></details>
+  <div class="card"><b>🎵 我的歌词</b>
+    <p style="color:var(--sub);margin:6px 0 10px">把喜欢的日语歌的歌词贴进来，每个假名会配上你自己歌里的句子，出现在讲解页和“歌词认字”题里。</p>
+    ${S.myLyrics.length ? `<div class="list" style="margin-bottom:12px">${S.myLyrics.map((s, i) => `<div><span lang="ja"><b>${esc(s.title)}</b>${s.artist ? ` <small style="color:var(--sub)">${esc(s.artist)}</small>` : ''}</span><button class="chip" data-mydel="${i}">删除</button></div>`).join('')}</div>` : ''}
+    <button class="btn teal small" id="myAdd">＋ 导入歌词</button>
+  </div>
+  <div class="card"><b>备份与设置</b>
+    <p>学习记录只存在这台手机的浏览器里。清除浏览器数据或换手机前，先导出备份。</p>
+    <div class="list" style="margin-bottom:12px">
+      <div><span><b>罗马音逐步淡出</b><br><small style="color:var(--sub)">字练稳后，认读题改成听声音选，不再靠罗马音</small></span><button class="chip ${S.pref.fade ? 'on' : ''}" id="tFade">${S.pref.fade ? '已开' : '已关'}</button></div>
+      <div><span><b>整句朗读</b><br><small style="color:var(--sub)">字稳固后出整句歌词，自己读再核对</small></span><button class="chip ${S.pref.readLine ? 'on' : ''}" id="tRead">${S.pref.readLine ? '已开' : '已关'}</button></div>
+    </div>
+    ${APP ? `<div class="list" style="margin-bottom:12px">${[[1, '每日练习提醒'], [2, '睡前复习提醒']].map(([id, name]) => {
+      const [on, h, m] = APP.getReminder(id).split(',');
+      return `<div><span><b>${name}</b><br><input type="time" id="remT${id}" value="${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}" style="font:inherit;font-size:18px;margin-top:4px;padding:4px 8px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)"></span><button class="chip ${on === 'true' ? 'on' : ''}" data-rem="${id}">${on === 'true' ? '已开' : '已关'}</button></div>`;
+    }).join('')}</div>` : ''}
+    <div style="margin-bottom:12px"><b>字号</b><div class="seg" id="fzSeg">${FZ.map(([v, n]) => `<button data-fz="${v}" class="${(S.pref.fz || 1) === v ? 'on' : ''}">${n}</button>`).join('')}</div></div>
+    <div style="margin-bottom:12px"><button class="btn teal small" id="soundCheck">🔊 声音自检</button>
+      <div id="scOut" style="font-size:16px;margin-top:8px;line-height:1.7"></div></div>
+    <div class="toggles"><button class="btn small" id="exp">导出记录</button><button class="btn ghost small" id="imp">导入记录</button><button class="btn ghost small" id="theme">深色 / 浅色</button><button class="btn ghost small" id="reset">清空记录</button></div>
+  </div>
+  <p style="color:var(--sub);font-size:15px">/*__LYRICSRC__*/<br>发音录音：VOICEVOX:/*__VOICE__*/<br>单词真人发音：Kanji alive（<span>https://kanjialive.com</span>，CC BY 4.0，原样使用未修改）；Fukujinzuke（Lingua Libre / Wikimedia Commons，CC BY 4.0）<br>笔顺数据：KanjiVG（Ulrich Apel，CC BY-SA 3.0）<br>图像记忆卡、口诀为原创</p>`;
+  $('#exp').onclick = exportBackup;
+  $('#myAdd').onclick = myLyricForm;
+  document.querySelectorAll('[data-mydel]').forEach(b => b.onclick = () => {
+    const s = S.myLyrics[+b.dataset.mydel];
+    if (!confirm(`删除「${s.title}」的歌词？`)) return;
+    S.myLyrics.splice(+b.dataset.mydel, 1); buildMyEx(); save(); renderGuide(); toast('已删除');
+  });
+  // reminders (app only): toggle on/off, or change the time while on
+  document.querySelectorAll('[data-rem]').forEach(b => b.onclick = () => {
+    const id = +b.dataset.rem, on = !b.classList.contains('on'), [h, m] = $('#remT' + id).value.split(':').map(Number);
+    APP.setReminder(id, h, m, on); renderGuide(); toast(on ? `已设置：每天 ${$('#remT' + id).value} 提醒` : '已关闭提醒');
+  });
+  document.querySelectorAll('[id^=remT]').forEach(inp => inp.onchange = () => {
+    const id = +inp.id.slice(4), btn = document.querySelector(`[data-rem="${id}"]`), [h, m] = inp.value.split(':').map(Number);
+    if (btn.classList.contains('on')) { APP.setReminder(id, h, m, true); toast(`提醒时间改为 ${inp.value}`); }
+  });
+  $('#soundCheck').onclick = soundCheck;
+  document.querySelectorAll('#fzSeg button').forEach(b => b.onclick = () => setFz(+b.dataset.fz));
+  $('#tFade').onclick = () => { S.pref.fade = !S.pref.fade; save(); renderGuide(); };
+  $('#tRead').onclick = () => { S.pref.readLine = !S.pref.readLine; save(); if (S.pref.readLine) unlockSeqAll(); renderGuide(); };
+  $('#imp').onclick = () => $('#importFile').click();
+  $('#reset').onclick = () => { if (confirm('确定清空所有学习记录？建议先导出备份。')) { S = blank(); save(); renderAll(); toast('已清空'); } };
+  $('#theme').onclick = () => {
+    const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+    const cur = document.documentElement.dataset.theme || (dark ? 'dark' : 'light');
+    S.pref.theme = cur === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = S.pref.theme; save();
+  };
+}
+function myLyricForm() {
+  const box = 'font:inherit;font-size:18px;width:100%;box-sizing:border-box;margin:6px 0;padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink)';
+  showModal(`<b>导入歌词</b>
+    <input id="myT" placeholder="歌名" style="${box}">
+    <input id="myA" placeholder="歌手（可不填）" style="${box}">
+    <textarea id="myX" rows="9" lang="ja" placeholder="把日语歌词粘贴到这里，一行一句" style="${box};resize:vertical"></textarea>
+    <p style="color:var(--sub);font-size:15px;margin:4px 0 10px">汉字想要注音，就在后面加括号写读音：夢(ゆめ)、紅葉(もみじ)；没加的汉字照原样显示。<br>这些句子没有内置录音，用手机自带的日语语音朗读。</p>
+    <div class="toggles"><button class="btn small" id="mySave">保存</button><button class="btn ghost small" id="myCancel">取消</button></div>`);
+  $('#myCancel').onclick = hideModal;
+  $('#mySave').onclick = () => {
+    const title = $('#myT').value.trim(), artist = $('#myA').value.trim(), text = $('#myX').value;
+    if (!title) return toast('先写上歌名');
+    if (!/[ぁ-ゖァ-ヺ]/.test(text)) return toast('没找到日语假名，请粘贴日语歌词');
+    S.myLyrics.push({title, artist, text});
+    const n = buildMyEx();
+    unlockSeqAll(); save(); hideModal(); renderGuide();
+    toast(`已导入「${title}」：共 ${n} 句，${Object.keys(MYEX).length} 个假名有了你自己的歌词`);
+  };
+}
+$('#importFile').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => { try { const d = JSON.parse(r.result); if (!d.cards || !d.intro) throw 0; if (confirm('用这个备份覆盖当前记录？')) { S = Object.assign(blank(), d); save(); renderAll(); toast('已导入'); } } catch (err) { toast('这个文件不是有效的备份'); } };
+  r.readAsText(f); e.target.value = '';
+});
+
+// ---------------- tabs / init ----------------
+function renderAll() { renderHome(); renderTable(); renderStats(); }
+$('#tabs').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  document.querySelectorAll('#tabs button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('section.page').forEach(p => p.classList.toggle('on', p.id === b.dataset.p));
+  if (b.dataset.p === 'p-home') renderHome();
+  if (b.dataset.p === 'p-table') renderTable();
+  if (b.dataset.p === 'p-stats') renderStats();
+  window.scrollTo(0, 0);
+});
+window.addEventListener('keydown', e => { if (e.key === 'Escape') { if ($('#sheet').classList.contains('on')) closeSheet(); else if ($('#modal').classList.contains('on')) hideModal(); } });
+if (S.pref.theme) document.documentElement.dataset.theme = S.pref.theme;
+applyFz();
+buildMyEx();
+renderAll(); renderGuide();
+</script>
+</body>
+</html>
