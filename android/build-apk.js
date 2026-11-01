@@ -21,7 +21,8 @@ const KS = process.env.KANA_KS || path.join(T, 'kana-release.keystore');
 const PASSFILE = path.join(T, 'kana-release.pass');
 const KSPASS = process.env.KANA_KS_PASS || (fs.existsSync(PASSFILE) && fs.readFileSync(PASSFILE, 'utf8').trim());
 if (!KSPASS) throw new Error('set KANA_KS_PASS (a new keystore is created with it if none exists)');
-const [, , PAGE, OUT] = process.argv;
+// optional third argument: a folder whose sub-folders (audio/, img/, data/) are packed next to the page
+const [, , PAGE, OUT, EXTRA] = process.argv;
 
 const run = (exe, args, opts = {}) => {
   console.log('>', path.basename(exe), args.slice(0, 4).join(' '), args.length > 4 ? '…' : '');
@@ -32,13 +33,16 @@ const bat = name => path.join(BT, name + '.bat');
 fs.rmSync(B, { recursive: true, force: true });
 fs.mkdirSync(path.join(B, 'gen'), { recursive: true });
 fs.mkdirSync(path.join(B, 'classes'), { recursive: true });
+fs.rmSync(path.join(APP, 'assets'), { recursive: true, force: true });
 fs.mkdirSync(path.join(APP, 'assets'), { recursive: true });
 fs.copyFileSync(PAGE, path.join(APP, 'assets', 'index.html'));
+if (EXTRA) for (const d of ['audio', 'img', 'data']) if (fs.existsSync(path.join(EXTRA, d))) fs.cpSync(path.join(EXTRA, d), path.join(APP, 'assets', d), { recursive: true });
 
 // 1. resources + manifest + assets
 run(path.join(BT, 'aapt2.exe'), ['compile', '--dir', path.join(APP, 'res'), '-o', path.join(B, 'res.zip')]);
+// (assets are added with 7-Zip in step 4: aapt2 on Windows stores nested asset paths with "\", which Android can't find)
 run(path.join(BT, 'aapt2.exe'), ['link', '-I', JAR, '--manifest', path.join(APP, 'AndroidManifest.xml'),
-  '-A', path.join(APP, 'assets'), '--java', path.join(B, 'gen'), '-o', path.join(B, 'base.apk'), path.join(B, 'res.zip')]);
+  '--java', path.join(B, 'gen'), '-o', path.join(B, 'base.apk'), path.join(B, 'res.zip')]);
 
 // 2. java -> class
 const sources = [];
@@ -55,6 +59,11 @@ run(bat('d8'), ['--lib', JAR, '--min-api', '24', '--output', B, ...classes], { s
 
 // 4. put classes.dex into the apk (existing entries are copied untouched)
 run(SEVENZ, ['a', '-tzip', path.join(B, 'base.apk'), 'classes.dex'], { cwd: B });
+// assets: recordings and pictures stored as they are (already compressed), page and data compressed
+const media = ['audio', 'img'].map(d => path.join('assets', d)).filter(d => fs.existsSync(path.join(APP, d)));
+if (media.length) run(SEVENZ, ['a', '-tzip', '-mx=0', path.join(B, 'base.apk'), ...media], { cwd: APP });
+run(SEVENZ, ['a', '-tzip', '-mx=9', path.join(B, 'base.apk'), path.join('assets', 'index.html'),
+  ...(fs.existsSync(path.join(APP, 'assets', 'data')) ? [path.join('assets', 'data')] : [])], { cwd: APP });
 
 // 5. align, then sign
 run(path.join(BT, 'zipalign.exe'), ['-p', '-f', '4', path.join(B, 'base.apk'), path.join(B, 'aligned.apk')]);

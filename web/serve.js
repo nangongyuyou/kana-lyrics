@@ -5,7 +5,7 @@ const PORT = +(process.argv[3] || 5178);
 http.createServer((req, res) => {
   const f = path.join(ROOT, decodeURIComponent(req.url.split('?')[0]));
   if (!f.startsWith(ROOT) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { res.writeHead(404); return res.end(); }
-  const type = { '.wav': 'audio/wav', '.mp3': 'audio/mpeg', '.json': 'application/json' }[path.extname(f).toLowerCase()] || 'text/html; charset=utf-8';
+  const type = { '.wav': 'audio/wav', '.mp3': 'audio/mpeg', '.json': 'application/json', '.js': 'text/javascript; charset=utf-8', '.ogg': 'audio/ogg', '.png': 'image/png', '.jpg': 'image/jpeg' }[path.extname(f).toLowerCase()] || 'text/html; charset=utf-8';
   res.writeHead(200, { 'Content-Type': type });
   fs.createReadStream(f).pipe(res);
 }).listen(PORT, () => console.log(`http://localhost:${PORT}/`));

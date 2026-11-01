@@ -1,11 +1,11 @@
 {
   "name": "kana-lyrics",
-  "version": "1.1.0",
+  "version": "3.0.0",
   "private": true,
   "description": "Learn hiragana and katakana with lines from songs you love",
   "license": "MIT",
   "scripts": {
-    "build:public": "node build.js ResourceHanRoundedCN-Heavy.ttf ../dist/kana-lyrics.html public"
+    "build:public": "node build.js ResourceHanRoundedCN-Heavy.ttf ../app public"
   },
   "dependencies": {
     "@breezystack/lamejs": "^1.2.7",

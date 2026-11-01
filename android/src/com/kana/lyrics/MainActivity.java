@@ -22,10 +22,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import android.database.Cursor;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Hosts the study page in a WebView and adds what a plain web page cannot do. */
 public class MainActivity extends Activity {
@@ -101,6 +106,22 @@ public class MainActivity extends Activity {
 
         if (state != null) web.restoreState(state);
         else web.loadUrl("file:///android_asset/index.html");
+    }
+
+    // write the learning record right away when the app goes to the background (it may be killed later)
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (web != null) web.evaluateJavascript("window.__flush && window.__flush()", null);
+    }
+
+    private static byte[] readAll(File f) throws Exception {
+        byte[] b = new byte[(int) f.length()];
+        try (FileInputStream in = new FileInputStream(f)) {
+            int off = 0;
+            while (off < b.length) { int n = in.read(b, off, b.length - off); if (n < 0) break; off += n; }
+        }
+        return b;
     }
 
     @Override
@@ -204,6 +225,88 @@ public class MainActivity extends Activity {
         @JavascriptInterface
         public String getReminder(int id) {
             return Reminder.describe(MainActivity.this, id);
+        }
+
+        /** The learning record lives in the app's own storage (no browser size limit). Written via a temp file. */
+        @JavascriptInterface
+        public String saveState(String json) {
+            try {
+                File tmp = new File(getFilesDir(), "state.json.tmp"), f = new File(getFilesDir(), "state.json");
+                try (FileOutputStream os = new FileOutputStream(tmp)) { os.write(json.getBytes(StandardCharsets.UTF_8)); os.getFD().sync(); }
+                if (!tmp.renameTo(f)) { f.delete(); if (!tmp.renameTo(f)) return "ERR:rename"; }
+                return "OK";
+            } catch (Exception e) {
+                return "ERR:" + e.getMessage();
+            }
+        }
+
+        @JavascriptInterface
+        public String loadState() {
+            try {
+                File f = new File(getFilesDir(), "state.json");
+                return f.exists() ? new String(readAll(f), StandardCharsets.UTF_8) : "";
+            } catch (Exception e) {
+                return "";
+            }
+        }
+
+        /** Every answer, one line each, for fitting the memory model to this learner. */
+        @JavascriptInterface
+        public String appendLog(String lines) {
+            try (FileOutputStream os = new FileOutputStream(new File(getFilesDir(), "log.tsv"), true)) {
+                os.write(lines.getBytes(StandardCharsets.UTF_8));
+                return "OK";
+            } catch (Exception e) {
+                return "ERR:" + e.getMessage();
+            }
+        }
+
+        @JavascriptInterface
+        public String readLog() {
+            try {
+                File f = new File(getFilesDir(), "log.tsv");
+                return f.exists() ? new String(readAll(f), StandardCharsets.UTF_8) : "";
+            } catch (Exception e) {
+                return "";
+            }
+        }
+
+        /** Weekly automatic backup into Downloads/五十音; only the newest 4 automatic ones are kept. */
+        @JavascriptInterface
+        public String autoBackup(String name, String text) {
+            String where = saveFile(name, text);
+            if (where.startsWith("ERR")) return where;
+            try {
+                if (Build.VERSION.SDK_INT >= 29) {
+                    List<Long> ids = new ArrayList<Long>();
+                    try (Cursor c = getContentResolver().query(MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                            new String[]{MediaStore.Downloads._ID},
+                            MediaStore.Downloads.DISPLAY_NAME + " LIKE ? AND " + MediaStore.Downloads.RELATIVE_PATH + " LIKE ?",
+                            new String[]{"五十音记录-自动%", Environment.DIRECTORY_DOWNLOADS + "/五十音%"},
+                            MediaStore.Downloads.DATE_ADDED + " DESC")) {
+                        while (c != null && c.moveToNext()) ids.add(c.getLong(0));
+                    }
+                    for (int i = 4; i < ids.size(); i++)
+                        getContentResolver().delete(Uri.withAppendedPath(MediaStore.Downloads.EXTERNAL_CONTENT_URI, String.valueOf(ids.get(i))), null, null);
+                } else {
+                    File[] fs = new File(getExternalFilesDir(null), "backup").listFiles();
+                    if (fs != null) {
+                        List<File> auto = new ArrayList<File>();
+                        for (File f : fs) if (f.getName().startsWith("五十音记录-自动")) auto.add(f);
+                        java.util.Collections.sort(auto, new java.util.Comparator<File>() {
+                            @Override public int compare(File a, File b) { return Long.compare(b.lastModified(), a.lastModified()); }
+                        });
+                        for (int i = 4; i < auto.size(); i++) auto.get(i).delete();
+                    }
+                }
+            } catch (Exception ignored) { }
+            return where;
+        }
+
+        /** One reminder when enough questions will be due (0 = cancel). */
+        @JavascriptInterface
+        public void setDueReminder(long atMillis, String text) {
+            Reminder.scheduleDue(MainActivity.this, atMillis, text);
         }
     }
 }

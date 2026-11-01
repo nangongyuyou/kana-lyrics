@@ -34,6 +34,16 @@ public class Reminder extends BroadcastReceiver {
         am.setInexactRepeating(AlarmManager.RTC_WAKEUP, t.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
     }
 
+    /** id 3: a one-off reminder at the moment enough reviews have piled up (computed by the page). */
+    static void scheduleDue(Context c, long at, String text) {
+        c.getSharedPreferences(PREFS, 0).edit().putLong("dueAt", at).putString("dueText", text).apply();
+        AlarmManager am = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pi = PendingIntent.getBroadcast(c, 3, new Intent(c, Reminder.class).putExtra("id", 3),
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        am.cancel(pi);
+        if (at > System.currentTimeMillis()) am.set(AlarmManager.RTC_WAKEUP, at, pi);
+    }
+
     /** "on,hour,minute" so the page can show the current setting. */
     static String describe(Context c, int id) {
         SharedPreferences sp = c.getSharedPreferences(PREFS, 0);
@@ -47,9 +57,11 @@ public class Reminder extends BroadcastReceiver {
             for (int id = 1; id <= 2; id++) {
                 if (sp.getBoolean("on" + id, false)) schedule(c, id, sp.getInt("h" + id, 20), sp.getInt("m" + id, 0), true);
             }
+            if (sp.getLong("dueAt", 0) > System.currentTimeMillis()) scheduleDue(c, sp.getLong("dueAt", 0), sp.getString("dueText", ""));
             return;
         }
         int id = intent.getIntExtra("id", 1);
+        String dueText = id == 3 ? c.getSharedPreferences(PREFS, 0).getString("dueText", "") : "";
         NotificationManager nm = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= 26) {
             nm.createNotificationChannel(new NotificationChannel(CHANNEL, "练习提醒", NotificationManager.IMPORTANCE_DEFAULT));
@@ -58,8 +70,8 @@ public class Reminder extends BroadcastReceiver {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         Notification.Builder b = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(c, CHANNEL) : new Notification.Builder(c);
         b.setSmallIcon(android.R.drawable.ic_popup_reminder)
-                .setContentTitle(id == 2 ? "睡前复习 10 分钟" : "该练五十音啦")
-                .setContentText(id == 2 ? "睡前复习一轮，睡觉时大脑会帮你巩固" : "今天的目标在等你，打开刷一会儿")
+                .setContentTitle(id == 3 ? "该复习啦" : id == 2 ? "睡前复习 10 分钟" : "该练五十音啦")
+                .setContentText(id == 3 ? dueText : id == 2 ? "睡前复习一轮，睡觉时大脑会帮你巩固" : "今天的目标在等你，打开刷一会儿")
                 .setAutoCancel(true)
                 .setContentIntent(open);
         nm.notify(id, b.build());

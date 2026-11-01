@@ -17,3 +17,8 @@ android/sdk/
 *.pass
 
 tmp-browser-profile/
+
+# build output (node build.js ... ../app public) and the Opus clip cache
+app/
+资源处理/
+
