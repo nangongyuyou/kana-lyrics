@@ -598,7 +598,7 @@ function skillsOf(ch) {
   const s = ['see', 'hear'];
   if (x.grp !== 'x') s.push('pair');
   s.push('write');
-  if (x.grp === 'b' || x.grp === 'd') if (GRID[toHira(ch)]) s.push('seq');
+  // (no table-position "neighbour" questions: they train the chart layout, not reading)
   if (hasLyric(ch)) s.push('lyric');
   return s;
 }
@@ -633,10 +633,12 @@ const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
 };
-const blank = () => ({v:2, cards:{}, intro:[], log:{}, conf:{}, mine:{}, myLyrics:[], best:0, created:Date.now(), lastExport:0, lastTable:0, pref:{rt:true, rm:true, fade:false, readLine:true, fz:1}});
+const blank = () => ({v:3, cards:{}, intro:[], log:{}, conf:{}, mine:{}, myLyrics:[], best:0, created:Date.now(), lastExport:0, lastTable:0, pref:{rt:true, rm:true, fade:false, readLine:false, fz:1}});
 let S = store.get('kana2', null) || blank();
 // fill in fields added in later versions
 S = Object.assign(blank(), S); S.pref = Object.assign(blank().pref, S.pref);
+// v3: neighbour questions are gone and whole-line reading starts switched off
+if (S.v < 3) { for (const id in S.cards) if (id.endsWith('|seq')) delete S.cards[id]; S.pref.readLine = false; S.v = 3; }
 const save = () => store.set('kana2', S);
 
 // ---------------- your own lyrics ----------------
@@ -727,7 +729,6 @@ function unlockFor(ch) {
   // later skills start one step in: recognition already got them past the first exposure
   if (c.st >= 2) sk.filter(s => s === 'hear' || s === 'pair').forEach(s => activate(ch, s, 1));
   if (c.st >= 3) sk.filter(s => s === 'write' || s === 'lyric').forEach(s => activate(ch, s, 1));
-  if (c.st >= 3 && sk.includes('seq') && seqKinds(ch).length) activate(ch, 'seq', 1);
   if (c.st >= 3 && unitOf(ch).grp !== 's' && S.intro.length >= 6) activate(ch, 'grid', 1);
   if (c.st >= 3 && isKataStr(ch) && kwordsFor(ch).length) activate(ch, 'kword', 1);
   // reading a whole line comes once the character has held up on two different days
@@ -777,7 +778,7 @@ function introduceNext() {
 }
 function weakness(ch) {
   let w = 0;
-  for (const sk of ['see','hear','pair','write','seq','lyric','word']) { const c = card(cid(ch, sk)); if (c) w += c.lap * 3 + c.slow + (c.st < 4 ? 0.5 : 0) + (c.rt > 3500 ? 1 : 0); }
+  for (const sk of ['see','hear','pair','write','seq','lyric','word']) { const c = card(cid(ch, sk)); if (c) w += c.lap * 3 + c.slow + (c.st < 4 ? 0.5 : 0) + (c.rt > 6000 ? 1 : 0); }
   for (const k in S.conf) if (k.startsWith(ch + '>')) w += S.conf[k] * 2;
   return w;
 }
@@ -1315,7 +1316,8 @@ function answerAuto(b) {
   if (D.mode === 'sprint') return sprintAnswer(b);
   const q = D.cur; if (q.done) return; q.done = true;
   const rt = Date.now() - q.t0, ok = b.dataset.v === q.answer;
-  const limit = ['lyric', 'word', 'kword', 'seq', 'mini'].includes(q.sk) ? 5000 : 3000;
+  // generous limits: Bluetooth headphones add audible delay, and a fast-but-anxious answer helps nobody
+  const limit = ['lyric', 'word', 'kword', 'mini'].includes(q.sk) ? 7500 : 5500;
   let r = ok ? (rt <= limit ? 2 : 1) : 0;
   if (q.peek) r = 0;
   if (!ok && CH2U[b.dataset.v] && CH2U[q.answer]) { const k = q.answer + '>' + b.dataset.v; S.conf[k] = (S.conf[k] || 0) + 1; }
@@ -1778,8 +1780,8 @@ function renderGuide() {
     <li><b>新字先猜再学。</b>第一次见到的字先让你猜，猜完立刻看字源和口诀。先试后学比先看再背记得更牢。</li>
     <li><b>同一个字会隔开再考。</b>答对后隔 1 分钟、10 分钟、30 分钟再考，之后隔 1、2、4、8、16 天。答错就从头来。</li>
     <li><b>“稳固” = 在 3 个不同的日子都答对。</b>当天刷熟不算数，隔天还能秒答才是真的记住了。</li>
-    <li><b>又对又快。</b>答对但超过 3 秒，算“慢”，这个字会继续多出现。</li>
-    <li><b>能力一级级解锁：</b>先认读，再听辨、平片互转，再默写、顺序、歌词。</li>
+    <li><b>又对又快。</b>答对但超过 5.5 秒（歌词、单词题 7.5 秒），算“慢”，这个字会继续多出现。时限留足了蓝牙耳机的延迟，不用着急。</li>
+    <li><b>能力一级级解锁：</b>先认读，再听辨、平片互转，再默写、歌词。</li>
     <li><b>当前的字稳了才放新字。</b>复习积压太多时，系统会先让你复习。</li>
     <li><b>每 30 分钟提醒休息。</b>注意力下降后刷题效果会明显变差。</li>
     <li><b>随时点 💡 看讲解。</b>答题前看了讲解，这题按“没想起”记，这样记录才真实。</li>
