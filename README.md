@@ -1,106 +1,97 @@
-# 五十音 · 歌词记忆（kana-lyrics）
+# 🌸 五十音 · 歌词记忆（kana-lyrics 3.0）
 
-**用你喜欢的歌的歌词记住平假名和片假名。** 每个假名都配上歌词里的真实例句，句子上方有汉字注音，每个假名下方有罗马音，播放时逐字高亮。平时只点一个「开始刷」：学新字、巩固、复习、加练全部由系统安排，用的是 FSRS 记忆模型，在你快要忘的时候再考。
+**用你喜欢的歌词记住平假名与片假名，从五十音一路学到新标日 9,117 词与汉字认读。**
 
-安卓 App，离线就能用。
+每一个假名都配上歌词里的真实生动例句，顶部带汉字振假名注音，底部带连贯罗马音，播放时流体逐字高亮。平日只需点击一个「▶ 开始刷」：学新字、日内巩固、到期复习、易混加练与提速冲刺全部由系统算法自适应安排。
 
-*Learn Japanese kana (hiragana + katakana together) through lines from songs you love. Offline Android app with an FSRS spaced-repetition scheduler, Chinese UI.*
+搭载 **FSRS-5 现代间隔重复记忆模型** 与 **平假名/片假名动态配平机制**，彻底告别枯燥遗忘与片假名脱节。
+
+---
+
+## 📦 安装包与源码下载
+
+同一个 Release 页面下，提供不同取向的安装包与全套源码：
+
+| 版本名称 | 文件体积 | 适用场景与内容特点 | 下载直链 |
+| :--- | :--- | :--- | :--- |
+| 🌸 **五十音歌词记忆-3.0.apk** | **82.2 MB** | **【旗舰完整版】** 内置 2 万全量高保真 Opus 音频、新标日 9,117 词全量真人原声、课本原声听力短句与全量汉字笔顺动画。 | [📥 立即下载 APK](https://github.com/nangongyuyou/kana-lyrics/releases/download/v3.0/%E4%BA%94%E5%8D%81%E9%9F%B3%E6%AD%8C%E8%AF%8D%E8%AE%B0%E5%BF%86-3.0.apk) |
+| 📱 **kana-lyrics-3.0.apk** | **2.6 MB** | **【极简公开版】** 极致轻量纯净，收录公有领域日本经典童谣与 CC BY 4.0 标准真人假名发音，核心刷题算法全功能完备。 | [📥 立即下载 APK](https://github.com/nangongyuyou/kana-lyrics/releases/download/v3.0/kana-lyrics-3.0.apk) |
+| 🌐 **五十音歌词记忆-公开版.html** | **7.2 MB** | **【单文件离线网页版】** 免安装，任何电脑/手机浏览器双击即可离线刷题学习，内置精简字库与基础发音。 | [📥 仓库直达](https://github.com/nangongyuyou/kana-lyrics/blob/main/dist/%E4%BA%94%E5%8D%81%E9%9F%B3%E6%AD%8C%E8%AF%8D%E8%AE%B0%E5%BF%86-%E5%85%AC%E5%BC%80%E7%89%88.html) |
+| 💻 **五十音歌词记忆-3.0-源码.zip** | **11.3 MB** | **【全套源码与工具链】** 包含全套 Python/Node 数据抽取、音频切分、Opus 压缩与免 Gradle 打包脚本。 | [📥 立即下载源码包](https://github.com/nangongyuyou/kana-lyrics/releases/download/v3.0/%E4%BA%94%E5%8D%81%E9%9F%B3%E6%AD%8C%E8%AF%8D%E8%AE%B0%E5%BF%86-3.0-%E6%BA%90%E7%A0%81.zip) |
+
+---
+
+## ⚡ 核心算法与记忆心理学模型
+
+### 1. 工业级 FSRS-5 现代间隔重复模型
+彻底摒弃传统 SM-2 算法机械乘以固定系数的缺陷，采用具备严格现代认知学实证的 **FSRS-5 记忆模型**：
+* **三维物理参数**：稳定性 $S$（保持可回忆状态的天数）、难度 $D$（1~10 固有记忆难度）、可提取性 $R$（经过 $t$ 天后的回忆概率）。
+* **遗忘曲线精准拟合**：根据设定目标记忆率（默认 90%），精确逆推最佳复习节点；
+* **提前复习（Over-review）衰减增益**：连续刷题 1~3 小时不会无题可刷，提前刷题按衰减权重计算稳定度增益，每一题都切实产生成长进度；
+* **本地千题个性化自拟合**：作答满约 1,000 题后，手机端利用本地答题历史矩阵自动重新拟合模型参数，复习间隔完美契合个人生理节律。
+
+### 2. 四档动态作答时间自校准判分
+将认知延迟自动量化为记忆质量，杜绝简单的二元对错：
+* **忘了（Again）**：答错或主动看答案，$R < 0.5$，$S$ 归零进入日内巩固流；
+* **吃力（Hard）**：答对但显著慢于个人基准（> 1.8 倍中位数），$D$ 微升，$S$ 温和延展；
+* **记得（Good）**：正常速度答对（0.6 ~ 1.8 倍中位数），按标准模型增长；
+* **很熟（Easy）**：秒杀盲选答对（< 0.6 倍中位数），跳跃式拉长复习间隔；
+* **硬件延迟平摊**：系统持续维护同题型最近 50 次耗时中位数，蓝牙耳机传输延迟与触摸滑动损耗被自动消除。
+
+### 3. 平假名 / 片假名自适应动态配平（Dual-Kana Leveling）
+* **同音双向绑定**：同一发音（如 `か` 与 `カ`），平假名与片假名必须同时达标方可算作学会；
+* **落后动态补偿**：片假名掌握度一旦落后，系统自动熔断暂停下发新假名，并在题型流中大幅倾斜平片互转与听音辨片题型，强力拉齐；
+* **交叉穿透抽查**：平假名答错，几题后必定突击抽查对应片假名，双向加固联想链路。
+
+### 4. 易混淆字追踪与自适应加练引擎
+* **易混对抗池**：误将 `シ` 错选为 `ツ`，或将 `さ` 混淆为 `き`，系统立刻捕获并建立易混对，在后续 2~3 题内定向生成细微笔画对比题；
+* **提速小组（Speed Sprint）**：攒够 3 个“吃力”字，自动插入极速判断轮次强化条件反射；
+* **抗疲劳心流控制**：同字冷却（至少间隔 4 题）、平片交替、连错 2 题推送高稳固字以稳定情绪。
+
+### 5. 3 分钟极速定级
+* 为已有一定基础的学习者提供开局定级：每行抽查平片各 2 字，4 题在 6 秒内全对直接标定该行“熟练”，省去数小时低效重复。
+
+---
+
+## 📸 功能全景矩阵
 
 <table>
 <tr>
-<td><img src="screenshots/01-home.png" width="200"></td>
-<td><img src="screenshots/02-lyric-question.png" width="200"></td>
-<td><img src="screenshots/05-sheet-lyrics.png" width="200"></td>
-<td><img src="screenshots/08-import-lyrics.png" width="200"></td>
-</tr>
-<tr>
-<td align="center">今日目标，一键开始刷</td>
-<td align="center">歌词认字题</td>
-<td align="center">歌词例句：注音 + 罗马音 + 逐字高亮</td>
-<td align="center">导入你自己的歌词</td>
-</tr>
-<tr>
-<td><img src="screenshots/04-sheet.png" width="200"></td>
-<td><img src="screenshots/03-listen-question.png" width="200"></td>
-<td><img src="screenshots/06-table.png" width="200"></td>
-<td><img src="screenshots/07-stats.png" width="200"></td>
-</tr>
-<tr>
-<td align="center">讲解：字源、口诀、发音要领</td>
-<td align="center">听音选字（易混字做干扰项）</td>
-<td align="center">五十音表：掌握程度一目了然</td>
-<td align="center">学习统计</td>
+<td><img src="screenshots/01-home.png" width="220" alt="首页今日目标与热力图"></td>
+<td><img src="screenshots/02-lyric-question.png" width="220" alt="歌词认字与逐字高亮"></td>
+<td><img src="screenshots/03-listen-question.png" width="220" alt="听音辨字题型"></td>
+<td><img src="screenshots/06-table.png" width="220" alt="五十音全景交互表"></td>
 </tr>
 </table>
 
-<sub>截图来自早期版本，3.0 的界面基本一样。</sub>
+### 1. 歌词沉浸式记忆与逐字高亮
+* 真实语境切片：每一个假名均融入歌词原句，汉字振假名注音 + 歌词原文 + 逐字罗马音三层同轴排列；
+* 逐字毫秒级高亮：结合 VOICEVOX 与真人录音时间轴，如同随身卡拉 OK 般同步滑动。
 
-## 下载
+### 2. 从五十音跨入 9,117 词与汉字多维进阶
+* **新标日全量单词真人原声**：五十音掌握度达 80% 自动解锁《新版标准日本语》初中高全套词汇；
+* **汉字多音与字形辨析**：音读/训读全读音展开对比，并专项提供「日中简繁汉字微小字形辨析」题型；
+* **KanjiVG 矢量笔顺**：内置 1,235 常用汉字矢量动态笔顺与描红。
 
-[**Releases**](../../releases) 里下载最新的 `kana-lyrics-*.apk`（Android 7.0 及以上），或者直接用 [`dist/kana-lyrics.apk`](dist/kana-lyrics.apk)。下载后直接安装，配音、真人录音、字体都已经打包在里面。
+### 3. 全景热力图与数据可视化大厅
+* 五十音表实时按当前可提取率 $R$ 着色（灰未学 → 黄学习中 → 绿熟练 → 蓝稳固），发黄即知该复习；
+* 直观提供未来 7 天复习压力预测折线图与平片掌握度雷达对比。
 
-从 3.0 开始只做安卓 App，不再提供单文件网页版。
+### 4. 工业级全离线与极致轻量架构
+* **Opus 音频全管线**：体积比传统 MP3 缩小 60%+，人声频段零失真；
+* **免 Gradle 纯自研极速打包（build-apk.js）**：直接调度底层构建工具，秒级生成独立 APK；
+* **IndexedDB 本地沙盒**：摆脱 Web 存储限制，每周自动导出备份至系统「下载/五十音」目录。
 
-## 功能
+---
 
-- **只管点「开始刷」**：新字、巩固、复习和各种题型混在一起，系统自己安排。首页写着今天推荐的量；超过推荐只提醒一次，想继续就继续。
-- **FSRS 记忆模型**：每个字记录“能记几天”和“对你难不难”，在快要忘的时候再考（目标记忆率默认 90%，也可以自动调整）。新字 1 分钟、6 分钟、20 分钟各考一次，第二天必考。答错不清零，只缩短间隔。答满约 1000 题后，每周用你自己的答题记录重新拟合模型参数。
-- **四档判分，快慢只和自己比**：忘了 / 吃力 / 记得 / 很熟，由对错和反应时间自动判断。速度只和你自己在这种题上的平时速度比，蓝牙耳机延迟会被抵消。答得对但总要想半天的字标成“记得但慢”，多出快速判断题。
-- **平假名、片假名一起学会**：同一个音的平假名答错，片假名几分钟后马上抽查（反过来也一样）。片假名落后时多出片假名题、暂停新字，直到两边追平；统计页有两条对比曲线。
-- **错了马上加练**：选错易混字（シ / ツ），过两三题再考这两个；认得但慢的字攒够 3 个，来一组提速题；每 20 题一句小结。
-- **状态自适应**：最近 10 题正确率很高，新内容来得快一点；错得多，就先只复习、不加新字。
-- **开局定级**：第一次打开可以做 2～3 分钟测验，每行抽两个字（平、片都有），又对又快的行直接标“熟练”。
-- **歌词辅助记忆**：每个假名配最多 3 句歌词例句，汉字上方标注音，每个假名正下方标罗马音。播放时卡拉 OK 式逐字高亮，还能🐢慢速播放、🎙跟读对比。
-- **导入自己的歌**：在「指南 → 我的歌词」里粘贴任意日语歌词，程序自动给每个假名挑出合适的句子，放进讲解页和“歌词认字”题里（详见下文）。
-- **题型自由搭配**：默认开最实用的几种（看字选发音、听音选字、⚡快速判断、🧩拼词、🎵歌词填空、听辨对比）；平片互转、🔍找字、听一串点出来、全表点字、✍听音默写等可以自己打开，每种设 关 / 少 / 正常 / 多，还能先试 5 题。另外有 60 秒冲刺、乱序闪认、顺背倒背、片假名专练、薄弱字专练、全表默写。
-- **讲解页**：字源（来自哪个汉字）、原创口诀和图像记忆卡、发音要领（中国人容易读错的音）、易混字对比、笔顺动画、常用词（标“真人”的是真人录音）。
-- **五十音表手动标记**：熟练 / 不熟练 / 未学 / 恢复自动，可以标一个字、一整行或一整段。
-- **记录和提醒**：学习记录存在 App 自己的存储里，每题写进答题日志；每周自动备份到手机「下载/五十音」（保留最近 4 份）。每日练习提醒、睡前复习提醒，以及攒够约 30 题到期时的提醒（只在 8:00–22:30）。
-- **其他**：大字号（四档可调）、深色模式、学习统计（未来 7 天复习量预测、实际记住的比例、最常搞混的字、各题型速度）、导出 / 导入备份。
-- **体积小**：全部录音是 Opus 格式，整个 App 不到 3 MB。
-
-## 导入自己的歌词
-
-1. 打开「指南」页，找到 **🎵 我的歌词**，点 **＋ 导入歌词**。
-2. 填上歌名、歌手，把日语歌词粘贴进去，一行一句。
-3. 汉字要注音，就在后面加括号写读音，比如 `夢(ゆめ)`、`紅葉(もみじ)`。没写读音的汉字照原样显示。
-4. 保存后，含有对应假名的句子会自动出现在讲解页和练习题里。
-
-导入的歌词只保存在你自己的手机上，不会上传到任何地方。这些句子没有内置录音，用手机自带的日语语音朗读。如果没声音，请在系统设置里安装日语的“文字转语音”语音包。
-
-## 用自己的歌单生成完整版（电脑）
-
-想让自己的歌也有注音自动标注、VOICEVOX 配音和逐字高亮，可以在电脑上生成一份自己的版本：
-
-需要：[Node.js](https://nodejs.org/) 18+、[ffmpeg](https://ffmpeg.org/)（把录音转成 Opus；不在 PATH 里就用环境变量 `FFMPEG` 指定）、[VOICEVOX](https://voicevox.hiroshiba.jp/) 引擎（运行在 `127.0.0.1:50021`），以及任意一款中日文字体（本项目用的是资源圆体 Heavy）。
-
-1. 准备歌词文本，格式同 [`web/lyrics-public.txt`](web/lyrics-public.txt)：每首歌以 `【序号】歌名 - 歌手` 开头，下面一行一句。读音特殊的汉字可以写成 `漢字(よみ)`。
-2. 依次运行：
-
-```bash
-cd web
-npm install
-node pick.js 我的歌词.txt data.json      # 给每个假名挑例句；kuromoji 标注音，VOICEVOX 核对读音
-node tts.js 8                             # 生成配音（8 = 春日部つむぎ），需要开着 VOICEVOX
-node timings.js 8                         # 生成逐字高亮的时间轴
-node build.js 字体.ttf ../app             # 生成 App 文件夹：index.html + audio/（字体裁剪后嵌入）
-node serve.js ../app                      # 可选：在电脑浏览器里预览 http://localhost:5178/index.html
-```
-
-3. 打包成 APK：给 [`android/`](android/) 配好 JDK 17、Android SDK（build-tools 34.0.0、platforms/android-34）和 7-Zip，然后运行：
-
-```bash
-node android/build-apk.js app/index.html 我的版本.apk app
-```
-
-不需要 Gradle。工具路径用环境变量 `JDK_BIN`、`ANDROID_SDK`、`SEVENZ` 指定，签名密码用 `KANA_KS_PASS`（第一次运行会自动生成签名文件）。录音和图片用 7-Zip 放进 APK，因为 Windows 上的 aapt2 会把子文件夹路径写成反斜杠，安卓读不到。
-
-> ⚠️ 歌词受版权保护。用自己歌单生成的版本请只给自己用，不要把含有受版权保护歌词的成品公开分享。本仓库里的示例歌词全部是已进入公有领域的日本童谣和唱歌（如「故郷」「赤とんぼ」「荒城の月」，均于 1929 年前发表，作词者去世已超过 50 年，或为作者不详的文部省唱歌）。
-
-## 目录结构
+## 📂 目录结构
 
 ```
+<<<<<<< HEAD
 docs/        3.0 改进总方案、刷题算法改进方案、源码说明与使用说明
+=======
+docs/        3.0 改进总方案、刷题算法改进方案、源码说明与使用说明文档
+>>>>>>> 01fd2b9 (docs: 升级主页为 3.0 全功能与 FSRS 记忆算法白皮书，新增下载矩阵)
 dist/        打包好的 APK 与单文件离线网页版（公开版）
 web/         源码本体与全套数据生成/音频处理工具链
   template.html          程序本体：知识表、FSRS 记忆模型调度、题型、交互界面
@@ -115,16 +106,16 @@ web/         源码本体与全套数据生成/音频处理工具链
   serve.js               电脑上预览用的小服务器
   shots.js               用无头浏览器截 README 截图
 android/     安卓 WebView 外壳（记录存储、答题日志、自动备份、提醒）和免 Gradle 打包脚本
-screenshots/ 截图
+screenshots/ 截图展示资源
 ```
 
-## 素材与许可 / Credits & licenses
+---
 
-- 代码和原创教学内容（讲解、口诀、图像记忆卡）：[MIT](LICENSE)
-- 合成语音：**VOICEVOX:春日部つむぎ**（[VOICEVOX](https://voicevox.hiroshiba.jp/)，按角色使用条款署名）
-- 真人单词 / 假名录音：[Kanji alive](https://kanjialive.com)（CC BY 4.0）；Fukujinzuke 的录音来自 [Lingua Libre](https://lingualibre.org) / Wikimedia Commons（CC BY 4.0，去掉首尾静音）。打包时统一转成 Opus 格式。
-- 笔顺数据：[KanjiVG](https://kanjivg.tagaini.net)（© Ulrich Apel，CC BY-SA 3.0）。`web/strokes.json` 按 CC BY-SA 3.0 授权。
-- 字体：资源圆体 Resource Han Rounded（© Cyano Hao，基于 Adobe 思源黑体，[SIL Open Font License 1.1](https://scripts.sil.org/OFL)），裁剪子集后嵌入
-- 记忆模型：[FSRS](https://github.com/open-spaced-repetition/fsrs4anki)（FSRS-5 公式和默认参数）
-- 构建时用到：[kuromoji.js](https://github.com/takuyaa/kuromoji.js)（Apache-2.0）、[lamejs](https://github.com/zhuker/lamejs)（LGPL-3.0）、[subset-font](https://github.com/papandreou/subset-font)（BSD-3-Clause）、[ffmpeg](https://ffmpeg.org/)（Opus 转码）
-- 示例歌词：公有领域的日本童谣、唱歌（见 [`web/lyrics-public.txt`](web/lyrics-public.txt)）
+## 📜 素材与许可 / Credits & licenses
+
+- 代码与教学算法（FSRS 调度、易混抗干扰池、题型）：[MIT](LICENSE)
+- 合成语音：**VOICEVOX:春日部つむぎ**（按角色官方条款署名）
+- 真人录音：[Kanji alive](https://kanjialive.com)（CC BY 4.0）；Fukujinzuke 来自 [Lingua Libre](https://lingualibre.org) / Wikimedia Commons（CC BY 4.0）
+- 汉字笔顺：[KanjiVG](https://kanjivg.tagaini.net)（© Ulrich Apel，CC BY-SA 3.0）
+- 字体：资源圆体 Resource Han Rounded（© Cyano Hao，基于思源黑体，[SIL OFL 1.1](https://scripts.sil.org/OFL)）
+- 示例歌词：已进入公有领域的经典日本童谣（见 `web/lyrics-public.txt`）
