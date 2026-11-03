@@ -100,15 +100,20 @@ node android/build-apk.js app/index.html 我的版本.apk app
 ## 目录结构
 
 ```
-dist/        打包好的 APK
-web/         源码和生成脚本
-  template.html      程序本体：知识表、FSRS 调度、题型、界面
-  build.js           注入数据和字体，把录音转成 Opus，生成 App 文件夹（加 public 参数生成公开版）
-  pick.js            用 kuromoji 分词标注音，给每个假名挑例句
-  tts.js / timings.js  VOICEVOX 配音和逐字时间轴
-  ka-map.js / fuku-get.js  整理真人录音（Kanji alive / Lingua Libre）
-  serve.js           电脑上预览用的小服务器
-  shots.js           用无头浏览器截 README 截图
+docs/        3.0 改进总方案、刷题算法改进方案、源码说明与使用说明
+dist/        打包好的 APK 与单文件离线网页版（公开版）
+web/         源码本体与全套数据生成/音频处理工具链
+  template.html          程序本体：知识表、FSRS 记忆模型调度、题型、交互界面
+  build.js               注入数据和字体，把录音转成 Opus，生成 App 文件夹（加 public 参数生成公开版）
+  kanji-build.py         汉字数据构建工具（释义、例词、KanjiVG 笔顺、简繁对照、录音提取）
+  anki-vocab.py          新标日单词库抽取与分词标注脚本
+  to-opus.py             音频批量压缩转换为 Opus 格式
+  tb-cut*.py / tb-*.py   课本录音智能切分、标注与声学校对全套工具
+  pick.js                用 kuromoji 分词标注音，给每个假名挑例句
+  tts.js / timings.js    VOICEVOX 配音和逐字时间轴
+  ka-*.js / human-*.js   整理真人录音与多源音频匹配（Kanji alive / Lingua Libre）
+  serve.js               电脑上预览用的小服务器
+  shots.js               用无头浏览器截 README 截图
 android/     安卓 WebView 外壳（记录存储、答题日志、自动备份、提醒）和免 Gradle 打包脚本
 screenshots/ 截图
 ```

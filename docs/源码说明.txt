@@ -1,0 +1,22 @@
+五十音歌词记忆 3.0 源码
+======================
+
+制作脚本\template.html   整个 App（界面 + 刷题算法），唯一需要改的主文件
+制作脚本\build.js        生成 App 文件夹：index.html + audio\ + data\ + img\
+                         node build.js <字体.ttf> <输出文件夹> [public]
+                         public = 公开版（只用公有领域童谣，不带任何有版权的资源）
+                         KANA_AUDIO=mp3 时用 MP3 代替 Opus
+制作脚本\kanji-build.py  汉字数据：读法、例词、简繁/日中字形对照、笔顺（KanjiVG）、Kanji alive 录音
+制作脚本\anki-vocab.py   新标日单词表（9117 词）
+制作脚本\to-opus.py      单词录音转 Opus
+制作脚本\tb-*.py         课本《一人で学べるひらがなカタカナ》音频切分和校对
+制作脚本\serve.js        电脑上预览用的小服务器
+android\                 安卓外壳（WebView）：MainActivity.java、Reminder.java、图标
+android\build-apk.js     不用 Gradle 直接打包：aapt2 → javac → d8 → 7-Zip → zipalign → apksigner
+                         node build-apk.js <App文件夹>\index.html <输出.apk> <App文件夹>
+
+打包需要 JDK 17、Android SDK build-tools 34 + platforms/android-34、7-Zip，
+以及签名文件 kana-release.keystore 和密码（都在 E:\ruanjian\kana-tools\，不在这个压缩包里，别删）。
+
+有版权的资源（歌词、课本录音、新标日单词和录音、联想图）不在源码里，
+在 E:\ruanjian\五十音学习工具\资源处理\，仅供个人使用，不要公开。
